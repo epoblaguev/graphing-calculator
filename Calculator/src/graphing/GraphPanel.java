@@ -12,15 +12,19 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import javax.swing.JPanel;
 
 /**
  *
  * @author Egor
  */
-public class GraphPanel extends JPanel implements MouseMotionListener  {
+public class GraphPanel extends JPanel implements MouseMotionListener, MouseWheelListener{
     private int id = 0;
 
     private double minX = -30;
@@ -36,6 +40,7 @@ public class GraphPanel extends JPanel implements MouseMotionListener  {
     public GraphPanel() {
         Toolkit tk = Toolkit.getDefaultToolkit();
         this.addMouseMotionListener(this);
+        this.addMouseWheelListener(this);
         
 
         MediaTracker tracker = new MediaTracker(this);
@@ -54,13 +59,20 @@ public class GraphPanel extends JPanel implements MouseMotionListener  {
 
         yAxis = (int) ((this.getWidth()) * (Math.abs(minX) / (Math.abs(maxX) + Math.abs(minX))));
         xAxis = (int) ((this.getHeight()) * (Math.abs(maxY)/(Math.abs(maxY) + Math.abs(minY))));
+
+        if(minX > 0 || maxX < 0){
+            yAxis = -50;
+        }
+        if(minY > 0 || maxY < 0){
+            xAxis = -50;
+        }
         
         //Write Numbers
         g.drawString("0", yAxis+2, xAxis-1);
-        g.drawString(String.valueOf(minX), 0, xAxis-1);
-        g.drawString(String.valueOf(maxX), this.getWidth()-30, xAxis-1);
-        g.drawString(String.valueOf(minY), yAxis+2, this.getHeight()-1);
-        g.drawString(String.valueOf(maxY), yAxis+2, 10);
+        g.drawString(String.valueOf(Math.round(minX* 100)/100.0), 0, xAxis-1);
+        g.drawString(String.valueOf(Math.round(maxX * 100)/100.0), this.getWidth()-30, xAxis-1);
+        g.drawString(String.valueOf(Math.round(minY* 100)/100.0), yAxis+2, this.getHeight()-1);
+        g.drawString(String.valueOf(Math.round(maxY* 100)/100.0), yAxis+2, 10);
 
         //Draw x axis
         g.drawLine(0, xAxis, this.getWidth(), xAxis);
@@ -117,8 +129,29 @@ public class GraphPanel extends JPanel implements MouseMotionListener  {
         m.addVariable("x", x);
 
         return m.getValue();
+    }
 
+    public void zoom(double percent){
+        double mult = percent/100;
+        this.minX += this.minX * mult;
+        this.maxX += this.maxX * mult;
+        this.minY += this.minY * mult;
+        this.maxY += this.maxY * mult;
+        this.repaint();
+    }
 
+    public void moveHorizontal(double percent){
+        double move = (this.maxX - this.minX)*(percent/100);
+        this.minX += move;
+        this.maxX += move;
+        this.repaint();
+    }
+
+    public void moveVertical(double percent){
+        double move = (this.maxY - this.minY)*(percent/100);
+        this.minY += move;
+        this.maxY += move;
+        this.repaint();
     }
 
     public void mouseDragged(MouseEvent e) {
@@ -133,5 +166,16 @@ public class GraphPanel extends JPanel implements MouseMotionListener  {
         y = Math.round(y*100)/100.0;
         
         this.setToolTipText("x:" + x + "\n, y:" + y);
+    }
+
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        //If zoom in
+        if(e.getWheelRotation() < 0){
+            zoom(-10);
+        }
+        //If zoom out
+        else{
+            zoom(100/9);
+        }
     }
 }

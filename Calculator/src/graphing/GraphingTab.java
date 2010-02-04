@@ -22,10 +22,10 @@ import javax.swing.JTextField;
 public class GraphingTab extends JPanel implements ActionListener {
 
     private GraphPanel graphPanel;
-    private JPanel eastPanel, southPanel;
+    private JPanel eastPanel, southPanel, graphWrapper;
     private JLabel y1Label;
     private JTextField y1Text;
-    private JButton graphButton;
+    private JButton graphButton, leftButton, rightButton, upButton, downButton;
 
     public GraphingTab() {
         this.setLayout(new BorderLayout());
@@ -34,11 +34,25 @@ public class GraphingTab extends JPanel implements ActionListener {
         graphPanel = new GraphPanel();
         eastPanel = new JPanel();
         southPanel = new JPanel();
+        graphWrapper = new JPanel(new BorderLayout());
+
+        //Initialize graphWrapper items;
+        leftButton = new JButton("<");
+        rightButton = new JButton(">");
+        upButton = new JButton("^");
+        downButton = new JButton("\\/");
 
         //Initialize southPanel items.
         y1Label = new JLabel("y1:");
-        y1Text = new JTextField(10);
+        y1Text = new JTextField(20);
         graphButton = new JButton("Graph");
+
+        //Add to wrapper panel
+        graphWrapper.add(graphPanel, BorderLayout.CENTER);
+        graphWrapper.add(leftButton, BorderLayout.WEST);
+        graphWrapper.add(rightButton, BorderLayout.EAST);
+        graphWrapper.add(upButton, BorderLayout.NORTH);
+        graphWrapper.add(downButton, BorderLayout.SOUTH);
         
         //Add to southPanel
         southPanel.setLayout(new FlowLayout());
@@ -48,13 +62,17 @@ public class GraphingTab extends JPanel implements ActionListener {
 
         //Add Action Listeners
         graphButton.addActionListener(this);
+        leftButton.addActionListener(this);
+        rightButton.addActionListener(this);
+        upButton.addActionListener(this);
+        downButton.addActionListener(this);
 
 
 
 
         graphPanel.drawGrid();
         graphPanel.setSize(50,50);
-        this.add(graphPanel, BorderLayout.CENTER);
+        this.add(graphWrapper, BorderLayout.CENTER);
         this.add(eastPanel, BorderLayout.EAST);
         this.add(southPanel, BorderLayout.SOUTH);
 
@@ -65,6 +83,18 @@ public class GraphingTab extends JPanel implements ActionListener {
         if(e.getSource() == graphButton){
             String expression = this.y1Text.getText();
             graphPanel.drawGraph(expression);
+        }
+        if(e.getSource() == leftButton){
+            graphPanel.moveHorizontal(-10);
+        }
+        if(e.getSource() == rightButton){
+            graphPanel.moveHorizontal(10);
+        }
+        if(e.getSource() == upButton){
+            graphPanel.moveVertical(10);
+        }
+        if(e.getSource() == downButton){
+            graphPanel.moveVertical(-10);
         }
     }
 }
