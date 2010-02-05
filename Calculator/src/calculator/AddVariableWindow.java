@@ -30,7 +30,7 @@ public class AddVariableWindow extends JFrame implements ActionListener {
 
     private JLabel lblVariableName, lblVariableValue;
     private JTextField txtVariableName, txtVariableValue;
-    private JButton btnAdd, btnCancel;
+    private JButton btnAdd, btnClose;
     private JPanel topPanel, middlePanel, bottomPanel;
 
     public AddVariableWindow() {
@@ -48,9 +48,9 @@ public class AddVariableWindow extends JFrame implements ActionListener {
         txtVariableValue = new JTextField(10);
 
         btnAdd = new JButton("Add");
-        btnCancel = new JButton("Cancel");
+        btnClose = new JButton("Close");
         btnAdd.addActionListener(this);
-        btnCancel.addActionListener(this);
+        btnClose.addActionListener(this);
 
         topPanel.add(lblVariableName, BorderLayout.WEST);
         topPanel.add(txtVariableName, BorderLayout.EAST);
@@ -59,7 +59,7 @@ public class AddVariableWindow extends JFrame implements ActionListener {
         middlePanel.add(txtVariableValue, BorderLayout.EAST);
 
         bottomPanel.add(btnAdd);
-        bottomPanel.add(btnCancel);
+        bottomPanel.add(btnClose);
 
         this.add(topPanel);
         this.add(middlePanel);
@@ -84,7 +84,7 @@ public class AddVariableWindow extends JFrame implements ActionListener {
                 VariableTablePane.refreshTable();
             }
 
-            if (e.getSource() == btnCancel) {
+            if (e.getSource() == btnClose) {
                 this.dispose();
             }
         } catch (InvalidVariableNameException ex) {

@@ -36,7 +36,7 @@ public class CalculatorTab extends JPanel implements ActionListener {
     JPanel controlPanel, controlPanelEast;
     JPanel centerPanel, centerPanelEast, centerPanelWest, exprControlPanel, varControlPanel;
     JTextField txtInput;
-    JButton btnEnter, btnAddVariable, btnRemoveVariable, btnClearExpressions, btnCopyToInput;
+    JButton btnEnter, btnAddVariable, btnRemoveVariable, btnClearExpressions, btnAppendToInput;
     JTable varTable, exprTable;
 
     public CalculatorTab() {
@@ -94,19 +94,19 @@ public class CalculatorTab extends JPanel implements ActionListener {
         btnAddVariable = new JButton("Add");
         btnRemoveVariable = new JButton("Remove");
         btnClearExpressions = new JButton("Clear");
-        btnCopyToInput = new JButton("Copy To Input");
+        btnAppendToInput = new JButton("Append To Input");
 
         //Add Action Listeners
         btnAddVariable.addActionListener(this);
         btnRemoveVariable.addActionListener(this);
         btnClearExpressions.addActionListener(this);
-        btnCopyToInput.addActionListener(this);
+        btnAppendToInput.addActionListener(this);
 
         //Add buttons to control panels
         varControlPanel.add(btnAddVariable);
         varControlPanel.add(btnRemoveVariable);
         exprControlPanel.add(btnClearExpressions);
-        exprControlPanel.add(btnCopyToInput);
+        exprControlPanel.add(btnAppendToInput);
 
         //Add to variable pannel.
         centerPanelEast.add(varScrollPane, BorderLayout.CENTER);
@@ -167,7 +167,7 @@ public class CalculatorTab extends JPanel implements ActionListener {
             }
         }
 
-        if (e.getSource() == btnCopyToInput) {
+        if (e.getSource() == btnAppendToInput) {
             if (exprTable.getSelectedRow() >= 0) {
                 String copy = ((Expression) ExpressionList.getExpressionList().get(exprTable.getSelectedRow())).getExpression();
                 txtInput.setText(txtInput.getText() + "(" + copy + ")");

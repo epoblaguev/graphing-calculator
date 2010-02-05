@@ -25,7 +25,7 @@ public class GraphingTab extends JPanel implements ActionListener {
     private JPanel eastPanel, southPanel, graphWrapper;
     private JLabel y1Label;
     private JTextField y1Text;
-    private JButton graphButton, leftButton, rightButton, upButton, downButton;
+    private JButton btnGraph, btnLeft, btnRight, btnUp, btnDown;
 
     public GraphingTab() {
         this.setLayout(new BorderLayout());
@@ -37,35 +37,35 @@ public class GraphingTab extends JPanel implements ActionListener {
         graphWrapper = new JPanel(new BorderLayout());
 
         //Initialize graphWrapper items;
-        leftButton = new JButton("<");
-        rightButton = new JButton(">");
-        upButton = new JButton("^");
-        downButton = new JButton("\\/");
+        btnLeft = new JButton("<");
+        btnRight = new JButton(">");
+        btnUp = new JButton("^");
+        btnDown = new JButton("\\/");
 
         //Initialize southPanel items.
         y1Label = new JLabel("y1:");
         y1Text = new JTextField(20);
-        graphButton = new JButton("Graph");
+        btnGraph = new JButton("Graph");
 
         //Add to wrapper panel
         graphWrapper.add(graphPanel, BorderLayout.CENTER);
-        graphWrapper.add(leftButton, BorderLayout.WEST);
-        graphWrapper.add(rightButton, BorderLayout.EAST);
-        graphWrapper.add(upButton, BorderLayout.NORTH);
-        graphWrapper.add(downButton, BorderLayout.SOUTH);
+        graphWrapper.add(btnLeft, BorderLayout.WEST);
+        graphWrapper.add(btnRight, BorderLayout.EAST);
+        graphWrapper.add(btnUp, BorderLayout.NORTH);
+        graphWrapper.add(btnDown, BorderLayout.SOUTH);
         
         //Add to southPanel
         southPanel.setLayout(new FlowLayout());
         southPanel.add(y1Label);
         southPanel.add(y1Text);
-        southPanel.add(graphButton);
+        southPanel.add(btnGraph);
 
         //Add Action Listeners
-        graphButton.addActionListener(this);
-        leftButton.addActionListener(this);
-        rightButton.addActionListener(this);
-        upButton.addActionListener(this);
-        downButton.addActionListener(this);
+        btnGraph.addActionListener(this);
+        btnLeft.addActionListener(this);
+        btnRight.addActionListener(this);
+        btnUp.addActionListener(this);
+        btnDown.addActionListener(this);
 
 
 
@@ -80,20 +80,20 @@ public class GraphingTab extends JPanel implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == graphButton){
+        if(e.getSource() == btnGraph){
             String expression = this.y1Text.getText();
             graphPanel.drawGraph(expression);
         }
-        if(e.getSource() == leftButton){
+        if(e.getSource() == btnLeft){
             graphPanel.moveHorizontal(-10);
         }
-        if(e.getSource() == rightButton){
+        if(e.getSource() == btnRight){
             graphPanel.moveHorizontal(10);
         }
-        if(e.getSource() == upButton){
+        if(e.getSource() == btnUp){
             graphPanel.moveVertical(10);
         }
-        if(e.getSource() == downButton){
+        if(e.getSource() == btnDown){
             graphPanel.moveVertical(-10);
         }
     }

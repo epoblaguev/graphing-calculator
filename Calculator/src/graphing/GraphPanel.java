@@ -57,15 +57,18 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseWhee
         super.paintComponent(g);
         g.setColor(Color.black);
 
-        yAxis = (int) ((this.getWidth()) * (Math.abs(minX) / (Math.abs(maxX) + Math.abs(minX))));
-        xAxis = (int) ((this.getHeight()) * (Math.abs(maxY)/(Math.abs(maxY) + Math.abs(minY))));
+        yAxis = (int) ((this.getWidth()) * (Math.abs(minX) / (maxX-minX)));
+        xAxis = (int) ((this.getHeight()) * (maxY/(maxY-minY)));
 
-        if(minX > 0 || maxX < 0){
-            yAxis = -50;
-        }
-        if(minY > 0 || maxY < 0){
-            xAxis = -50;
-        }
+        System.out.println("yAxis: " + yAxis);
+        System.out.println("xAxis: " + xAxis);
+
+//        if(minX > 0 || maxX < 0){
+//            yAxis = -50;
+//        }
+//        if(minY > 0 || maxY < 0){
+//            xAxis = -50;
+//        }
         
         //Write Numbers
         g.drawString("0", yAxis+2, xAxis-1);
@@ -87,12 +90,12 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseWhee
             return;
         }
 
-        xAnchor = (int) ((minX / ((Math.abs(maxX) + Math.abs(minX))/this.getWidth())) + yAxis) - 100;
-        yAnchor = (int) -((minY / ((Math.abs(maxY) + Math.abs(minY))/this.getHeight())) + xAxis) - 100;
+        xAnchor = (int) ((minX / ((Math.abs(maxX) + Math.abs(minX))/this.getWidth())) + yAxis) -100;
+        yAnchor = (int) ((maxY / (this.getHeight()*(Math.abs(maxY) + Math.abs(minY)))) + xAxis);
 
         for(double x = minX; x<=maxX; x += (Math.abs(maxX) + Math.abs(minX))/this.getWidth()){
             int toX = (int) (x / ((Math.abs(maxX) + Math.abs(minX))/this.getWidth())) + yAxis;
-            int toY = (int) -((evaluate(expression, x) / ((Math.abs(maxY) + Math.abs(minY))/this.getHeight())) + xAxis);
+            int toY = (int) (-evaluate(expression,x) / ((Math.abs(maxY) + Math.abs(minY))/this.getHeight())) + xAxis - this.getHeight();
 
             g.drawLine(xAnchor, yAnchor, toX, toY + this.getHeight());
             
@@ -171,11 +174,11 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseWhee
     public void mouseWheelMoved(MouseWheelEvent e) {
         //If zoom in
         if(e.getWheelRotation() < 0){
-            zoom(-10);
+            zoom(-20);
         }
         //If zoom out
         else{
-            zoom(100/9);
+            zoom(25);
         }
     }
 }
