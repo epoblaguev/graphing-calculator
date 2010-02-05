@@ -57,25 +57,18 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseWhee
         super.paintComponent(g);
         g.setColor(Color.black);
 
-        yAxis = (int) ((this.getWidth()) * (Math.abs(minX) / (maxX-minX)));
-        xAxis = (int) ((this.getHeight()) * (maxY/(maxY-minY)));
+        yAxis = xPosition(0);
+        xAxis = yPosition(0);
 
         System.out.println("yAxis: " + yAxis);
         System.out.println("xAxis: " + xAxis);
-
-//        if(minX > 0 || maxX < 0){
-//            yAxis = -50;
-//        }
-//        if(minY > 0 || maxY < 0){
-//            xAxis = -50;
-//        }
         
         //Write Numbers
         g.drawString("0", yAxis+2, xAxis-1);
-        g.drawString(String.valueOf(Math.round(minX* 100)/100.0), 0, xAxis-1);
-        g.drawString(String.valueOf(Math.round(maxX * 100)/100.0), this.getWidth()-30, xAxis-1);
-        g.drawString(String.valueOf(Math.round(minY* 100)/100.0), yAxis+2, this.getHeight()-1);
-        g.drawString(String.valueOf(Math.round(maxY* 100)/100.0), yAxis+2, 10);
+        g.drawString(String.valueOf(Math.round(minX* 100)/100.0), 5, xAxis-1);
+        g.drawString(String.valueOf(Math.round(maxX * 100)/100.0), this.getWidth()-35, xAxis-1);
+        g.drawString(String.valueOf(Math.round(minY* 100)/100.0), yAxis+2, this.getHeight()-5);
+        g.drawString(String.valueOf(Math.round(maxY* 100)/100.0), yAxis+2, 15);
 
         //Draw x axis
         g.drawLine(0, xAxis, this.getWidth(), xAxis);
@@ -90,18 +83,32 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseWhee
             return;
         }
 
-        xAnchor = (int) ((minX / ((Math.abs(maxX) + Math.abs(minX))/this.getWidth())) + yAxis) -100;
-        yAnchor = (int) ((maxY / (this.getHeight()*(Math.abs(maxY) + Math.abs(minY)))) + xAxis);
+        xAnchor = -100;
+        yAnchor = this.getHeight()/2;
 
-        for(double x = minX; x<=maxX; x += (Math.abs(maxX) + Math.abs(minX))/this.getWidth()){
-            int toX = (int) (x / ((Math.abs(maxX) + Math.abs(minX))/this.getWidth())) + yAxis;
-            int toY = (int) (-evaluate(expression,x) / ((Math.abs(maxY) + Math.abs(minY))/this.getHeight())) + xAxis - this.getHeight();
+        for(double x = minX; x<=maxX; x += (maxX-minX)/this.getWidth()){
 
-            g.drawLine(xAnchor, yAnchor, toX, toY + this.getHeight());
+            int toX = xPosition(x);
+            int toY = yPosition(evaluate(expression,x));
+
+            g.drawLine(xAnchor, yAnchor, toX, toY);
             
             xAnchor = toX;
-            yAnchor = toY + this.getHeight();
+            yAnchor = toY;
         }
+    }
+
+    private int xPosition(double x){
+        double pixelsPerUnit = this.getWidth()/(maxX - minX);
+        double pos = (x - minX)*pixelsPerUnit;
+        return (int) pos;
+    }
+
+    private int yPosition(double y){
+        double pixelsPerUnit = this.getHeight()/(maxY - minY);
+        double pos = (y - minY)*pixelsPerUnit;
+        pos = -pos + this.getHeight();
+        return (int) pos;
     }
 
     void drawGraph(String expression){
