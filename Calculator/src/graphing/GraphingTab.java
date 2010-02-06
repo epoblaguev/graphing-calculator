@@ -10,6 +10,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.geom.Dimension2D;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -29,7 +30,7 @@ public class GraphingTab extends JPanel implements ActionListener {
     private JPanel eastPanel, southPanel, directionPanel, boundsPanel;
     private JLabel lblY1, lblMinX, lblMaxX, lblMinY, lblMaxY;
     private JTextField txtY1, txtMinX, txtMaxX, txtMinY, txtMaxY;
-    private JButton btnGraph, btnLeft, btnRight, btnUp, btnDown;
+    private JButton btnGraph, btnLeft, btnRight, btnUp, btnDown, btnCenter;
 
     public GraphingTab() {
         super();
@@ -42,11 +43,11 @@ public class GraphingTab extends JPanel implements ActionListener {
         eastPanel.setLayout(new BoxLayout(eastPanel, BoxLayout.Y_AXIS));
         southPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         directionPanel = new JPanel(new BorderLayout());
-        directionPanel.setSize(100, 80);
+        directionPanel.setSize(120, 80);
         directionPanel.setMaximumSize(directionPanel.getSize());
         boundsPanel = new JPanel(new GridLayout(0,2));
         boundsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        boundsPanel.setSize(100, 80);
+        boundsPanel.setSize(120, 80);
         boundsPanel.setMaximumSize(boundsPanel.getSize());
 
         //Initialize directionPanel items
@@ -54,6 +55,7 @@ public class GraphingTab extends JPanel implements ActionListener {
         btnRight = new JButton(">");
         btnUp = new JButton("^");
         btnDown = new JButton("\\/");
+        btnCenter = new JButton();
 
         //Initialize southPanel items.
         lblY1 = new JLabel("y1:");
@@ -75,6 +77,7 @@ public class GraphingTab extends JPanel implements ActionListener {
         directionPanel.add(btnRight, BorderLayout.EAST);
         directionPanel.add(btnUp, BorderLayout.NORTH);
         directionPanel.add(btnDown, BorderLayout.SOUTH);
+        directionPanel.add(btnCenter, BorderLayout.CENTER);
         
         //Add to southPanel
         southPanel.setLayout(new FlowLayout());
@@ -102,6 +105,7 @@ public class GraphingTab extends JPanel implements ActionListener {
         btnRight.addActionListener(this);
         btnUp.addActionListener(this);
         btnDown.addActionListener(this);
+        btnCenter.addActionListener(this);
 
 
 
@@ -131,6 +135,9 @@ public class GraphingTab extends JPanel implements ActionListener {
         }
         if(e.getSource() == btnDown){
             graphPanel.moveVertical(-10);
+        }
+        if(e.getSource() == btnCenter){
+            graphPanel.center();
         }
     }
 }

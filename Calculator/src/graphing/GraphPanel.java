@@ -164,6 +164,18 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseWhee
         this.repaint();
     }
 
+    public void center(){
+        double x = maxX - minX;
+        double y = maxY - minY;
+
+        minX = -(x/2);
+        maxX = x/2;
+        minY = -(y/2);
+        maxY = y/2;
+
+        this.repaint();
+    }
+
     public void mouseDragged(MouseEvent e) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
