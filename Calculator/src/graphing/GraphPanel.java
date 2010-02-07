@@ -103,7 +103,7 @@ public class GraphPanel extends JPanel {
     }
 
     public void setMaxX(double maxX) throws InvalidBoundsException {
-        if(maxX < this.minX)
+        if(maxX <= this.minX)
             throw new InvalidBoundsException("Max X must be greater then Min X");
         else
             this.maxX = maxX;
@@ -121,7 +121,7 @@ public class GraphPanel extends JPanel {
     }
 
     public void setMaxY(double maxY) throws InvalidBoundsException {
-        if(maxY < this.minY)
+        if(maxY <= this.minY)
             throw new InvalidBoundsException("Max Y must be greater than Min Y");
         else
             this.maxY = maxY;
@@ -139,7 +139,7 @@ public class GraphPanel extends JPanel {
     }
 
     public void setMinX(double minX) throws InvalidBoundsException {
-        if(minX > this.maxX)
+        if(minX >= this.maxX)
             throw new InvalidBoundsException("Max X must be greater then Min X");
         else
             this.minX = minX;
@@ -157,7 +157,7 @@ public class GraphPanel extends JPanel {
     }
 
     public void setMinY(double minY) throws InvalidBoundsException {
-        if(minY > this.maxY)
+        if(minY >= this.maxY)
             throw new InvalidBoundsException("Max Y must be greater then Min Y");
         else
             this.minY = minY;
