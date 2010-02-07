@@ -6,7 +6,7 @@
 package Constants;
 
 /**
- *
+ * Contains blacklists of various things.
  * @author Egor
  */
 public class BlackLists {

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package calculator;
 
 import exceptions.InvalidVariableNameException;
@@ -13,8 +9,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- *
+ * A form that allows the addition of variables.
  * @author Egor
  */
 public class AddVariableWindow extends JFrame implements ActionListener {
@@ -33,6 +27,9 @@ public class AddVariableWindow extends JFrame implements ActionListener {
     private JButton btnAdd, btnClose;
     private JPanel topPanel, middlePanel, bottomPanel;
 
+    /**
+     * Constructor. Creates the form.
+     */
     public AddVariableWindow() {
         super();
         this.setLayout(new GridLayout(0, 1));

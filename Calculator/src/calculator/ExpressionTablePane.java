@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package calculator;
 
 import expressions.Expression;
@@ -13,12 +8,15 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ * A pane that displays a table of expressions and their computed values;
  * @author Egor
  */
 public class ExpressionTablePane extends JTable{
     private static DefaultTableModel tableModel = new DefaultTableModel();
 
+    /**
+     * Create the table pane.
+     */
     public ExpressionTablePane(){
         this.setModel(tableModel);
         tableModel.addColumn("Expression");
@@ -31,14 +29,26 @@ public class ExpressionTablePane extends JTable{
         return false;
     }
 
+    /**
+     * Adds a row to the table pane.
+     * @param row
+     *  The row to be added
+     */
     public static void addRow(Vector row){
         tableModel.addRow(row);
     }
 
+    /**
+     * Sets the row count.
+     * @param rowCount
+     */
     public static void setRowCount(int rowCount){
         tableModel.setRowCount(rowCount);
     }
 
+    /**
+     * Refreshes the table.
+     */
     public static void refreshTable(){
         Vector row;
         ExpressionTablePane.setRowCount(0);

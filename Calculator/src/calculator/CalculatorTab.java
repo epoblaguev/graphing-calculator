@@ -1,21 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package calculator;
 
 import exceptions.InvalidVariableNameException;
 import expressions.VariableList;
 import expressions.Expression;
-import expressions.Variable;
 import expressions.ExpressionList;
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -27,7 +20,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 /**
- *
+ * A panel that can be used as a calculator.
  * @author Egor
  */
 public class CalculatorTab extends JPanel implements ActionListener {
@@ -39,6 +32,9 @@ public class CalculatorTab extends JPanel implements ActionListener {
     JButton btnEnter, btnAddVariable, btnRemoveVariable, btnClearExpressions, btnAppendToInput;
     JTable varTable, exprTable;
 
+    /**
+     * Constructor for Calculator Tab
+     */
     public CalculatorTab() {
         this.setLayout(new BorderLayout());
         this.createControlPanel();
@@ -53,6 +49,9 @@ public class CalculatorTab extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Initializes and adds components to the Control Panel
+     */
     private void createControlPanel() {
         controlPanel = new JPanel();
         controlPanelEast = new JPanel();
@@ -69,6 +68,9 @@ public class CalculatorTab extends JPanel implements ActionListener {
         controlPanel.add(controlPanelEast, BorderLayout.EAST);
     }
 
+    /**
+     * Initializes and adds components to the Center Panel
+     */
     private void createCenterPanel() {
         centerPanel = new JPanel();
         centerPanelEast = new JPanel();
@@ -121,6 +123,11 @@ public class CalculatorTab extends JPanel implements ActionListener {
         centerPanel.add(centerPanelEast);
     }
 
+    /**
+     * If ExpressionTablePane and VariableTablePane are uninitialized, creates them.
+     * Otherwise refreshes them.
+     * @throws InvalidVariableNameException
+     */
     private void createTables() throws InvalidVariableNameException {
         ExpressionTablePane.refreshTable();
         VariableTablePane.refreshTable();
