@@ -13,6 +13,12 @@ public class Expression {
     private String expression;
 
     public Expression(String expression) {
+        this.expression = this.formatExpression(expression);
+    }
+
+    private String formatExpression(String expression){
+        expression = expression.replace(" ", "");
+        
         for (int i = 0; i <= 9; i++) {
             expression = expression.replace(i + "(", i + "*(");
 
@@ -22,10 +28,9 @@ public class Expression {
             }
         }
 
-
-
         expression = expression.replace(")(", ")*(");
-        this.expression = expression.replace(" ", "");
+        
+        return expression;
     }
 
     public String getExpression() {

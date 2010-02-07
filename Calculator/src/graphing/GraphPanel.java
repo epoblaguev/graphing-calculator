@@ -5,6 +5,7 @@
 package graphing;
 
 import exceptions.InvalidBoundsException;
+import expressions.Expression;
 import expressions.MathEvaluator;
 import expressions.Variable;
 import expressions.VariableList;
@@ -186,7 +187,11 @@ public class GraphPanel extends JPanel {
     }
 
     void drawGraph(String expression) {
-        this.expression = expression;
+
+        //Format the expression.
+        Expression expr = new Expression(expression);
+
+        this.expression = expr.getExpression();
         this.repaint();
     }
 
@@ -195,15 +200,8 @@ public class GraphPanel extends JPanel {
         this.repaint();
     }
 
-    private double evaluate(String expression, double x) {
-        String expr;
-        for (int i = 0; i <= 9; i++) {
-            expression = expression.replace(i + "(", i + "*(");
-        }
-        expression = expression.replace(")(", ")*(");
-        expr = expression.replace(" ", "");
-
-        MathEvaluator m = new MathEvaluator(expr);
+    private double evaluate(String expression, double x){
+        MathEvaluator m = new MathEvaluator(expression);
         m.setUsingRadians(true);
 
         for (Variable var : VariableList.getVariableList()) {
@@ -228,11 +226,7 @@ public class GraphPanel extends JPanel {
         this.maxX = xCenter + (xSpan + xSpan * mult) / 2;
         this.minY = yCenter - (ySpan + ySpan * mult) / 2;
         this.maxY = yCenter + (ySpan + ySpan * mult) / 2;
-
-//        this.minX += this.minX * mult;
-//        this.maxX += this.maxX * mult;
-//        this.minY += this.minY * mult;
-//        this.maxY += this.maxY * mult;
+        
         this.repaint();
     }
 

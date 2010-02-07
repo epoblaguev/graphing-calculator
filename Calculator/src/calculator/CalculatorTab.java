@@ -147,6 +147,7 @@ public class CalculatorTab extends JPanel implements ActionListener {
 
         if (e.getSource() == btnAddVariable) {
             JFrame window = new AddVariableWindow();
+            window.setLocationRelativeTo(this);
             window.setVisible(true);
             window.pack();
         }

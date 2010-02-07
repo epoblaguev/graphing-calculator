@@ -147,8 +147,12 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnGraph) {
-            String expression = this.txtY1.getText();
-            graphPanel.drawGraph(expression);
+            try {
+                String expression = this.txtY1.getText();
+                graphPanel.drawGraph(expression);
+            } catch (Exception exc) {
+                JOptionPane.showMessageDialog(this, "Error: " + exc.getMessage());
+            }
         }
         if (e.getSource() == btnLeft) {
             graphPanel.moveHorizontal(-10);
@@ -201,16 +205,16 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
     }
 
     public void focusGained(FocusEvent e) {
-        if(e.getSource() == txtMaxX){
+        if (e.getSource() == txtMaxX) {
             txtMaxX.selectAll();
         }
-        if(e.getSource() == txtMinX){
+        if (e.getSource() == txtMinX) {
             txtMinX.selectAll();
         }
-        if(e.getSource() == txtMaxY){
+        if (e.getSource() == txtMaxY) {
             txtMaxY.selectAll();
         }
-        if(e.getSource() == txtMinY){
+        if (e.getSource() == txtMinY) {
             txtMinY.selectAll();
         }
     }
