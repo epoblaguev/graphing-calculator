@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 /************************************************************************
  * <i>Mathematic expression evaluator.</i> Supports the following functions:
- * +, -, *, /, ^, %, cos, sin, tan, acos, asin, atan, sqrt, sqr, log, min, max, ceil, floor, abs, neg, rndr.<br>
+ * +, -, *, /, ^, %, cos, sin, tan, acos, asin, atan, sqrt, sqr, log, min, max, ceil, floor, abs, neg, rnd.<br>
  * When the getValue() is called, a Double object is returned. If it returns null, an error occured.<p>
  * <pre>
  * Sample:

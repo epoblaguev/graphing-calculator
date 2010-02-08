@@ -14,6 +14,7 @@ import java.awt.Graphics;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
+import java.text.DecimalFormat;
 import javax.swing.JPanel;
 
 /**
@@ -48,6 +49,7 @@ public class GraphPanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        DecimalFormat df = new DecimalFormat("#.##");
         g.setColor(Color.black);
 
         yAxis = xPosition(0);
@@ -55,10 +57,10 @@ public class GraphPanel extends JPanel {
 
         //Write Numbers
         g.drawString("0", yAxis + 2, xAxis - 1);
-        g.drawString(String.valueOf(Math.round(minX * 100) / 100.0), 5, xAxis - 1);
-        g.drawString(String.valueOf(Math.round(maxX * 100) / 100.0), this.getWidth() - 35, xAxis - 1);
-        g.drawString(String.valueOf(Math.round(minY * 100) / 100.0), yAxis + 2, this.getHeight() - 5);
-        g.drawString(String.valueOf(Math.round(maxY * 100) / 100.0), yAxis + 2, 15);
+        g.drawString(df.format(minX), 5, xAxis - 1);
+        g.drawString(df.format(maxX), this.getWidth() - 35, xAxis - 1);
+        g.drawString(df.format(minY), yAxis + 2, this.getHeight() - 5);
+        g.drawString(df.format(maxY), yAxis + 2, 15);
 
         //Draw crossheir
         g.drawLine(this.getWidth() / 2 - 5, this.getHeight() / 2, this.getWidth() / 2 + 5, this.getHeight() / 2);
@@ -92,14 +94,8 @@ public class GraphPanel extends JPanel {
         }
     }
 
-    public double getMaxX(int sigFig) {
-        double ans = maxX;
-        if(sigFig<0){
-            return ans;
-        }
-        else{
-            return Math.round(ans * Math.pow(10, sigFig)) / Math.pow(10, sigFig);
-        }
+    public double getMaxX() {
+        return maxX;
     }
 
     public void setMaxX(double maxX) throws InvalidBoundsException {
@@ -110,14 +106,8 @@ public class GraphPanel extends JPanel {
         this.repaint();
     }
 
-    public double getMaxY(int sigFig) {
-        double ans = maxY;
-        if(sigFig<0){
-            return ans;
-        }
-        else{
-            return Math.round(ans * Math.pow(10, sigFig)) / Math.pow(10, sigFig);
-        }
+    public double getMaxY() {
+        return maxY;
     }
 
     public void setMaxY(double maxY) throws InvalidBoundsException {
@@ -128,14 +118,8 @@ public class GraphPanel extends JPanel {
         this.repaint();
     }
 
-    public double getMinX(int sigFig) {
-        double ans = minX;
-        if(sigFig<0){
-            return ans;
-        }
-        else{
-            return Math.round(ans * Math.pow(10, sigFig)) / Math.pow(10, sigFig);
-        }
+    public double getMinX() {
+        return minX;
     }
 
     public void setMinX(double minX) throws InvalidBoundsException {
@@ -146,14 +130,8 @@ public class GraphPanel extends JPanel {
         this.repaint();
     }
 
-    public double getMinY(int sigFig) {
-        double ans = minY;
-        if(sigFig<0){
-            return ans;
-        }
-        else{
-            return Math.round(ans * Math.pow(10, sigFig)) / Math.pow(10, sigFig);
-        }
+    public double getMinY() {
+        return minY;
     }
 
     public void setMinY(double minY) throws InvalidBoundsException {
@@ -202,7 +180,6 @@ public class GraphPanel extends JPanel {
 
     private double evaluate(String expression, double x){
         MathEvaluator m = new MathEvaluator(expression);
-        m.setUsingRadians(true);
 
         for (Variable var : VariableList.getVariableList()) {
             m.addVariable(var.getVariableName(), var.getVariableValue());

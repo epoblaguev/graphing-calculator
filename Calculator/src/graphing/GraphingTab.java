@@ -5,25 +5,20 @@
 package graphing;
 
 import exceptions.InvalidBoundsException;
+import expressions.Expression;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.awt.geom.Dimension2D;
-import java.util.Observable;
-import java.util.Observer;
+import java.text.DecimalFormat;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -139,10 +134,11 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
     }
 
     private void setBounds() {
-        this.txtMaxX.setText(String.valueOf(graphPanel.getMaxX(4)));
-        this.txtMinX.setText(String.valueOf(graphPanel.getMinX(4)));
-        this.txtMaxY.setText(String.valueOf(graphPanel.getMaxY(4)));
-        this.txtMinY.setText(String.valueOf(graphPanel.getMinY(4)));
+        DecimalFormat df = new DecimalFormat("#.####");
+        this.txtMaxX.setText(df.format(graphPanel.getMaxX()));
+        this.txtMinX.setText(df.format(graphPanel.getMinX()));
+        this.txtMaxY.setText(df.format(graphPanel.getMaxY()));
+        this.txtMinY.setText(df.format(graphPanel.getMinY()));
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -176,13 +172,11 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
 
     public void mouseMoved(MouseEvent e) {
         if (e.getSource() == graphPanel) {
-            double x = (e.getX() - graphPanel.getyAxis()) * ((Math.abs(graphPanel.getMaxX(-1)) + Math.abs(graphPanel.getMinX(-1))) / this.getWidth());
-            double y = -(e.getY() - graphPanel.getxAxis()) * ((Math.abs(graphPanel.getMaxY(-1)) + Math.abs(graphPanel.getMinY(-1))) / this.getHeight());
+            DecimalFormat df = new DecimalFormat("#.##");
+            double x = (e.getX() - graphPanel.getyAxis()) * ((Math.abs(graphPanel.getMaxX()) + Math.abs(graphPanel.getMinX())) / this.getWidth());
+            double y = -(e.getY() - graphPanel.getxAxis()) * ((Math.abs(graphPanel.getMaxY()) + Math.abs(graphPanel.getMinY())) / this.getHeight());
 
-            x = Math.round(x * 100) / 100.0;
-            y = Math.round(y * 100) / 100.0;
-
-            graphPanel.setToolTipText("x:" + x + "\n, y:" + y);
+            graphPanel.setToolTipText("x:" + df.format(x) + "\n, y:" + df.format(y));
         }
     }
 
@@ -222,17 +216,23 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
     public void focusLost(FocusEvent e) {
         try {
             if (e.getSource() == txtMaxX) {
-                graphPanel.setMaxX(Double.valueOf(txtMaxX.getText()));
+                Expression expr = new Expression(txtMaxX.getText());
+                graphPanel.setMaxX(expr.evaluate());
             }
             if (e.getSource() == txtMinX) {
-                graphPanel.setMinX(Double.valueOf(txtMinX.getText()));
+                Expression expr = new Expression(txtMinX.getText());
+                graphPanel.setMinX(expr.evaluate());
             }
             if (e.getSource() == txtMaxY) {
-                graphPanel.setMaxY(Double.valueOf(txtMaxY.getText()));
+                Expression expr = new Expression(txtMaxY.getText());
+                graphPanel.setMaxY(expr.evaluate());
             }
             if (e.getSource() == txtMinY) {
-                graphPanel.setMinY(Double.valueOf(txtMinY.getText()));
+                Expression expr = new Expression(txtMinY.getText());
+                graphPanel.setMinY(expr.evaluate());
             }
+        } catch (NumberFormatException nfe){
+            JOptionPane.showMessageDialog(this, nfe.getMessage());
         } catch (InvalidBoundsException ibe) {
             JOptionPane.showMessageDialog(this, ibe.getMessage());
         }

@@ -44,7 +44,6 @@ public class Expression {
     public double evaluate() {
 
         MathEvaluator m = new MathEvaluator(this.expression);
-        m.setUsingRadians(false);
 
         for (Variable var : VariableList.getVariableList()) {
             m.addVariable(var.getVariableName(), var.getVariableValue());

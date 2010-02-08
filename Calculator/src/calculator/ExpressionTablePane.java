@@ -2,6 +2,7 @@ package calculator;
 
 import expressions.Expression;
 import expressions.ExpressionList;
+import java.text.DecimalFormat;
 import java.util.Iterator;
 import java.util.Vector;
 import javax.swing.JTable;
@@ -58,7 +59,7 @@ public class ExpressionTablePane extends JTable{
             Expression curExpression = (Expression) itr.next();
             row = new Vector(2);
             row.add(curExpression.getExpression());
-            row.add(curExpression.evaluate());
+            row.add(new DecimalFormat("#.##########").format(curExpression.evaluate()));
 
             ExpressionTablePane.addRow(row);
         }
