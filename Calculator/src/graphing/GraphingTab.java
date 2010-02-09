@@ -6,8 +6,10 @@ package graphing;
 
 import exceptions.InvalidBoundsException;
 import expressions.Expression;
+import graphing.EquationInput;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -19,7 +21,9 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.text.DecimalFormat;
+import java.util.Vector;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -35,9 +39,9 @@ import javax.swing.border.EtchedBorder;
 public class GraphingTab extends JPanel implements ActionListener, MouseWheelListener, MouseMotionListener, FocusListener {
 
     private GraphPanel graphPanel;
-    private JPanel eastPanel, southPanel, directionPanel, boundsPanel;
-    private JLabel lblY1, lblMinX, lblMaxX, lblMinY, lblMaxY;
-    private JTextField txtY1, txtMinX, txtMaxX, txtMinY, txtMaxY;
+    private JPanel eastPanel, southPanel, directionPanel, boundsPanel, equationPanel;
+    private JLabel lblMinX, lblMaxX, lblMinY, lblMaxY;
+    private JTextField txtMinX, txtMaxX, txtMinY, txtMaxY;
     private JButton btnGraph, btnLeft, btnRight, btnUp, btnDown, btnCenter;
 
     public GraphingTab() {
@@ -49,7 +53,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         graphPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         eastPanel = new JPanel();
         eastPanel.setLayout(new BoxLayout(eastPanel, BoxLayout.Y_AXIS));
-        southPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        southPanel = new JPanel();
         directionPanel = new JPanel(new BorderLayout());
         directionPanel.setSize(120, 80);
         directionPanel.setMaximumSize(directionPanel.getSize());
@@ -57,6 +61,8 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         boundsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         boundsPanel.setSize(120, 80);
         boundsPanel.setMaximumSize(boundsPanel.getSize());
+        equationPanel = new JPanel();
+        equationPanel.setLayout(new BoxLayout(equationPanel, BoxLayout.Y_AXIS));
 
         //Initialize directionPanel items
         btnLeft = new JButton("<");
@@ -66,8 +72,6 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         btnCenter = new JButton();
 
         //Initialize southPanel items.
-        lblY1 = new JLabel("y1:");
-        txtY1 = new JTextField(20);
         btnGraph = new JButton("Graph");
 
         //Initialize boundsPanel items
@@ -87,10 +91,14 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         directionPanel.add(btnDown, BorderLayout.SOUTH);
         directionPanel.add(btnCenter, BorderLayout.CENTER);
 
+        //Add to equationWrapper panel.
+        equationPanel.add(new EquationInput("y1:", Color.RED));
+        equationPanel.add(new EquationInput("y2:", Color.BLUE));
+        equationPanel.add(new EquationInput("y3:", Color.YELLOW));
+
         //Add to southPanel
-        southPanel.setLayout(new FlowLayout());
-        southPanel.add(lblY1);
-        southPanel.add(txtY1);
+        southPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        southPanel.add(equationPanel);
         southPanel.add(btnGraph);
 
         //Add to eastPanel
@@ -128,6 +136,8 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         this.add(eastPanel, BorderLayout.EAST);
         this.add(southPanel, BorderLayout.SOUTH);
 
+        equationPanel.setBackground(Color.red);
+
         graphPanel.repaint();
 
         this.setBounds();
@@ -144,8 +154,15 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnGraph) {
             try {
-                String expression = this.txtY1.getText();
-                graphPanel.drawGraph(expression);
+                Vector<Equation> eq = new Vector<Equation>();
+                for(Component cmp : equationPanel.getComponents()){
+                    if(cmp.getClass() == EquationInput.class){
+                        EquationInput ei = (EquationInput)cmp;
+                        if(!ei.getInput().getText().isEmpty())
+                            eq.add(new Equation(ei.getInput().getText(), ei.getColor()));
+                    }
+                }
+                graphPanel.drawGraph(eq);
             } catch (Exception exc) {
                 JOptionPane.showMessageDialog(this, "Error: " + exc.getMessage());
             }
@@ -173,8 +190,8 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
     public void mouseMoved(MouseEvent e) {
         if (e.getSource() == graphPanel) {
             DecimalFormat df = new DecimalFormat("#.##");
-            double x = (e.getX() - graphPanel.getyAxis()) * ((Math.abs(graphPanel.getMaxX()) + Math.abs(graphPanel.getMinX())) / this.getWidth());
-            double y = -(e.getY() - graphPanel.getxAxis()) * ((Math.abs(graphPanel.getMaxY()) + Math.abs(graphPanel.getMinY())) / this.getHeight());
+            double x = (e.getX() - graphPanel.getyAxis()) * ((Math.abs(graphPanel.getMaxX()) + Math.abs(graphPanel.getMinX())) / graphPanel.getWidth());
+            double y = -(e.getY() - graphPanel.getxAxis()) * ((Math.abs(graphPanel.getMaxY()) + Math.abs(graphPanel.getMinY())) / graphPanel.getHeight());
 
             graphPanel.setToolTipText("x:" + df.format(x) + "\n, y:" + df.format(y));
         }

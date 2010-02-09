@@ -15,6 +15,7 @@ import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
+import java.util.Vector;
 import javax.swing.JPanel;
 
 /**
@@ -32,10 +33,11 @@ public class GraphPanel extends JPanel {
     private int yAxis = 0;
     private int xAnchor = 0;
     private int yAnchor = 0;
-    private String expression = "";
+    private Vector<Equation> equations = new Vector<Equation>();
 
     public GraphPanel() {
         Toolkit tk = Toolkit.getDefaultToolkit();
+        this.setBackground(Color.lightGray);
 
         MediaTracker tracker = new MediaTracker(this);
         try {
@@ -72,25 +74,25 @@ public class GraphPanel extends JPanel {
         //Draw y axis
         g.drawLine(yAxis, 0, yAxis, this.getHeight());
 
-
-        g.setColor(Color.red);
-
-        if (expression.isEmpty()) {
+        if (equations.isEmpty()) {
             return;
         }
 
-        xAnchor = -100;
-        yAnchor = this.getHeight() / 2;
+        //Loop through each string.
+        for (Equation eq : equations) {
+            xAnchor = -100;
+            yAnchor = this.getHeight() / 2;
+            g.setColor(eq.getColor());
+            for (double x = minX; x <= maxX; x += (maxX - minX) / this.getWidth()) {
 
-        for (double x = minX; x <= maxX; x += (maxX - minX) / this.getWidth()) {
+                int toX = xPosition(x);
+                int toY = yPosition(evaluate(eq.getExpression(), x));
 
-            int toX = xPosition(x);
-            int toY = yPosition(evaluate(expression, x));
+                g.drawLine(xAnchor, yAnchor, toX, toY);
 
-            g.drawLine(xAnchor, yAnchor, toX, toY);
-
-            xAnchor = toX;
-            yAnchor = toY;
+                xAnchor = toX;
+                yAnchor = toY;
+            }
         }
     }
 
@@ -99,10 +101,11 @@ public class GraphPanel extends JPanel {
     }
 
     public void setMaxX(double maxX) throws InvalidBoundsException {
-        if(maxX <= this.minX)
+        if (maxX <= this.minX) {
             throw new InvalidBoundsException("Max X must be greater then Min X");
-        else
+        } else {
             this.maxX = maxX;
+        }
         this.repaint();
     }
 
@@ -111,10 +114,11 @@ public class GraphPanel extends JPanel {
     }
 
     public void setMaxY(double maxY) throws InvalidBoundsException {
-        if(maxY <= this.minY)
+        if (maxY <= this.minY) {
             throw new InvalidBoundsException("Max Y must be greater than Min Y");
-        else
+        } else {
             this.maxY = maxY;
+        }
         this.repaint();
     }
 
@@ -123,10 +127,11 @@ public class GraphPanel extends JPanel {
     }
 
     public void setMinX(double minX) throws InvalidBoundsException {
-        if(minX >= this.maxX)
+        if (minX >= this.maxX) {
             throw new InvalidBoundsException("Max X must be greater then Min X");
-        else
+        } else {
             this.minX = minX;
+        }
         this.repaint();
     }
 
@@ -135,10 +140,11 @@ public class GraphPanel extends JPanel {
     }
 
     public void setMinY(double minY) throws InvalidBoundsException {
-        if(minY >= this.maxY)
+        if (minY >= this.maxY) {
             throw new InvalidBoundsException("Max Y must be greater then Min Y");
-        else
+        } else {
             this.minY = minY;
+        }
         this.repaint();
     }
 
@@ -149,7 +155,6 @@ public class GraphPanel extends JPanel {
     public int getyAxis() {
         return yAxis;
     }
-    
 
     private int xPosition(double x) {
         double pixelsPerUnit = this.getWidth() / (maxX - minX);
@@ -164,21 +169,18 @@ public class GraphPanel extends JPanel {
         return (int) pos;
     }
 
-    void drawGraph(String expression) {
+    void drawGraph(Vector eq) {
 
-        //Format the expression.
-        Expression expr = new Expression(expression);
-
-        this.expression = expr.getExpression();
+        this.equations = eq;
         this.repaint();
     }
 
     void drawGrid() {
-        this.expression = "";
+        this.equations = new Vector<Equation>();
         this.repaint();
     }
 
-    private double evaluate(String expression, double x){
+    private double evaluate(String expression, double x) {
         MathEvaluator m = new MathEvaluator(expression);
 
         for (Variable var : VariableList.getVariableList()) {
@@ -203,7 +205,7 @@ public class GraphPanel extends JPanel {
         this.maxX = xCenter + (xSpan + xSpan * mult) / 2;
         this.minY = yCenter - (ySpan + ySpan * mult) / 2;
         this.maxY = yCenter + (ySpan + ySpan * mult) / 2;
-        
+
         this.repaint();
     }
 

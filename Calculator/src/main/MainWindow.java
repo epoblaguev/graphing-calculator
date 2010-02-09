@@ -49,7 +49,7 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
 
         this.setJMenuBar(menuBar);
         this.add(tabbedPane, BorderLayout.CENTER);
-        this.setSize(500, 500);
+        this.setSize(500, 550);
         this.setMinimumSize(this.getSize());
     }
 
@@ -110,8 +110,6 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
         graphingTab = new GraphingTab();
         tabbedPane.addTab("Calculator", calculatorTab);
         tabbedPane.addTab("Graphing", graphingTab);
-
-        tabbedPane.setPreferredSize(new Dimension(300, 450));
     }
 
     public void actionPerformed(ActionEvent e) {
