@@ -169,9 +169,12 @@ public class GraphPanel extends JPanel {
         return (int) pos;
     }
 
-    void drawGraph(Vector eq) {
-
-        this.equations = eq;
+    void drawGraph(Vector<Equation> eq) {
+        this.equations = new Vector<Equation>();
+        for (Equation e : eq) {
+            Expression expr = new Expression(e.getExpression());
+            this.equations.add(new Equation(expr.getExpression(), e.getColor()));
+        }
         this.repaint();
     }
 
