@@ -59,7 +59,7 @@ public class ExpressionTablePane extends JTable{
             Expression curExpression = (Expression) itr.next();
             row = new Vector(2);
             row.add(curExpression.getExpression());
-            row.add(new DecimalFormat("#.##########").format(curExpression.evaluate()));
+            row.add(new DecimalFormat("#.##########").format(curExpression.getValue()));
 
             ExpressionTablePane.addRow(row);
         }

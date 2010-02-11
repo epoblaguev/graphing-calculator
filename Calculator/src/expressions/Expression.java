@@ -11,6 +11,8 @@ package expressions;
 public class Expression {
 
     private String expression;
+    private double value;
+    private String angleUnit;
 
     public Expression(String expression) {
         this.expression = this.formatExpression(expression);
@@ -41,6 +43,10 @@ public class Expression {
         this.expression = expression;
     }
 
+    public double getValue() {
+        return value;
+    }
+
     public double evaluate() {
 
         MathEvaluator m = new MathEvaluator(this.expression);
@@ -49,6 +55,13 @@ public class Expression {
             m.addVariable(var.getVariableName(), var.getVariableValue());
         }
 
-        return m.getValue();
+        if(m.isUsingRadians()){
+            this.angleUnit = "RAD";
+        }
+        else{
+            this.angleUnit = "DEG";
+        }
+        this.value = m.getValue();
+        return value;
     }
 }

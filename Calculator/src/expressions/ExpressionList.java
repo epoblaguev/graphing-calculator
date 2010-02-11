@@ -27,6 +27,7 @@ public class ExpressionList {
     }
 
     public static void addExpression(Expression expression){
+        expression.evaluate();
         expressions.add(expression);
     }
 
