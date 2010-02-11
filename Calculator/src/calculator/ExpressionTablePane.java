@@ -22,7 +22,8 @@ public class ExpressionTablePane extends JTable{
         this.setModel(tableModel);
         tableModel.addColumn("Expression");
         tableModel.addColumn("Value");
-        tableModel.setColumnCount(2);
+        tableModel.addColumn("Angle Units");
+        tableModel.setColumnCount(3);
     }
 
     @Override
@@ -60,6 +61,7 @@ public class ExpressionTablePane extends JTable{
             row = new Vector(2);
             row.add(curExpression.getExpression());
             row.add(new DecimalFormat("#.##########").format(curExpression.getValue()));
+            row.add(curExpression.getAngleUnits());
 
             ExpressionTablePane.addRow(row);
         }

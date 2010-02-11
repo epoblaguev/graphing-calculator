@@ -12,7 +12,7 @@ public class Expression {
 
     private String expression;
     private double value;
-    private String angleUnit;
+    private String angleUnits;
 
     public Expression(String expression) {
         this.expression = this.formatExpression(expression);
@@ -47,6 +47,10 @@ public class Expression {
         return value;
     }
 
+    public String getAngleUnits(){
+        return angleUnits;
+    }
+
     public double evaluate() {
 
         MathEvaluator m = new MathEvaluator(this.expression);
@@ -56,10 +60,10 @@ public class Expression {
         }
 
         if(m.isUsingRadians()){
-            this.angleUnit = "RAD";
+            this.angleUnits = "RAD";
         }
         else{
-            this.angleUnit = "DEG";
+            this.angleUnits = "DEG";
         }
         this.value = m.getValue();
         return value;

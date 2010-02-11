@@ -10,6 +10,6 @@ package Constants;
  * @author Egor
  */
 public class BlackLists {
-    public static final String[] variableBlackList = {"cos", "sin", "tan", "acos", "asin", "atan", "sqrt", "sqr", "log", "min", "max", "ceil", "floor", "abs", "neg", "rndr"};
+    public static final String[] variableBlackList = {"cos", "sin", "tan", "acos", "asin", "atan", "sqrt", "sqr", "log", "ln", "min", "max", "ceil", "floor", "abs", "neg", "rndr"};
 
 }

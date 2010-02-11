@@ -173,6 +173,8 @@ public class MathEvaluator {
         } else if ("sqrt".equals(op)) {
             res = new Double(Math.sqrt(f1.doubleValue()));
         } else if ("log".equals(op)) {
+            res = new Double(Math.log10(f1.doubleValue()));
+        } else if ("ln".equals(op)){
             res = new Double(Math.log(f1.doubleValue()));
         } else if ("min".equals(op)) {
             res = new Double(Math.min(f1.doubleValue(), f2.doubleValue()));
