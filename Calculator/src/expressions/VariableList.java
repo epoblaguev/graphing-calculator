@@ -14,7 +14,7 @@ import java.util.Vector;
  * @author Egor
  */
 public class VariableList {
-    private static Vector variables = new Vector<Variable>();
+    private static Vector<Variable> variables = new Vector<Variable>();
 
     public static void createIfEmpty() throws InvalidVariableNameException{
         if(variables.isEmpty()){
@@ -25,8 +25,12 @@ public class VariableList {
         }
     }
 
-    public static Vector<Variable> getVariableList(){
+    public static Vector<Variable> getVariables(){
         return variables;
+    }
+
+    public static void setVariables(Vector<Variable> variables) {
+        VariableList.variables = variables;
     }
 
     public static void clearVariableList(){

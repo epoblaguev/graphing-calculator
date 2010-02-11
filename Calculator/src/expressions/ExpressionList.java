@@ -12,14 +12,18 @@ import java.util.Vector;
  * @author Egor
  */
 public class ExpressionList {
-    private static Vector expressions = new Vector<Expression>();
+    private static Vector<Expression> expressions = new Vector<Expression>();
 
     public static void createIfEmpty(){
 
     }
 
-    public static Vector getExpressionList(){
+    public static Vector<Expression> getExpressionList(){
         return expressions;
+    }
+    
+    public static void setExpressions(Vector<Expression> expressions) {
+        ExpressionList.expressions = expressions;
     }
 
     public static void clearExpressionList(){

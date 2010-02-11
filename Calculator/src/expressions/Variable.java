@@ -7,12 +7,13 @@ package expressions;
 
 import exceptions.InvalidVariableNameException;
 import Constants.BlackLists;
+import java.io.Serializable;
 
 /**
  *
  * @author Egor
  */
-public class Variable {
+public class Variable implements Serializable{
 
     private String variableName;
     private double variableValue;

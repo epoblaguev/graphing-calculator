@@ -68,7 +68,7 @@ public class AddVariableWindow extends JFrame implements ActionListener {
             if (e.getSource() == btnAdd) {
                 Variable var = new Variable(txtVariableName.getText(), Double.valueOf(txtVariableValue.getText()));
 
-                Iterator itr = VariableList.getVariableList().iterator();
+                Iterator itr = VariableList.getVariables().iterator();
 
                 while (itr.hasNext()) {
                     Variable curVar = (Variable) itr.next();

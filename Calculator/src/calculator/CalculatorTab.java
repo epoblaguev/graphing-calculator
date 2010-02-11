@@ -9,6 +9,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -23,7 +24,7 @@ import javax.swing.JTextField;
  * A panel that can be used as a calculator.
  * @author Egor
  */
-public class CalculatorTab extends JPanel implements ActionListener {
+public class CalculatorTab extends JPanel implements ActionListener, Serializable {
 
     JScrollPane exprScrollPane, varScrollPane;
     JPanel controlPanel, controlPanelEast;

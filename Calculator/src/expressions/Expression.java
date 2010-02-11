@@ -4,11 +4,13 @@
  */
 package expressions;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Egor
  */
-public class Expression {
+public class Expression implements Serializable{
 
     private String expression;
     private double value;
@@ -55,7 +57,7 @@ public class Expression {
 
         MathEvaluator m = new MathEvaluator(this.expression);
 
-        for (Variable var : VariableList.getVariableList()) {
+        for (Variable var : VariableList.getVariables()) {
             m.addVariable(var.getVariableName(), var.getVariableValue());
         }
 

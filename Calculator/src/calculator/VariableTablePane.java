@@ -47,7 +47,7 @@ public class VariableTablePane extends JTable{
         Vector row;
         VariableTablePane.setRowCount(0);
 
-        Iterator itr = VariableList.getVariableList().iterator();
+        Iterator itr = VariableList.getVariables().iterator();
 
         while(itr.hasNext()){
             Variable curVariable = (Variable) itr.next();

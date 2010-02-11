@@ -186,7 +186,7 @@ public class GraphPanel extends JPanel {
     private double evaluate(String expression, double x) {
         MathEvaluator m = new MathEvaluator(expression);
 
-        for (Variable var : VariableList.getVariableList()) {
+        for (Variable var : VariableList.getVariables()) {
             m.addVariable(var.getVariableName(), var.getVariableValue());
         }
 

@@ -6,14 +6,27 @@ package main;
 
 import Constants.Info;
 import calculator.*;
+import exceptions.InvalidVariableNameException;
+import expressions.ExpressionList;
 import expressions.MathEvaluator;
+import expressions.VariableList;
 import graphing.GraphingTab;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -31,11 +44,11 @@ import javax.swing.event.ChangeListener;
 public class MainWindow extends JFrame implements ActionListener, ChangeListener {
 
     JTabbedPane tabbedPane;
-    JComponent calculatorTab;
-    JComponent graphingTab;
+    CalculatorTab calculatorTab;
+    GraphingTab graphingTab;
     JMenuBar menuBar;
     JMenu mnuFile, mnuSettings, mnuInfo;
-    JMenuItem miExit, miSave, miAbout, miHelp;
+    JMenuItem miExit, miSave, miAbout, miHelp, miLoad;
     JRadioButtonMenuItem rbDegrees, rbRadians;
     ButtonGroup bgAngle = new ButtonGroup();
 
@@ -62,6 +75,7 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
 
         //Initialize Menu Items
         miSave = new JMenuItem("Save State");
+        miLoad = new JMenuItem("Load State");
         miExit = new JMenuItem("Exit");
         miAbout = new JMenuItem("About");
         miHelp = new JMenuItem("Help");
@@ -71,6 +85,7 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
         rbRadians = new JRadioButtonMenuItem("Radians");
 
         //Add to file menu.
+        mnuFile.add(miLoad);
         mnuFile.add(miSave);
         mnuFile.add(miExit);
 
@@ -92,6 +107,7 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
         menuBar.add(mnuInfo);
 
         //Add listeners.
+        miLoad.addActionListener(this);
         miSave.addActionListener(this);
         miExit.addActionListener(this);
         miHelp.addActionListener(this);
@@ -113,16 +129,62 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
     }
 
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == miSave){
-            JOptionPane.showMessageDialog(this, "Not Yet Implemented");
+        if (e.getSource() == miLoad) {
+            JFileChooser fc = new JFileChooser();
+
+            if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                ObjectInputStream in = null;
+                try {
+                    File file = fc.getSelectedFile();
+                    in = new ObjectInputStream(new FileInputStream(file.getPath()));
+                    Storage store = (Storage) in.readObject();
+                    ExpressionList.setExpressions(store.getExpressions());
+                    VariableList.setVariables(store.getVariables());
+                    ExpressionTablePane.refreshTable();
+                    VariableTablePane.refreshTable();
+                    in.close();
+
+                } catch (InvalidVariableNameException ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage());
+                } catch (ClassNotFoundException ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage());
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage());
+                }
+
+            }
+
         }
-        if(e.getSource() == miExit){
+        if (e.getSource() == miSave) {
+            JFileChooser fc = new JFileChooser();
+
+            if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                Storage store = new Storage(ExpressionList.getExpressionList(), VariableList.getVariables());
+                ObjectOutputStream objstream = null;
+                try {
+                    File file = fc.getSelectedFile();
+                    objstream = new ObjectOutputStream(new FileOutputStream(file.getPath()));
+                    objstream.writeObject(store);
+                    objstream.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    try {
+                        objstream.close();
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+            }
+        }
+        if (e.getSource() == miExit) {
             this.dispose();
         }
-        if(e.getSource() == miAbout){
+        if (e.getSource() == miAbout) {
             JOptionPane.showMessageDialog(this, Info.ABOUT);
         }
-        if(e.getSource() == miHelp){
+        if (e.getSource() == miHelp) {
             JOptionPane.showMessageDialog(this, Info.HELP);
         }
     }

@@ -198,7 +198,7 @@ public class MathEvaluator {
     }
 
     private void initializeOperators() {
-        operators = new Operator[25];
+        operators = new Operator[26];
         operators[0] = new Operator("+", 2, 0);
         operators[1] = new Operator("-", 2, 0);
         operators[2] = new Operator("*", 2, 10);
@@ -216,14 +216,15 @@ public class MathEvaluator {
         operators[14] = new Operator("sqrt", 1, 20);
         operators[15] = new Operator("sqr", 1, 20);
         operators[16] = new Operator("log", 1, 20);
-        operators[17] = new Operator("min", 2, 0);
-        operators[18] = new Operator("max", 2, 0);
-        operators[19] = new Operator("exp", 1, 20);
-        operators[20] = new Operator("floor", 1, 20);
-        operators[21] = new Operator("ceil", 1, 20);
-        operators[22] = new Operator("abs", 1, 20);
-        operators[23] = new Operator("neg", 1, 20);
-        operators[24] = new Operator("rnd", 1, 20);
+        operators[17] = new Operator("ln", 1, 20);
+        operators[18] = new Operator("min", 2, 0);
+        operators[19] = new Operator("max", 2, 0);
+        operators[20] = new Operator("exp", 1, 20);
+        operators[21] = new Operator("floor", 1, 20);
+        operators[22] = new Operator("ceil", 1, 20);
+        operators[23] = new Operator("abs", 1, 20);
+        operators[24] = new Operator("neg", 1, 20);
+        operators[25] = new Operator("rnd", 1, 20);
     }
 
     /***
