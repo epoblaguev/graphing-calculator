@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -37,12 +38,12 @@ import javax.swing.border.EtchedBorder;
  *
  * @author Egor
  */
-public class GraphingTab extends JPanel implements ActionListener, MouseWheelListener, MouseMotionListener, FocusListener {
+public class GraphingTab extends JPanel implements ActionListener, MouseWheelListener, MouseMotionListener, MouseListener, FocusListener {
 
     private int equationCount = 3;
     private GraphPanel graphPanel;
-    private JPanel eastPanel, southPanel, directionPanel, boundsPanel, equationPanel, buttonPanel;
-    private JLabel lblMinX, lblMaxX, lblMinY, lblMaxY;
+    private JPanel eastPanel, southPanel, directionPanel, boundsPanel, equationPanel, buttonPanel, graphWrapper, locationPanel;
+    private JLabel lblMinX, lblMaxX, lblMinY, lblMaxY, lblXCoordinate, lblYCoordinate;
     private JTextField txtMinX, txtMaxX, txtMinY, txtMaxY;
     private JButton btnGraph, btnLeft, btnRight, btnUp, btnDown, btnCenter, btnAddEquation, btnRemoveEquation;
     private JScrollPane equationScrollPane;
@@ -69,6 +70,8 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         equationScrollPane.setPreferredSize(new Dimension(330,125));
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+        graphWrapper = new JPanel(new BorderLayout());
+        locationPanel = new JPanel(new GridLayout(1,2));
 
         //Initialize directionPanel items
         btnLeft = new JButton("<");
@@ -109,6 +112,14 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         buttonPanel.add(btnAddEquation);
         buttonPanel.add(btnGraph);
 
+        //Add to graphWrapper
+        graphWrapper.add(graphPanel, BorderLayout.CENTER);
+        graphWrapper.add(locationPanel, BorderLayout.SOUTH);
+        lblXCoordinate = new JLabel("X: N/A");
+        lblYCoordinate = new JLabel("Y: N/A");
+        locationPanel.add(lblXCoordinate);
+        locationPanel.add(lblYCoordinate);
+
         //Add to southPanel
         southPanel.add(equationScrollPane);
         southPanel.add(buttonPanel);
@@ -138,6 +149,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         btnRemoveEquation.addActionListener(this);
         graphPanel.addMouseMotionListener(this);
         graphPanel.addMouseWheelListener(this);
+        graphPanel.addMouseListener(this);
         txtMaxX.addFocusListener(this);
         txtMinX.addFocusListener(this);
         txtMaxY.addFocusListener(this);
@@ -146,7 +158,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
 
         graphPanel.drawGrid();
         graphPanel.setSize(50, 50);
-        this.add(graphPanel, BorderLayout.CENTER);
+        this.add(graphWrapper, BorderLayout.CENTER);
         this.add(eastPanel, BorderLayout.EAST);
         this.add(southPanel, BorderLayout.SOUTH);
 
@@ -219,11 +231,14 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
 
     public void mouseMoved(MouseEvent e) {
         if (e.getSource() == graphPanel) {
-            DecimalFormat df = new DecimalFormat("#.##");
+            DecimalFormat df = new DecimalFormat("#.#####");
             double x = (e.getX() - graphPanel.getyAxis()) * ((Math.abs(graphPanel.getMaxX()) + Math.abs(graphPanel.getMinX())) / graphPanel.getWidth());
             double y = -(e.getY() - graphPanel.getxAxis()) * ((Math.abs(graphPanel.getMaxY()) + Math.abs(graphPanel.getMinY())) / graphPanel.getHeight());
 
-            graphPanel.setToolTipText("x:" + df.format(x) + "\n, y:" + df.format(y));
+            lblXCoordinate.setText("X: " + df.format(x));
+            lblYCoordinate.setText("Y: " + df.format(y));
+
+            //graphPanel.setToolTipText("x:" + df.format(x) + "\n, y:" + df.format(y));
         }
     }
 
@@ -282,6 +297,29 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
             JOptionPane.showMessageDialog(this, nfe.getMessage());
         } catch (InvalidBoundsException ibe) {
             JOptionPane.showMessageDialog(this, ibe.getMessage());
+        }
+    }
+
+    public void mouseClicked(MouseEvent e) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void mousePressed(MouseEvent e) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void mouseReleased(MouseEvent e) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void mouseEntered(MouseEvent e) {
+        //
+    }
+
+    public void mouseExited(MouseEvent e) {
+        if(e.getSource() == graphPanel){
+            lblXCoordinate.setText("X: N/A");
+            lblYCoordinate.setText("Y: N/A");
         }
     }
 }
