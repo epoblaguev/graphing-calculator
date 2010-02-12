@@ -203,9 +203,14 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
             equationScrollPane.validate();
         }
         if (e.getSource() == btnRemoveEquation) {
-            equationPanel.remove(equationPanel.getComponentCount() - 1);
+            if(equationCount > 1){
+                equationPanel.remove(equationPanel.getComponentCount() - 1);
             equationCount--;
             equationScrollPane.validate();
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Can't remove last equation.");
+            }
         }
 
         //Display the bounds.
