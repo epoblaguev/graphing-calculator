@@ -9,6 +9,8 @@ import expressions.Expression;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,18 +57,16 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         eastPanel = new JPanel();
         eastPanel.setLayout(new BoxLayout(eastPanel, BoxLayout.Y_AXIS));
         southPanel = new JPanel();
-        southPanel.setLayout(new BorderLayout());
+        southPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         directionPanel = new JPanel(new BorderLayout());
-        directionPanel.setSize(120, 80);
-        directionPanel.setMaximumSize(directionPanel.getSize());
+        directionPanel.setMaximumSize(new Dimension(120,80));
         boundsPanel = new JPanel(new GridLayout(0, 2));
         boundsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        boundsPanel.setSize(120, 80);
-        boundsPanel.setMaximumSize(boundsPanel.getSize());
+        boundsPanel.setMaximumSize(new Dimension(120,80));
         equationPanel = new JPanel();
-        equationPanel.setLayout(new BoxLayout(equationPanel, BoxLayout.Y_AXIS));
+        equationPanel.setLayout(new GridLayout(0,1));
         equationScrollPane = new JScrollPane(equationPanel);
-
+        equationScrollPane.setPreferredSize(new Dimension(330,125));
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 
@@ -110,8 +110,8 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         buttonPanel.add(btnGraph);
 
         //Add to southPanel
-        southPanel.add(equationScrollPane, BorderLayout.CENTER);
-        southPanel.add(buttonPanel, BorderLayout.EAST);
+        southPanel.add(equationScrollPane);
+        southPanel.add(buttonPanel);
 
         //Add to eastPanel
         eastPanel.add(directionPanel);
@@ -149,8 +149,6 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         this.add(graphPanel, BorderLayout.CENTER);
         this.add(eastPanel, BorderLayout.EAST);
         this.add(southPanel, BorderLayout.SOUTH);
-
-        equationPanel.setBackground(Color.red);
 
         graphPanel.repaint();
 
@@ -199,17 +197,15 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         }
         if (e.getSource() == btnAddEquation) {
             Random r = new Random();
-            this.setSize(this.getHeight() - 100, this.getWidth());
             equationCount++;
             equationPanel.add(new EquationInput("y" + equationCount + "=",
                     new Color(r.nextInt(256), r.nextInt(256), r.nextInt(256))));
-            this.repaint();
+            equationScrollPane.validate();
         }
         if (e.getSource() == btnRemoveEquation) {
-            this.setSize(this.getHeight() - 100, this.getWidth());
             equationPanel.remove(equationPanel.getComponentCount() - 1);
             equationCount--;
-            this.repaint();
+            equationScrollPane.validate();
         }
 
         //Display the bounds.
