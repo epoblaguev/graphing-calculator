@@ -54,8 +54,8 @@ public class GraphPanel extends JPanel {
         DecimalFormat df = new DecimalFormat("#.##");
         g.setColor(Color.black);
 
-        yAxis = xPosition(0);
-        xAxis = yPosition(0);
+        yAxis = UnitToPixelX(0);
+        xAxis = UnitToPixelY(0);
 
         //Write Numbers
         g.drawString("0", yAxis + 2, xAxis - 1);
@@ -80,13 +80,13 @@ public class GraphPanel extends JPanel {
 
         //Loop through each string.
         for (Equation eq : equations) {
-            xAnchor = -100;
-            yAnchor = this.getHeight() / 2;
+            xAnchor = UnitToPixelX(minX);
+            yAnchor = UnitToPixelY(evaluate(eq.getExpression(), minX));
             g.setColor(eq.getColor());
             for (double x = minX; x <= maxX; x += (maxX - minX) / this.getWidth()) {
 
-                int toX = xPosition(x);
-                int toY = yPosition(evaluate(eq.getExpression(), x));
+                int toX = UnitToPixelX(x);
+                int toY = UnitToPixelY(evaluate(eq.getExpression(), x));
 
                 g.drawLine(xAnchor, yAnchor, toX, toY);
 
@@ -156,17 +156,49 @@ public class GraphPanel extends JPanel {
         return yAxis;
     }
 
-    private int xPosition(double x) {
+    /**
+     * Converts specified x value to it's pixel location.
+     * @param x - the value of x for which to find the pixel location on the graph.
+     * @return - the pixel value.
+     */
+    public int UnitToPixelX(double x) {
         double pixelsPerUnit = this.getWidth() / (maxX - minX);
         double pos = (x - minX) * pixelsPerUnit;
         return (int) pos;
     }
 
-    private int yPosition(double y) {
+    /**
+     * Converts specified y value to it's pixel location.
+     * @param y - the value of y for which to find the pixel location on the graph.
+     * @return - the pixel value.
+     */
+    public int UnitToPixelY(double y) {
         double pixelsPerUnit = this.getHeight() / (maxY - minY);
         double pos = (y - minY) * pixelsPerUnit;
         pos = -pos + this.getHeight();
         return (int) pos;
+    }
+
+    /**
+     * Converts a horizontal pixel location to it's x value
+     * @param pix - pixel location to convert.
+     * @return - x value of pixel location.
+     */
+    public double PixelToUnitX(int pix){
+        double unitsPerPixel = (maxY-minY)/this.getWidth();
+        double x = (pix*unitsPerPixel) + minX;
+        return x;
+    }
+
+    /**
+     * Converts a vertical pixel location to it's y value.
+     * @param pix - pixel location to convert.
+     * @return - y value of pixel location.
+     */
+    public double PixelToUnitY(int pix){
+        double unitsPerPixel = (maxY-minY)/this.getHeight();
+        double y = ((this.getHeight() - pix)*unitsPerPixel) + minY;
+        return y;
     }
 
     void drawGraph(Vector<Equation> eq) {

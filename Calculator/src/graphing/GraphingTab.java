@@ -42,7 +42,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
 
     private int equationCount = 3;
     private GraphPanel graphPanel;
-    private JPanel eastPanel, southPanel, directionPanel, boundsPanel, equationPanel, buttonPanel, graphWrapper, locationPanel;
+    private JPanel eastPanel, southPanel, directionPanel, boundsPanel, equationPanel, buttonPanel, coordinatePanel;
     private JLabel lblMinX, lblMaxX, lblMinY, lblMaxY, lblXCoordinate, lblYCoordinate;
     private JTextField txtMinX, txtMaxX, txtMinY, txtMaxY;
     private JButton btnGraph, btnLeft, btnRight, btnUp, btnDown, btnCenter, btnAddEquation, btnRemoveEquation;
@@ -70,8 +70,8 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         equationScrollPane.setPreferredSize(new Dimension(330,125));
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
-        graphWrapper = new JPanel(new BorderLayout());
-        locationPanel = new JPanel(new GridLayout(1,2));
+        coordinatePanel = new JPanel(new GridLayout(0,1));
+        coordinatePanel.setMaximumSize(new Dimension(120,40));
 
         //Initialize directionPanel items
         btnLeft = new JButton("<");
@@ -112,13 +112,11 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         buttonPanel.add(btnAddEquation);
         buttonPanel.add(btnGraph);
 
-        //Add to graphWrapper
-        graphWrapper.add(graphPanel, BorderLayout.CENTER);
-        graphWrapper.add(locationPanel, BorderLayout.SOUTH);
+        //Add to coordinatePanel
         lblXCoordinate = new JLabel("X: N/A");
         lblYCoordinate = new JLabel("Y: N/A");
-        locationPanel.add(lblXCoordinate);
-        locationPanel.add(lblYCoordinate);
+        coordinatePanel.add(lblXCoordinate);
+        coordinatePanel.add(lblYCoordinate);
 
         //Add to southPanel
         southPanel.add(equationScrollPane);
@@ -127,6 +125,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         //Add to eastPanel
         eastPanel.add(directionPanel);
         eastPanel.add(boundsPanel);
+        eastPanel.add(coordinatePanel);
 
         //Add to boundsPanel
         boundsPanel.add(lblMaxX);
@@ -157,8 +156,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
 
 
         graphPanel.drawGrid();
-        graphPanel.setSize(50, 50);
-        this.add(graphWrapper, BorderLayout.CENTER);
+        this.add(graphPanel, BorderLayout.CENTER);
         this.add(eastPanel, BorderLayout.EAST);
         this.add(southPanel, BorderLayout.SOUTH);
 
@@ -232,8 +230,13 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
     public void mouseMoved(MouseEvent e) {
         if (e.getSource() == graphPanel) {
             DecimalFormat df = new DecimalFormat("#.#####");
-            double x = (e.getX() - graphPanel.getyAxis()) * ((Math.abs(graphPanel.getMaxX()) + Math.abs(graphPanel.getMinX())) / graphPanel.getWidth());
-            double y = -(e.getY() - graphPanel.getxAxis()) * ((Math.abs(graphPanel.getMaxY()) + Math.abs(graphPanel.getMinY())) / graphPanel.getHeight());
+            //double x = (e.getX() - graphPanel.getyAxis()) * ((Math.abs(graphPanel.getMaxX()) + Math.abs(graphPanel.getMinX())) / graphPanel.getWidth());
+            double x = graphPanel.PixelToUnitX(e.getX());
+            double y = graphPanel.PixelToUnitY(e.getY());
+
+            System.out.println("e.getX(): " + e.getX());
+            System.out.println("x:" + x);
+            System.out.println();
 
             lblXCoordinate.setText("X: " + df.format(x));
             lblYCoordinate.setText("Y: " + df.format(y));
