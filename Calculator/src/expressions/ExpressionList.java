@@ -42,4 +42,8 @@ public class ExpressionList {
     public static void removeExpression(Expression expression){
         expressions.remove(expression);
     }
+
+    public static void removeExpression(int index){
+        expressions.remove(index);
+    }
 }

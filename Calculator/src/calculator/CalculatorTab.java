@@ -30,6 +30,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.text.DefaultEditorKit;
 
 /**
  * A panel that can be used as a calculator.
@@ -45,7 +46,7 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
     JButton btnEnter, btnAddVariable, btnRemoveVariable, btnClearExpressions, btnAppendToInput;
     JTable varTable, exprTable, targetTable;
     JPopupMenu mnuRightClick;
-    JMenuItem miCopyExpression, miCopyValue;
+    JMenuItem miCopyExpression, miCopyValue, miRemoveRow;
     Clipboard clipBoard;
 
     /**
@@ -83,15 +84,19 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
         controlPanelEast.add(btnEnter);
         controlPanel.add(txtInput, BorderLayout.CENTER);
         controlPanel.add(controlPanelEast, BorderLayout.EAST);
+
+        txtInput.addMouseListener(this);
     }
 
     private void createPopupMenu() {
         mnuRightClick = new JPopupMenu();
         miCopyExpression = new JMenuItem("Copy Expression");
         miCopyValue = new JMenuItem("Copy Value");
+        miRemoveRow = new JMenuItem("Remove Row");
 
         miCopyExpression.addActionListener(this);
         miCopyValue.addActionListener(this);
+        miRemoveRow.addActionListener(this);
     }
 
     /**
@@ -216,18 +221,34 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
             }
         }
 
-        if(e.getSource() == miCopyValue){
+        if (e.getSource() == miCopyValue) {
             String value = targetTable.getModel().getValueAt(targetRow, 1).toString();
             StringSelection strS = new StringSelection(value);
             clipBoard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipBoard.setContents(strS, this);
         }
 
-        if(e.getSource() == miCopyExpression){
+        if (e.getSource() == miCopyExpression) {
             String value = targetTable.getModel().getValueAt(targetRow, 0).toString();
             StringSelection strS = new StringSelection(value);
             clipBoard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipBoard.setContents(strS, this);
+        }
+
+        if (e.getSource() == miRemoveRow) {
+            if (targetTable.equals(varTable)) {
+                try {
+                    VariableList.removeVariable(targetRow);
+                    VariableTablePane.refreshTable();
+                } catch (InvalidVariableNameException ex) {
+                    JOptionPane.showMessageDialog(this, "Invalid variable name.");
+                }
+            }
+            if (targetTable.equals(exprTable)) {
+                ExpressionList.removeExpression(targetRow);
+                ExpressionTablePane.refreshTable();
+            }
+
         }
     }
 
@@ -249,8 +270,9 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
             mnuRightClick.removeAll();
             mnuRightClick.add(miCopyExpression);
             mnuRightClick.add(miCopyValue);
+            mnuRightClick.add(miRemoveRow);
 
-            mnuRightClick.show(exprTable, e.getX() + 10, e.getY() + 10);
+            mnuRightClick.show(exprTable, e.getX() + 10, e.getY() + 5);
         }
         if (e.getSource() == varTable && e.getModifiers() == InputEvent.BUTTON3_MASK) {
             targetTable = varTable;
@@ -261,8 +283,28 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
             mnuRightClick.removeAll();
             mnuRightClick.add(miCopyExpression);
             mnuRightClick.add(miCopyValue);
+            mnuRightClick.add(miRemoveRow);
 
-            mnuRightClick.show(varTable, e.getX() + 10, e.getY() + 10);
+            mnuRightClick.show(varTable, e.getX() + 10, e.getY() + 5);
+        }
+
+        if (e.getSource() == txtInput && e.getModifiers() == InputEvent.BUTTON3_MASK){
+            txtInput.requestFocus();
+            JMenuItem mnuItem;
+            mnuRightClick.removeAll();
+
+            mnuItem = new JMenuItem(new DefaultEditorKit.CutAction());
+            mnuItem.setText("Cut");
+            mnuRightClick.add(mnuItem);
+            mnuItem = new JMenuItem(new DefaultEditorKit.CopyAction());
+            mnuItem.setText("Copy");
+            mnuRightClick.add(mnuItem);
+            mnuItem = new JMenuItem(new DefaultEditorKit.PasteAction());
+            mnuItem.setText("Paste");
+            mnuRightClick.add(mnuItem);
+
+
+            mnuRightClick.show(txtInput, e.getX() + 10, e.getY());
         }
     }
 
@@ -275,6 +317,6 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
     }
 
     public void lostOwnership(Clipboard clipboard, Transferable contents) {
-       //Lost ownership.
+        //Lost ownership.
     }
 }
