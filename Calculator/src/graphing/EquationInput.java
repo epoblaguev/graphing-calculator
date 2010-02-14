@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Random;
@@ -101,7 +102,7 @@ public class EquationInput extends JPanel implements ActionListener, MouseListen
     }
 
     public void mouseReleased(MouseEvent e) {
-        if (e.getSource() == input) {
+        if (e.getSource() == input && e.getModifiers() == InputEvent.BUTTON3_MASK) {
             input.requestFocus();
             JMenuItem mnuItem;
             mnuRightClick.removeAll();

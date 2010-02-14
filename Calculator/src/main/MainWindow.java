@@ -12,8 +12,6 @@ import expressions.MathEvaluator;
 import expressions.VariableList;
 import graphing.GraphingTab;
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -25,7 +23,6 @@ import java.io.ObjectOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -182,10 +179,10 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
             this.dispose();
         }
         if (e.getSource() == miAbout) {
-            JOptionPane.showMessageDialog(this, Info.ABOUT);
+            JOptionPane.showMessageDialog(this, Info.ABOUT, "About", JOptionPane.INFORMATION_MESSAGE);
         }
         if (e.getSource() == miHelp) {
-            JOptionPane.showMessageDialog(this, Info.HELP);
+            JOptionPane.showMessageDialog(this, Info.HELP, "Help", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
