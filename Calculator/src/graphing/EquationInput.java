@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Random;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -83,10 +84,10 @@ public class EquationInput extends JPanel implements ActionListener, MouseListen
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnName) {
-            Random r = new Random();
-            this.color = new Color(r.nextInt(256), r.nextInt(256), r.nextInt(256));
-
-            this.btnName.setForeground(color);
+            Color clr = JColorChooser.showDialog(btnName, "Dialog Text", btnName.getForeground());
+            if (clr != null) {
+                this.btnName.setForeground(clr);
+            }
             this.revalidate();
         }
     }
@@ -100,22 +101,23 @@ public class EquationInput extends JPanel implements ActionListener, MouseListen
     }
 
     public void mouseReleased(MouseEvent e) {
-        input.requestFocus();
-        JMenuItem mnuItem;
-        mnuRightClick.removeAll();
+        if (e.getSource() == input) {
+            input.requestFocus();
+            JMenuItem mnuItem;
+            mnuRightClick.removeAll();
 
-        mnuItem = new JMenuItem(new DefaultEditorKit.CutAction());
-        mnuItem.setText("Cut");
-        mnuRightClick.add(mnuItem);
-        mnuItem = new JMenuItem(new DefaultEditorKit.CopyAction());
-        mnuItem.setText("Copy");
-        mnuRightClick.add(mnuItem);
-        mnuItem = new JMenuItem(new DefaultEditorKit.PasteAction());
-        mnuItem.setText("Paste");
-        mnuRightClick.add(mnuItem);
+            mnuItem = new JMenuItem(new DefaultEditorKit.CutAction());
+            mnuItem.setText("Cut");
+            mnuRightClick.add(mnuItem);
+            mnuItem = new JMenuItem(new DefaultEditorKit.CopyAction());
+            mnuItem.setText("Copy");
+            mnuRightClick.add(mnuItem);
+            mnuItem = new JMenuItem(new DefaultEditorKit.PasteAction());
+            mnuItem.setText("Paste");
+            mnuRightClick.add(mnuItem);
 
-
-        mnuRightClick.show(input, e.getX() + 10, e.getY());
+            mnuRightClick.show(input, e.getX() + 10, e.getY());
+        }
     }
 
     public void mouseEntered(MouseEvent e) {
