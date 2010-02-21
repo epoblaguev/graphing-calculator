@@ -5,6 +5,7 @@
 package main;
 
 import Constants.Info;
+import Settings.GraphSettings;
 import calculator.*;
 import exceptions.InvalidVariableNameException;
 import expressions.ExpressionList;
@@ -23,6 +24,7 @@ import java.io.ObjectOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -47,6 +49,7 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
     JMenu mnuFile, mnuSettings, mnuInfo;
     JMenuItem miExit, miSave, miAbout, miHelp, miLoad;
     JRadioButtonMenuItem rbDegrees, rbRadians;
+    JCheckBoxMenuItem ckAntiAlias;
     ButtonGroup bgAngle = new ButtonGroup();
 
     public MainWindow() {
@@ -81,6 +84,9 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
         rbDegrees = new JRadioButtonMenuItem("Degrees");
         rbRadians = new JRadioButtonMenuItem("Radians");
 
+        //Initialize check buttons.
+        ckAntiAlias = new JCheckBoxMenuItem("Use Antialiasing");
+
         //Add to file menu.
         mnuFile.add(miLoad);
         mnuFile.add(miSave);
@@ -93,6 +99,8 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
         //Add to settings menu
         mnuSettings.add(rbDegrees);
         mnuSettings.add(rbRadians);
+        mnuSettings.addSeparator();
+        mnuSettings.add(ckAntiAlias);
 
         //Add to Info menu
         mnuInfo.add(miHelp);
@@ -111,6 +119,7 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
         miAbout.addActionListener(this);
         rbDegrees.addChangeListener(this);
         rbRadians.addChangeListener(this);
+        ckAntiAlias.addChangeListener(this);
 
         //Set angle type to degrees.
         rbDegrees.setSelected(true);
@@ -190,6 +199,11 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
         if (e.getSource() == this.rbDegrees || e.getSource() == this.rbRadians) {
             MathEvaluator m = new MathEvaluator();
             m.setUsingRadians(this.rbRadians.isSelected());
+            this.repaint();
+        }
+        if(e.getSource() == this.ckAntiAlias){
+            GraphSettings.setAntialiased(this.ckAntiAlias.isSelected());
+            this.repaint();
         }
     }
 }

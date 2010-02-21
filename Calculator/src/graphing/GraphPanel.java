@@ -4,16 +4,21 @@
  */
 package graphing;
 
+import Settings.GraphSettings;
 import exceptions.InvalidBoundsException;
 import expressions.Expression;
 import expressions.MathEvaluator;
 import expressions.Variable;
 import expressions.VariableList;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.MediaTracker;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
+import java.awt.geom.GeneralPath;
 import java.text.DecimalFormat;
 import java.util.Vector;
 import javax.swing.JPanel;
@@ -50,29 +55,38 @@ public class GraphPanel extends JPanel {
 
     @Override
     public void paintComponent(Graphics g) {
+
+        GeneralPath polyline = new GeneralPath(GeneralPath.WIND_EVEN_ODD, this.getWidth());
+        Graphics2D g2 = (Graphics2D) g;
+
+        if (GraphSettings.isAntialiased()) {
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        }
+
         super.paintComponent(g);
+
         DecimalFormat df = new DecimalFormat("#.##");
-        g.setColor(Color.black);
+        g2.setColor(Color.black);
 
         yAxis = UnitToPixelX(0);
         xAxis = UnitToPixelY(0);
 
         //Write Numbers
-        g.drawString("0", yAxis + 2, xAxis - 1);
-        g.drawString(df.format(minX), 5, xAxis - 1);
-        g.drawString(df.format(maxX), this.getWidth() - 35, xAxis - 1);
-        g.drawString(df.format(minY), yAxis + 2, this.getHeight() - 5);
-        g.drawString(df.format(maxY), yAxis + 2, 15);
+        g2.drawString("0", yAxis + 2, xAxis - 1);
+        g2.drawString(df.format(minX), 5, xAxis - 1);
+        g2.drawString(df.format(maxX), this.getWidth() - 35, xAxis - 1);
+        g2.drawString(df.format(minY), yAxis + 2, this.getHeight() - 5);
+        g2.drawString(df.format(maxY), yAxis + 2, 15);
 
         //Draw crossheir
-        g.drawLine(this.getWidth() / 2 - 5, this.getHeight() / 2, this.getWidth() / 2 + 5, this.getHeight() / 2);
-        g.drawLine(this.getWidth() / 2, this.getHeight() / 2 - 5, this.getWidth() / 2, this.getHeight() / 2 + 5);
+        g2.drawLine(this.getWidth() / 2 - 5, this.getHeight() / 2, this.getWidth() / 2 + 5, this.getHeight() / 2);
+        g2.drawLine(this.getWidth() / 2, this.getHeight() / 2 - 5, this.getWidth() / 2, this.getHeight() / 2 + 5);
 
         //Draw x axis
-        g.drawLine(0, xAxis, this.getWidth(), xAxis);
+        g2.drawLine(0, xAxis, this.getWidth(), xAxis);
 
         //Draw y axis
-        g.drawLine(yAxis, 0, yAxis, this.getHeight());
+        g2.drawLine(yAxis, 0, yAxis, this.getHeight());
 
         if (equations.isEmpty()) {
             return;
@@ -80,19 +94,12 @@ public class GraphPanel extends JPanel {
 
         //Loop through each string.
         for (Equation eq : equations) {
-            xAnchor = UnitToPixelX(minX);
-            yAnchor = UnitToPixelY(evaluate(eq.getExpression(), minX));
-            g.setColor(eq.getColor());
+            polyline.moveTo(UnitToPixelX(minX), UnitToPixelY(evaluate(eq.getExpression(), minX)));
+            g2.setColor(eq.getColor());
             for (double x = minX; x <= maxX; x += (maxX - minX) / this.getWidth()) {
-
-                int toX = UnitToPixelX(x);
-                int toY = UnitToPixelY(evaluate(eq.getExpression(), x));
-
-                g.drawLine(xAnchor, yAnchor, toX, toY);
-
-                xAnchor = toX;
-                yAnchor = toY;
+                polyline.lineTo(UnitToPixelX(x), UnitToPixelY(evaluate(eq.getExpression(), x)));
             }
+            g2.draw(polyline);
         }
     }
 
@@ -184,9 +191,9 @@ public class GraphPanel extends JPanel {
      * @param pix - pixel location to convert.
      * @return - x value of pixel location.
      */
-    public double PixelToUnitX(int pix){
-        double unitsPerPixel = (maxY-minY)/this.getWidth();
-        double x = (pix*unitsPerPixel) + minX;
+    public double PixelToUnitX(int pix) {
+        double unitsPerPixel = (maxY - minY) / this.getWidth();
+        double x = (pix * unitsPerPixel) + minX;
         return x;
     }
 
@@ -195,9 +202,9 @@ public class GraphPanel extends JPanel {
      * @param pix - pixel location to convert.
      * @return - y value of pixel location.
      */
-    public double PixelToUnitY(int pix){
-        double unitsPerPixel = (maxY-minY)/this.getHeight();
-        double y = ((this.getHeight() - pix)*unitsPerPixel) + minY;
+    public double PixelToUnitY(int pix) {
+        double unitsPerPixel = (maxY - minY) / this.getHeight();
+        double y = ((this.getHeight() - pix) * unitsPerPixel) + minY;
         return y;
     }
 
