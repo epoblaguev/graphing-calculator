@@ -36,8 +36,6 @@ public class GraphPanel extends JPanel {
     private double maxY = 30;
     private int xAxis = 0;
     private int yAxis = 0;
-    private int xAnchor = 0;
-    private int yAnchor = 0;
     private Vector<Equation> equations = new Vector<Equation>();
 
     public GraphPanel() {
@@ -94,12 +92,14 @@ public class GraphPanel extends JPanel {
 
         //Loop through each string.
         for (Equation eq : equations) {
+            g2.setStroke(new BasicStroke(GraphSettings.getLineWidth()));
             polyline.moveTo(UnitToPixelX(minX), UnitToPixelY(evaluate(eq.getExpression(), minX)));
             g2.setColor(eq.getColor());
             for (double x = minX; x <= maxX; x += (maxX - minX) / this.getWidth()) {
                 polyline.lineTo(UnitToPixelX(x), UnitToPixelY(evaluate(eq.getExpression(), x)));
             }
             g2.draw(polyline);
+            polyline.reset();
         }
     }
 

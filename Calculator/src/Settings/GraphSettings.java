@@ -11,6 +11,7 @@ package Settings;
  */
 public class GraphSettings {
     private static boolean antialiased = true;
+    private static float lineWidth = 1;
 
     public static boolean isAntialiased() {
         return antialiased;
@@ -18,5 +19,13 @@ public class GraphSettings {
 
     public static void setAntialiased(boolean antialiased) {
         GraphSettings.antialiased = antialiased;
+    }
+
+    public static float getLineWidth() {
+        return lineWidth;
+    }
+
+    public static void setLineWidth(float lineWidth) {
+        GraphSettings.lineWidth = lineWidth;
     }
 }

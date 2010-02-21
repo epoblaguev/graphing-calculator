@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JMenuItem;
@@ -88,6 +87,7 @@ public class EquationInput extends JPanel implements ActionListener, MouseListen
             Color clr = JColorChooser.showDialog(btnName, "Dialog Text", btnName.getForeground());
             if (clr != null) {
                 this.btnName.setForeground(clr);
+                this.color = clr;
             }
             this.revalidate();
         }

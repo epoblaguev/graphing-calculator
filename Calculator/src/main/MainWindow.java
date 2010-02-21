@@ -46,11 +46,11 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
     CalculatorTab calculatorTab;
     GraphingTab graphingTab;
     JMenuBar menuBar;
-    JMenu mnuFile, mnuSettings, mnuInfo;
+    JMenu mnuFile, mnuSettings, mnuInfo, mnuLineWidth;
     JMenuItem miExit, miSave, miAbout, miHelp, miLoad;
-    JRadioButtonMenuItem rbDegrees, rbRadians;
+    JRadioButtonMenuItem rbDegrees, rbRadians, rbThin, rbMedium, rbThick;
     JCheckBoxMenuItem ckAntiAlias;
-    ButtonGroup bgAngle = new ButtonGroup();
+    ButtonGroup bgAngle, bgLineWidth;
 
     public MainWindow() {
         super();
@@ -67,11 +67,16 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
     }
 
     private void createMenuBar() {
+        //Initialize Button Groups;
+        bgAngle = new ButtonGroup();
+        bgLineWidth = new ButtonGroup();
+        
         //Initialize Menu Bar
         menuBar = new JMenuBar();
         mnuFile = new JMenu("File");
         mnuSettings = new JMenu("Settings");
         mnuInfo = new JMenu("Info");
+        mnuLineWidth = new JMenu("Line Width");
 
         //Initialize Menu Items
         miSave = new JMenuItem("Save State");
@@ -83,6 +88,9 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
         //Initialize radio buttons.
         rbDegrees = new JRadioButtonMenuItem("Degrees");
         rbRadians = new JRadioButtonMenuItem("Radians");
+        rbThin = new JRadioButtonMenuItem("Thin");
+        rbMedium = new JRadioButtonMenuItem("Medium");
+        rbThick = new JRadioButtonMenuItem("Thick");
 
         //Initialize check buttons.
         ckAntiAlias = new JCheckBoxMenuItem("Use Antialiasing");
@@ -96,11 +104,23 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
         bgAngle.add(rbDegrees);
         bgAngle.add(rbRadians);
 
+        //Add to Line thickness button group.
+        bgLineWidth.add(rbThin);
+        bgLineWidth.add(rbMedium);
+        bgLineWidth.add(rbThick);
+
+        //Add to line thickness menu
+        mnuLineWidth.add(rbThin);
+        mnuLineWidth.add(rbMedium);
+        mnuLineWidth.add(rbThick);
+
         //Add to settings menu
         mnuSettings.add(rbDegrees);
         mnuSettings.add(rbRadians);
         mnuSettings.addSeparator();
         mnuSettings.add(ckAntiAlias);
+        mnuSettings.addSeparator();
+        mnuSettings.add(mnuLineWidth);
 
         //Add to Info menu
         mnuInfo.add(miHelp);
@@ -120,9 +140,13 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
         rbDegrees.addChangeListener(this);
         rbRadians.addChangeListener(this);
         ckAntiAlias.addChangeListener(this);
+        rbThin.addChangeListener(this);
+        rbMedium.addChangeListener(this);
+        rbThick.addChangeListener(this);
 
         //Set angle type to degrees.
         rbDegrees.setSelected(true);
+        rbThin.setSelected(true);
     }
 
     private void createTabbedPane() {
@@ -199,11 +223,21 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
         if (e.getSource() == this.rbDegrees || e.getSource() == this.rbRadians) {
             MathEvaluator m = new MathEvaluator();
             m.setUsingRadians(this.rbRadians.isSelected());
-            this.repaint();
         }
         if(e.getSource() == this.ckAntiAlias){
             GraphSettings.setAntialiased(this.ckAntiAlias.isSelected());
-            this.repaint();
         }
+        if(e.getSource() == this.rbThin || e.getSource() == this.rbMedium || e.getSource() == this.rbThick){
+            if(this.rbThin.isSelected()){
+                GraphSettings.setLineWidth(1);
+            }
+            else if(this.rbMedium.isSelected()){
+                GraphSettings.setLineWidth(1.5f);
+            }
+            else if(this.rbThick.isSelected()){
+                GraphSettings.setLineWidth(2);
+            }
+        }
+        this.repaint();
     }
 }
