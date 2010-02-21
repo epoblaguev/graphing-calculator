@@ -147,6 +147,7 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
         //Set angle type to degrees.
         rbDegrees.setSelected(true);
         rbThin.setSelected(true);
+        ckAntiAlias.setSelected(true);
     }
 
     private void createTabbedPane() {

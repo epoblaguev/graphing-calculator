@@ -14,10 +14,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.MediaTracker;
 import java.awt.RenderingHints;
-import java.awt.Toolkit;
-import java.awt.event.MouseEvent;
 import java.awt.geom.GeneralPath;
 import java.text.DecimalFormat;
 import java.util.Vector;
@@ -27,7 +24,7 @@ import javax.swing.JPanel;
  *
  * @author Egor
  */
-public class GraphPanel extends JPanel {
+public class GraphPanel extends JPanel implements Runnable{
 
     private int id = 0;
     private double minX = -30;
@@ -39,16 +36,7 @@ public class GraphPanel extends JPanel {
     private Vector<Equation> equations = new Vector<Equation>();
 
     public GraphPanel() {
-        Toolkit tk = Toolkit.getDefaultToolkit();
         this.setBackground(Color.lightGray);
-
-        MediaTracker tracker = new MediaTracker(this);
-        try {
-            tracker.waitForID(id);
-        } catch (InterruptedException ie) {
-            // BOO! LOADING ERROR
-        }
-
     }
 
     @Override
@@ -90,17 +78,20 @@ public class GraphPanel extends JPanel {
             return;
         }
 
+        g2.setStroke(new BasicStroke(GraphSettings.getLineWidth()));
+
         //Loop through each string.
         for (Equation eq : equations) {
-            g2.setStroke(new BasicStroke(GraphSettings.getLineWidth()));
-            polyline.moveTo(UnitToPixelX(minX), UnitToPixelY(evaluate(eq.getExpression(), minX)));
+            String expr = eq.getExpression();
+            polyline.moveTo(UnitToPixelX(minX), UnitToPixelY(evaluate(expr, minX)));
             g2.setColor(eq.getColor());
             for (double x = minX; x <= maxX; x += (maxX - minX) / this.getWidth()) {
-                polyline.lineTo(UnitToPixelX(x), UnitToPixelY(evaluate(eq.getExpression(), x)));
+                polyline.lineTo(UnitToPixelX(x), UnitToPixelY(evaluate(expr, x)));
             }
             g2.draw(polyline);
             polyline.reset();
         }
+        g2.dispose();
     }
 
     public double getMaxX() {
@@ -113,7 +104,7 @@ public class GraphPanel extends JPanel {
         } else {
             this.maxX = maxX;
         }
-        this.repaint();
+        (new Thread(this)).start();
     }
 
     public double getMaxY() {
@@ -126,7 +117,7 @@ public class GraphPanel extends JPanel {
         } else {
             this.maxY = maxY;
         }
-        this.repaint();
+        (new Thread(this)).start();
     }
 
     public double getMinX() {
@@ -139,7 +130,7 @@ public class GraphPanel extends JPanel {
         } else {
             this.minX = minX;
         }
-        this.repaint();
+        (new Thread(this)).start();
     }
 
     public double getMinY() {
@@ -152,7 +143,7 @@ public class GraphPanel extends JPanel {
         } else {
             this.minY = minY;
         }
-        this.repaint();
+        (new Thread(this)).start();
     }
 
     public int getxAxis() {
@@ -214,15 +205,15 @@ public class GraphPanel extends JPanel {
             Expression expr = new Expression(e.getExpression());
             this.equations.add(new Equation(expr.getExpression(), e.getColor()));
         }
-        this.repaint();
+        (new Thread(this)).start();
     }
 
     void drawGrid() {
         this.equations = new Vector<Equation>();
-        this.repaint();
+        (new Thread(this)).start();
     }
 
-    private double evaluate(String expression, double x) {
+    public double evaluate(String expression, double x) {
         MathEvaluator m = new MathEvaluator(expression);
 
         for (Variable var : VariableList.getVariables()) {
@@ -248,21 +239,25 @@ public class GraphPanel extends JPanel {
         this.minY = yCenter - (ySpan + ySpan * mult) / 2;
         this.maxY = yCenter + (ySpan + ySpan * mult) / 2;
 
-        this.repaint();
+        (new Thread(this)).start();
     }
 
     public void moveHorizontal(double percent) {
         double move = (this.maxX - this.minX) * (percent / 100);
         this.minX += move;
         this.maxX += move;
-        this.repaint();
+        System.out.println("H1");
+        (new Thread(this)).start();
+        System.out.println("H4");
     }
 
     public void moveVertical(double percent) {
         double move = (this.maxY - this.minY) * (percent / 100);
         this.minY += move;
         this.maxY += move;
-        this.repaint();
+        System.out.println("V1");
+        (new Thread(this)).start();
+        System.out.println("V4");
     }
 
     public void center() {
@@ -273,11 +268,13 @@ public class GraphPanel extends JPanel {
         maxX = x / 2;
         minY = -(y / 2);
         maxY = y / 2;
-
-        this.repaint();
+        
+        (new Thread(this)).start();
     }
 
-    public void mouseDragged(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void run() {
+        System.out.println("2");
+        this.repaint();
+        System.out.println("3");
     }
 }
