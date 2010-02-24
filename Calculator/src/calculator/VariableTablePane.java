@@ -14,12 +14,15 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * 
+ * A pane that displays a table of variables and their values;
  * @author Egor
  */
 public class VariableTablePane extends JTable{
     private static DefaultTableModel tableModel = new DefaultTableModel();
 
+    /**
+     * Constructor.
+     */
     public VariableTablePane(){
         this.setModel(tableModel);
         tableModel.addColumn("Variable");

@@ -109,8 +109,8 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         equationPanel.add(new EquationInput("y3=", Color.YELLOW));
 
         //Add to buttonPanel
-        buttonPanel.add(btnRemoveEquation);
         buttonPanel.add(btnAddEquation);
+        buttonPanel.add(btnRemoveEquation);
         buttonPanel.add(btnGraph);
 
         //Add to coordinatePanel
@@ -162,7 +162,6 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         this.add(southPanel, BorderLayout.SOUTH);
 
         graphPanel.repaint();
-
         this.setBounds();
     }
 

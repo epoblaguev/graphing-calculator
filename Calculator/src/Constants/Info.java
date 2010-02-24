@@ -5,7 +5,7 @@
 package Constants;
 
 /**
- *
+ * Contains info for info tabs.
  * @author Egor
  */
 public class Info {

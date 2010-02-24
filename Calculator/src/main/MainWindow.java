@@ -13,6 +13,7 @@ import expressions.MathEvaluator;
 import expressions.VariableList;
 import graphing.GraphingTab;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -46,11 +47,11 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
     CalculatorTab calculatorTab;
     GraphingTab graphingTab;
     JMenuBar menuBar;
-    JMenu mnuFile, mnuSettings, mnuInfo, mnuLineWidth;
+    JMenu mnuFile, mnuSettings, mnuInfo, mnuLineWidth, mnuGraphColor;
     JMenuItem miExit, miSave, miAbout, miHelp, miLoad;
-    JRadioButtonMenuItem rbDegrees, rbRadians, rbThin, rbMedium, rbThick;
+    JRadioButtonMenuItem rbDegrees, rbRadians, rbThin, rbMedium, rbThick, rbWhite, rbLightGray, rbGray;
     JCheckBoxMenuItem ckAntiAlias;
-    ButtonGroup bgAngle, bgLineWidth;
+    ButtonGroup bgAngle, bgLineWidth, bgGraphColor;
 
     public MainWindow() {
         super();
@@ -70,6 +71,7 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
         //Initialize Button Groups;
         bgAngle = new ButtonGroup();
         bgLineWidth = new ButtonGroup();
+        bgGraphColor = new ButtonGroup();
         
         //Initialize Menu Bar
         menuBar = new JMenuBar();
@@ -77,6 +79,7 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
         mnuSettings = new JMenu("Settings");
         mnuInfo = new JMenu("Info");
         mnuLineWidth = new JMenu("Line Width");
+        mnuGraphColor = new JMenu("Graph Background");
 
         //Initialize Menu Items
         miSave = new JMenuItem("Save State");
@@ -91,6 +94,9 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
         rbThin = new JRadioButtonMenuItem("Thin");
         rbMedium = new JRadioButtonMenuItem("Medium");
         rbThick = new JRadioButtonMenuItem("Thick");
+        rbWhite = new JRadioButtonMenuItem("White");
+        rbLightGray = new JRadioButtonMenuItem("Light Gray");
+        rbGray = new JRadioButtonMenuItem("Gray");
 
         //Initialize check buttons.
         ckAntiAlias = new JCheckBoxMenuItem("Use Antialiasing");
@@ -109,6 +115,16 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
         bgLineWidth.add(rbMedium);
         bgLineWidth.add(rbThick);
 
+        //Add to graph color button group
+        bgGraphColor.add(rbWhite);
+        bgGraphColor.add(rbLightGray);
+        bgGraphColor.add(rbGray);
+
+        //Add to graph color menu
+        mnuGraphColor.add(rbWhite);
+        mnuGraphColor.add(rbLightGray);
+        mnuGraphColor.add(rbGray);
+
         //Add to line thickness menu
         mnuLineWidth.add(rbThin);
         mnuLineWidth.add(rbMedium);
@@ -121,6 +137,7 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
         mnuSettings.add(ckAntiAlias);
         mnuSettings.addSeparator();
         mnuSettings.add(mnuLineWidth);
+        mnuSettings.add(mnuGraphColor);
 
         //Add to Info menu
         mnuInfo.add(miHelp);
@@ -143,11 +160,15 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
         rbThin.addChangeListener(this);
         rbMedium.addChangeListener(this);
         rbThick.addChangeListener(this);
+        rbWhite.addChangeListener(this);
+        rbLightGray.addChangeListener(this);
+        rbGray.addChangeListener(this);
 
-        //Set angle type to degrees.
+        //Set default settings..
         rbDegrees.setSelected(true);
         rbThin.setSelected(true);
         ckAntiAlias.setSelected(true);
+        rbLightGray.setSelected(true);
     }
 
     private void createTabbedPane() {
@@ -237,6 +258,17 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
             }
             else if(this.rbThick.isSelected()){
                 GraphSettings.setLineWidth(2);
+            }
+        }
+        if(e.getSource() == this.rbWhite || e.getSource() == this.rbLightGray || e.getSource() == this.rbGray){
+            if(this.rbWhite.isSelected()){
+                GraphSettings.setBgColor(Color.WHITE);
+            }
+            if(this.rbLightGray.isSelected()){
+                GraphSettings.setBgColor(Color.LIGHT_GRAY);
+            }
+            if(this.rbGray.isSelected()){
+                GraphSettings.setBgColor(Color.GRAY);
             }
         }
         this.repaint();

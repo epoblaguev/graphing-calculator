@@ -36,11 +36,12 @@ public class GraphPanel extends JPanel implements Runnable{
     private Vector<Equation> equations = new Vector<Equation>();
 
     public GraphPanel() {
-        this.setBackground(Color.lightGray);
+        this.setBackground(GraphSettings.getBgColor());
     }
 
     @Override
     public void paintComponent(Graphics g) {
+        this.setBackground(GraphSettings.getBgColor());
 
         GeneralPath polyline = new GeneralPath(GeneralPath.WIND_EVEN_ODD, this.getWidth());
         Graphics2D g2 = (Graphics2D) g;
@@ -246,18 +247,14 @@ public class GraphPanel extends JPanel implements Runnable{
         double move = (this.maxX - this.minX) * (percent / 100);
         this.minX += move;
         this.maxX += move;
-        System.out.println("H1");
         (new Thread(this)).start();
-        System.out.println("H4");
     }
 
     public void moveVertical(double percent) {
         double move = (this.maxY - this.minY) * (percent / 100);
         this.minY += move;
         this.maxY += move;
-        System.out.println("V1");
         (new Thread(this)).start();
-        System.out.println("V4");
     }
 
     public void center() {
@@ -273,8 +270,6 @@ public class GraphPanel extends JPanel implements Runnable{
     }
 
     public void run() {
-        System.out.println("2");
-        this.repaint();
-        System.out.println("3");
+        repaint();
     }
 }

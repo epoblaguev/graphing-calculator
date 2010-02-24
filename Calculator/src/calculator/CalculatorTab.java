@@ -15,6 +15,8 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.Serializable;
@@ -36,7 +38,7 @@ import javax.swing.text.DefaultEditorKit;
  * A panel that can be used as a calculator.
  * @author Egor
  */
-public class CalculatorTab extends JPanel implements ActionListener, Serializable, MouseListener, ClipboardOwner {
+public class CalculatorTab extends JPanel implements ActionListener, Serializable, MouseListener, ClipboardOwner, KeyListener {
 
     int targetRow;
     JScrollPane exprScrollPane, varScrollPane;
@@ -86,8 +88,12 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
         controlPanel.add(controlPanelEast, BorderLayout.EAST);
 
         txtInput.addMouseListener(this);
+        txtInput.addKeyListener(this);
     }
 
+    /**
+     * Creates the right click popup menu.
+     */
     private void createPopupMenu() {
         mnuRightClick = new JPopupMenu();
         miCopyExpression = new JMenuItem("Copy Expression");
@@ -171,6 +177,7 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
     }
 
     public void actionPerformed(ActionEvent e) {
+        //If Enter is pressed.
         if (e.getSource() == btnEnter) {
             Expression exp = new Expression(txtInput.getText());
             try {
@@ -182,6 +189,7 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
             }
         }
 
+        //If Add Variable is pressed.
         if (e.getSource() == btnAddVariable) {
             JFrame window = new AddVariableWindow();
             window.setLocationRelativeTo(this);
@@ -189,6 +197,7 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
             window.pack();
         }
 
+        //If Remove Variable is pressed.
         if (e.getSource() == btnRemoveVariable) {
             if (varTable.getSelectedRow() >= 0) {
                 try {
@@ -288,7 +297,7 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
             mnuRightClick.show(varTable, e.getX() + 10, e.getY() + 5);
         }
 
-        if (e.getSource() == txtInput && e.getModifiers() == InputEvent.BUTTON3_MASK){
+        if (e.getSource() == txtInput && e.getModifiers() == InputEvent.BUTTON3_MASK) {
             txtInput.requestFocus();
             JMenuItem mnuItem;
             mnuRightClick.removeAll();
@@ -318,5 +327,21 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
 
     public void lostOwnership(Clipboard clipboard, Transferable contents) {
         //Lost ownership.
+    }
+
+    public void keyTyped(KeyEvent e) {
+        //
+    }
+
+    public void keyPressed(KeyEvent e) {
+        //
+    }
+
+    public void keyReleased(KeyEvent e) {
+        if(e.getSource() == txtInput){
+            if(e.getKeyCode() == 10){
+                btnEnter.doClick();
+            }
+        }
     }
 }

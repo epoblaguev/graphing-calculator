@@ -65,6 +65,7 @@ public class AddVariableWindow extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         try {
+            //If Add.
             if (e.getSource() == btnAdd) {
                 Variable var = new Variable(txtVariableName.getText(), Double.valueOf(txtVariableValue.getText()));
 
@@ -81,6 +82,7 @@ public class AddVariableWindow extends JFrame implements ActionListener {
                 VariableTablePane.refreshTable();
             }
 
+            //If Close
             if (e.getSource() == btnClose) {
                 this.dispose();
             }
