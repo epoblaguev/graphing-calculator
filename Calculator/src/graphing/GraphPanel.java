@@ -27,10 +27,10 @@ import javax.swing.JPanel;
 public class GraphPanel extends JPanel implements Runnable{
 
     private int id = 0;
-    private double minX = -30;
-    private double maxX = 30;
-    private double minY = -30;
-    private double maxY = 30;
+    private double minX = -10;
+    private double maxX = 10;
+    private double minY = -10;
+    private double maxY = 10;
     private int xAxis = 0;
     private int yAxis = 0;
     private Vector<Equation> equations = new Vector<Equation>();

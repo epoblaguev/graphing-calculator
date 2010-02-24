@@ -84,7 +84,7 @@ public class EquationInput extends JPanel implements ActionListener, MouseListen
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnName) {
-            Color clr = JColorChooser.showDialog(btnName, "Dialog Text", btnName.getForeground());
+            Color clr = JColorChooser.showDialog(btnName, "Color Chooser", btnName.getForeground());
             if (clr != null) {
                 this.btnName.setForeground(clr);
                 this.color = clr;

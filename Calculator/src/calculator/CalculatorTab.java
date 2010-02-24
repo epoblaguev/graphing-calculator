@@ -185,7 +185,7 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
                 ExpressionTablePane.refreshTable();
             } catch (Exception exc) {
                 ExpressionList.removeExpression(exp);
-                JOptionPane.showMessageDialog(this, exc);
+                JOptionPane.showMessageDialog(this, exc, "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
 
@@ -204,7 +204,7 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
                     VariableList.removeVariable(varTable.getSelectedRow());
                     VariableTablePane.refreshTable();
                 } catch (InvalidVariableNameException ex) {
-                    JOptionPane.showMessageDialog(this, "Invalid variable name.");
+                    JOptionPane.showMessageDialog(this, "Invalid variable name.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
 
@@ -217,7 +217,7 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
                 ExpressionList.clearExpressionList();
                 ExpressionTablePane.refreshTable();
             } catch (Exception exc) {
-                JOptionPane.showMessageDialog(this, exc);
+                JOptionPane.showMessageDialog(this, exc, "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
 
@@ -250,7 +250,7 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
                     VariableList.removeVariable(targetRow);
                     VariableTablePane.refreshTable();
                 } catch (InvalidVariableNameException ex) {
-                    JOptionPane.showMessageDialog(this, "Invalid variable name.");
+                    JOptionPane.showMessageDialog(this, "Invalid variable name.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
             if (targetTable.equals(exprTable)) {
@@ -338,8 +338,8 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
     }
 
     public void keyReleased(KeyEvent e) {
-        if(e.getSource() == txtInput){
-            if(e.getKeyCode() == 10){
+        if (e.getSource() == txtInput) {
+            if (e.getKeyCode() == 10) {
                 btnEnter.doClick();
             }
         }

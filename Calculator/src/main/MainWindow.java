@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -34,14 +35,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTabbedPane;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 /**
  *
  * @author Egor
  */
-public class MainWindow extends JFrame implements ActionListener, ChangeListener {
+public class MainWindow extends JFrame implements ActionListener {
 
     JTabbedPane tabbedPane;
     CalculatorTab calculatorTab;
@@ -49,7 +48,7 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
     JMenuBar menuBar;
     JMenu mnuFile, mnuSettings, mnuInfo, mnuLineWidth, mnuGraphColor;
     JMenuItem miExit, miSave, miAbout, miHelp, miLoad;
-    JRadioButtonMenuItem rbDegrees, rbRadians, rbThin, rbMedium, rbThick, rbWhite, rbLightGray, rbGray;
+    JRadioButtonMenuItem rbDegrees, rbRadians, rbThin, rbMedium, rbThick, rbCustThickness, rbWhite, rbLightGray, rbGray, rbCustColor;
     JCheckBoxMenuItem ckAntiAlias;
     ButtonGroup bgAngle, bgLineWidth, bgGraphColor;
 
@@ -72,7 +71,7 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
         bgAngle = new ButtonGroup();
         bgLineWidth = new ButtonGroup();
         bgGraphColor = new ButtonGroup();
-        
+
         //Initialize Menu Bar
         menuBar = new JMenuBar();
         mnuFile = new JMenu("File");
@@ -94,9 +93,11 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
         rbThin = new JRadioButtonMenuItem("Thin");
         rbMedium = new JRadioButtonMenuItem("Medium");
         rbThick = new JRadioButtonMenuItem("Thick");
+        rbCustThickness = new JRadioButtonMenuItem("Custom");
         rbWhite = new JRadioButtonMenuItem("White");
         rbLightGray = new JRadioButtonMenuItem("Light Gray");
         rbGray = new JRadioButtonMenuItem("Gray");
+        rbCustColor = new JRadioButtonMenuItem("Custom");
 
         //Initialize check buttons.
         ckAntiAlias = new JCheckBoxMenuItem("Use Antialiasing");
@@ -114,21 +115,25 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
         bgLineWidth.add(rbThin);
         bgLineWidth.add(rbMedium);
         bgLineWidth.add(rbThick);
+        bgLineWidth.add(rbCustThickness);
 
         //Add to graph color button group
         bgGraphColor.add(rbWhite);
         bgGraphColor.add(rbLightGray);
         bgGraphColor.add(rbGray);
+        bgGraphColor.add(rbCustColor);
 
         //Add to graph color menu
         mnuGraphColor.add(rbWhite);
         mnuGraphColor.add(rbLightGray);
         mnuGraphColor.add(rbGray);
+        mnuGraphColor.add(rbCustColor);
 
         //Add to line thickness menu
         mnuLineWidth.add(rbThin);
         mnuLineWidth.add(rbMedium);
         mnuLineWidth.add(rbThick);
+        mnuLineWidth.add(rbCustThickness);
 
         //Add to settings menu
         mnuSettings.add(rbDegrees);
@@ -154,21 +159,23 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
         miExit.addActionListener(this);
         miHelp.addActionListener(this);
         miAbout.addActionListener(this);
-        rbDegrees.addChangeListener(this);
-        rbRadians.addChangeListener(this);
-        ckAntiAlias.addChangeListener(this);
-        rbThin.addChangeListener(this);
-        rbMedium.addChangeListener(this);
-        rbThick.addChangeListener(this);
-        rbWhite.addChangeListener(this);
-        rbLightGray.addChangeListener(this);
-        rbGray.addChangeListener(this);
+        rbDegrees.addActionListener(this);
+        rbRadians.addActionListener(this);
+        ckAntiAlias.addActionListener(this);
+        rbThin.addActionListener(this);
+        rbMedium.addActionListener(this);
+        rbThick.addActionListener(this);
+        rbCustThickness.addActionListener(this);
+        rbWhite.addActionListener(this);
+        rbLightGray.addActionListener(this);
+        rbGray.addActionListener(this);
+        rbCustColor.addActionListener(this);
 
         //Set default settings..
-        rbDegrees.setSelected(true);
-        rbThin.setSelected(true);
-        ckAntiAlias.setSelected(true);
-        rbLightGray.setSelected(true);
+        rbDegrees.doClick();
+        rbThin.doClick();
+        ckAntiAlias.doClick();
+        rbLightGray.doClick();
     }
 
     private void createTabbedPane() {
@@ -239,36 +246,44 @@ public class MainWindow extends JFrame implements ActionListener, ChangeListener
         if (e.getSource() == miHelp) {
             JOptionPane.showMessageDialog(this, Info.HELP, "Help", JOptionPane.INFORMATION_MESSAGE);
         }
-    }
 
-    public void stateChanged(ChangeEvent e) {
+        //Settings items.
         if (e.getSource() == this.rbDegrees || e.getSource() == this.rbRadians) {
             MathEvaluator m = new MathEvaluator();
             m.setUsingRadians(this.rbRadians.isSelected());
         }
-        if(e.getSource() == this.ckAntiAlias){
+        if (e.getSource() == this.ckAntiAlias) {
             GraphSettings.setAntialiased(this.ckAntiAlias.isSelected());
         }
-        if(e.getSource() == this.rbThin || e.getSource() == this.rbMedium || e.getSource() == this.rbThick){
-            if(this.rbThin.isSelected()){
+        if (e.getSource() == this.rbThin || e.getSource() == this.rbMedium || e.getSource() == this.rbThick || e.getSource() == this.rbCustThickness) {
+            if (this.rbThin.isSelected()) {
                 GraphSettings.setLineWidth(1);
-            }
-            else if(this.rbMedium.isSelected()){
+            } else if (this.rbMedium.isSelected()) {
                 GraphSettings.setLineWidth(1.5f);
-            }
-            else if(this.rbThick.isSelected()){
+            } else if (this.rbThick.isSelected()) {
                 GraphSettings.setLineWidth(2);
+            } else if (this.rbCustThickness.isSelected()) {
+                try {
+                    float thickness = Float.parseFloat(JOptionPane.showInputDialog(rbCustThickness, "Enter the custom thickness:"));
+                    GraphSettings.setLineWidth(thickness);
+                
+                } catch (Exception nfe) {
+                    JOptionPane.showMessageDialog(this.rbCustThickness, nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         }
-        if(e.getSource() == this.rbWhite || e.getSource() == this.rbLightGray || e.getSource() == this.rbGray){
-            if(this.rbWhite.isSelected()){
+        if (e.getSource() == this.rbWhite || e.getSource() == this.rbLightGray || e.getSource() == this.rbGray || e.getSource() == this.rbCustColor) {
+            if (this.rbWhite.isSelected()) {
                 GraphSettings.setBgColor(Color.WHITE);
-            }
-            if(this.rbLightGray.isSelected()){
+            } else if (this.rbLightGray.isSelected()) {
                 GraphSettings.setBgColor(Color.LIGHT_GRAY);
-            }
-            if(this.rbGray.isSelected()){
+            } else if (this.rbGray.isSelected()) {
                 GraphSettings.setBgColor(Color.GRAY);
+            } else if (this.rbCustColor.isSelected()) {
+                Color clr = JColorChooser.showDialog(rbCustColor, "Color Chooser", GraphSettings.getBgColor());
+                if (clr != null) {
+                    GraphSettings.setBgColor(clr);
+                }
             }
         }
         this.repaint();

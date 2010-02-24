@@ -68,7 +68,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         equationPanel = new JPanel();
         equationPanel.setLayout(new GridLayout(0, 1));
         equationScrollPane = new JScrollPane(equationPanel);
-        equationScrollPane.setPreferredSize(new Dimension(330, 125));
+        equationScrollPane.setPreferredSize(new Dimension(360, 125));
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         coordinatePanel = new JPanel(new GridLayout(0, 1));
@@ -187,7 +187,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
                 }
                 graphPanel.drawGraph(eq);
             } catch (Exception exc) {
-                JOptionPane.showMessageDialog(this, "Error: " + exc.getMessage());
+                JOptionPane.showMessageDialog(this, exc.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
         if (e.getSource() == btnLeft) {
@@ -218,7 +218,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
                 equationCount--;
                 equationScrollPane.validate();
             } else {
-                JOptionPane.showMessageDialog(this, "Can't remove last equation.");
+                JOptionPane.showMessageDialog(this, "Can't remove last equation.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
 
@@ -299,9 +299,9 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
                 graphPanel.setMinY(expr.evaluate());
             }
         } catch (NumberFormatException nfe) {
-            JOptionPane.showMessageDialog(this, nfe.getMessage());
+            JOptionPane.showMessageDialog(this, nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (InvalidBoundsException ibe) {
-            JOptionPane.showMessageDialog(this, ibe.getMessage());
+            JOptionPane.showMessageDialog(this, ibe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -317,7 +317,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
     }
 
     public void mouseReleased(MouseEvent e) {
-        System.out.println("Mouse Released:" + e.getPoint().toString());
+        //
     }
 
     public void mouseEntered(MouseEvent e) {
