@@ -191,7 +191,7 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
 
         //If Add Variable is pressed.
         if (e.getSource() == btnAddVariable) {
-            JFrame window = new AddVariableWindow();
+            JFrame window = new AddVariableDialog();
             window.setLocationRelativeTo(this);
             window.setVisible(true);
             window.pack();

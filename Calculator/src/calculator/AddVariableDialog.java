@@ -20,7 +20,7 @@ import javax.swing.JTextField;
  * A form that allows the addition of variables.
  * @author Egor
  */
-public class AddVariableWindow extends JFrame implements ActionListener {
+public class AddVariableDialog extends JFrame implements ActionListener {
 
     private JLabel lblVariableName, lblVariableValue;
     private JTextField txtVariableName, txtVariableValue;
@@ -30,7 +30,7 @@ public class AddVariableWindow extends JFrame implements ActionListener {
     /**
      * Constructor. Creates the form.
      */
-    public AddVariableWindow() {
+    public AddVariableDialog() {
         super();
         this.setLayout(new GridLayout(0, 1));
         this.setTitle("Add Variable");

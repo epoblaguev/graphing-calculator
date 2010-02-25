@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -317,7 +318,11 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
     }
 
     public void mouseReleased(MouseEvent e) {
-        //
+        if (e.getSource() == graphPanel && e.getModifiers() == InputEvent.BUTTON3_MASK) {
+            AddPointDialog addPoint = new AddPointDialog(graphPanel.PixelToUnitX(e.getX()),graphPanel.PixelToUnitY(e.getY()));
+            addPoint.setVisible(true);
+            this.repaint();
+        }
     }
 
     public void mouseEntered(MouseEvent e) {

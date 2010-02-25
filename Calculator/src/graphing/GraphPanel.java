@@ -14,9 +14,12 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.Vector;
 import javax.swing.JPanel;
 
@@ -24,9 +27,8 @@ import javax.swing.JPanel;
  *
  * @author Egor
  */
-public class GraphPanel extends JPanel implements Runnable{
+public class GraphPanel extends JPanel implements Runnable {
 
-    private int id = 0;
     private double minX = -10;
     private double maxX = 10;
     private double minY = -10;
@@ -34,9 +36,11 @@ public class GraphPanel extends JPanel implements Runnable{
     private int xAxis = 0;
     private int yAxis = 0;
     private Vector<Equation> equations = new Vector<Equation>();
+    private static HashMap<String, Point2D.Double> points = new HashMap<String, Point2D.Double>();
 
     public GraphPanel() {
         this.setBackground(GraphSettings.getBgColor());
+        GraphPanel.points.put("A", new Point2D.Double(5.3, 4.2));
     }
 
     @Override
@@ -46,17 +50,26 @@ public class GraphPanel extends JPanel implements Runnable{
         GeneralPath polyline = new GeneralPath(GeneralPath.WIND_EVEN_ODD, this.getWidth());
         Graphics2D g2 = (Graphics2D) g;
 
-        if (GraphSettings.isAntialiased()) {
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        }
+        super.paintComponent(g2);
 
-        super.paintComponent(g);
-
-        DecimalFormat df = new DecimalFormat("#.##");
+        DecimalFormat df = new DecimalFormat("#.###");
         g2.setColor(Color.black);
 
         yAxis = UnitToPixelX(0);
         xAxis = UnitToPixelY(0);
+
+        //Draw crossheir
+        g2.drawLine(this.getWidth() / 2 - 5, this.getHeight() / 2, this.getWidth() / 2 + 5, this.getHeight() / 2);
+        g2.drawLine(this.getWidth() / 2, this.getHeight() / 2 - 5, this.getWidth() / 2, this.getHeight() / 2 + 5);
+
+        //Draw x and y axis
+        g2.drawLine(0, xAxis, this.getWidth(), xAxis);
+        g2.drawLine(yAxis, 0, yAxis, this.getHeight());
+
+        //Set antialiasing
+        if (GraphSettings.isAntialiased()) {
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        }
 
         //Write Numbers
         g2.drawString("0", yAxis + 2, xAxis - 1);
@@ -64,20 +77,6 @@ public class GraphPanel extends JPanel implements Runnable{
         g2.drawString(df.format(maxX), this.getWidth() - 35, xAxis - 1);
         g2.drawString(df.format(minY), yAxis + 2, this.getHeight() - 5);
         g2.drawString(df.format(maxY), yAxis + 2, 15);
-
-        //Draw crossheir
-        g2.drawLine(this.getWidth() / 2 - 5, this.getHeight() / 2, this.getWidth() / 2 + 5, this.getHeight() / 2);
-        g2.drawLine(this.getWidth() / 2, this.getHeight() / 2 - 5, this.getWidth() / 2, this.getHeight() / 2 + 5);
-
-        //Draw x axis
-        g2.drawLine(0, xAxis, this.getWidth(), xAxis);
-
-        //Draw y axis
-        g2.drawLine(yAxis, 0, yAxis, this.getHeight());
-
-        if (equations.isEmpty()) {
-            return;
-        }
 
         g2.setStroke(new BasicStroke(GraphSettings.getLineWidth()));
 
@@ -92,7 +91,27 @@ public class GraphPanel extends JPanel implements Runnable{
             g2.draw(polyline);
             polyline.reset();
         }
+
+        //Add points
+        g2.setColor(Color.BLACK);
+        for (String key : points.keySet()) {
+            Point2D.Double pt = points.get(key);
+            int x = UnitToPixelX(pt.getX());
+            int y = UnitToPixelY(pt.getY());
+            g2.fillOval(x - 2, y - 2, 5, 5);
+            g2.drawString(key+"(" + df.format(pt.getX()) + "," + df.format(pt.getY()) + ")", x + 5, y);
+        }
+
         g2.dispose();
+    }
+
+    public static void addPoint(String name, double x, double y) {
+        Point2D.Double pt = new Point2D.Double(x, y);
+        points.put(name, pt);
+    }
+
+    public static void removePoint(String name){
+        points.remove(name);
     }
 
     public double getMaxX() {
@@ -265,7 +284,7 @@ public class GraphPanel extends JPanel implements Runnable{
         maxX = x / 2;
         minY = -(y / 2);
         maxY = y / 2;
-        
+
         (new Thread(this)).start();
     }
 
