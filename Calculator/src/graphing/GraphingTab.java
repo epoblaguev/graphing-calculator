@@ -43,6 +43,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
 
     private int equationCount = 3;
     private int xPrev = 0, yPrev = 0;
+    private double xClicked = 0, yClicked = 0;
     private GraphPanel graphPanel;
     private JPanel eastPanel, southPanel, directionPanel, boundsPanel, equationPanel, buttonPanel, coordinatePanel;
     private JLabel lblMinX, lblMaxX, lblMinY, lblMaxY, lblXCoordinate, lblYCoordinate;
@@ -319,9 +320,9 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
 
     public void mouseReleased(MouseEvent e) {
         if (e.getSource() == graphPanel && e.getModifiers() == InputEvent.BUTTON3_MASK) {
-            AddPointDialog addPoint = new AddPointDialog(graphPanel.PixelToUnitX(e.getX()),graphPanel.PixelToUnitY(e.getY()));
+            AddPointDialog addPoint = new AddPointDialog(this, graphPanel.PixelToUnitX(e.getX()),graphPanel.PixelToUnitY(e.getY()));
+            addPoint.setLocationRelativeTo(this);
             addPoint.setVisible(true);
-            this.repaint();
         }
     }
 

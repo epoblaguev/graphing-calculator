@@ -26,21 +26,23 @@ public class AddPointDialog extends JFrame implements ActionListener {
     private JLabel lblPointName, lblXValue, lblYValue;
     private JTextField txtPointName, txtXValue, txtYValue;
     private JButton btnAdd, btnClose;
-    private JPanel topPanel, middlePanel, bottomPanel;
+    private JPanel topPanel, bottomPanel, caller;
 
     /**
      * Constructor. Creates the form.
      */
-    public AddPointDialog() {
+    public AddPointDialog(JPanel caller) {
         super();
+        this.caller = caller;
         makeLayout();
         this.pack();
     }
 
-    public AddPointDialog(double x, double y) {
+    public AddPointDialog(JPanel caller, double x, double y) {
         super();
         makeLayout();
 
+        this.caller = caller;
         DecimalFormat df = new DecimalFormat("#.#########");
         txtXValue.setText(df.format(x));
         txtYValue.setText(df.format(y));
@@ -90,6 +92,8 @@ public class AddPointDialog extends JFrame implements ActionListener {
                 double x = Double.parseDouble(txtXValue.getText());
                 double y = Double.parseDouble(txtYValue.getText());
                 GraphPanel.addPoint(name, x, y);
+
+                this.caller.repaint();
                 this.dispose();
             }
 
