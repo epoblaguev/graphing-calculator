@@ -277,7 +277,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
             }
             try {
                 Point2D.Double pt1 = GraphPanel.getPoint(JOptionPane.showInputDialog("Name of first point:"));
-                Point2D.Double pt2 = GraphPanel.getPoint(JOptionPane.showInputDialog("Name of first point:"));
+                Point2D.Double pt2 = GraphPanel.getPoint(JOptionPane.showInputDialog("Name of second point:"));
 
                 if(pt1.equals(pt2)){
                     JOptionPane.showMessageDialog(this, "Select different points.", "Error", JOptionPane.ERROR_MESSAGE);
