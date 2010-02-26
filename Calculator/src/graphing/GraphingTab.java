@@ -276,10 +276,16 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
                 return;
             }
             try {
-                Point2D.Double ptA = GraphPanel.getPoint(JOptionPane.showInputDialog("Name of first point:"));
-                Point2D.Double ptB = GraphPanel.getPoint(JOptionPane.showInputDialog("Name of first point:"));
-                double slope = (ptA.getY() - ptB.getY()) / (ptA.getX() - ptB.getX());
-                double yIntercept = ptA.getY() - (slope * ptA.getX());
+                Point2D.Double pt1 = GraphPanel.getPoint(JOptionPane.showInputDialog("Name of first point:"));
+                Point2D.Double pt2 = GraphPanel.getPoint(JOptionPane.showInputDialog("Name of first point:"));
+
+                if(pt1.equals(pt2)){
+                    JOptionPane.showMessageDialog(this, "Select different points.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+                double slope = (pt1.getY() - pt2.getY()) / (pt1.getX() - pt2.getX());
+                double yIntercept = pt1.getY() - (slope * pt1.getX());
                 boolean foundEmpty = false;
                 for (int i = 0; i < this.equationCount; i++) {
                     if (((EquationInput) equationPanel.getComponent(i)).getInput().getText().isEmpty()) {
