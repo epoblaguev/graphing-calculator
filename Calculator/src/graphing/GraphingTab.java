@@ -17,6 +17,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -42,7 +44,7 @@ import javax.swing.border.EtchedBorder;
  *
  * @author Egor
  */
-public class GraphingTab extends JPanel implements ActionListener, MouseWheelListener, MouseMotionListener, MouseListener, FocusListener {
+public class GraphingTab extends JPanel implements ActionListener, MouseWheelListener, MouseMotionListener, MouseListener, FocusListener, KeyListener {
 
     private int equationCount = 3;
     private int xPrev = 0, yPrev = 0;
@@ -119,6 +121,9 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         equationPanel.add(new EquationInput("y1=", Color.RED));
         equationPanel.add(new EquationInput("y2=", Color.BLUE));
         equationPanel.add(new EquationInput("y3=", Color.YELLOW));
+        for (int i = 0; i < equationPanel.getComponentCount(); i++) {
+            ((EquationInput) equationPanel.getComponent(i)).getInput().addKeyListener(this);
+        }
 
         //Add to buttonPanel
         buttonPanel.add(btnAddEquation);
@@ -243,6 +248,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
             equationPanel.add(new EquationInput("y" + equationCount + "=",
                     new Color(r.nextInt(256), r.nextInt(256), r.nextInt(256))));
             equationScrollPane.validate();
+            ((EquationInput) equationPanel.getComponent(equationCount - 1)).getInput().addKeyListener(this);
         }
         if (e.getSource() == btnRemoveEquation) {
             if (equationCount > 1) {
@@ -279,11 +285,11 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
                 Point2D.Double pt1 = GraphPanel.getPoint(JOptionPane.showInputDialog("Name of first point:"));
                 Point2D.Double pt2 = GraphPanel.getPoint(JOptionPane.showInputDialog("Name of second point:"));
 
-                if(pt1.equals(pt2)){
+                if (pt1.equals(pt2)) {
                     JOptionPane.showMessageDialog(this, "Select different points.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                
+
                 double slope = (pt1.getY() - pt2.getY()) / (pt1.getX() - pt2.getX());
                 double yIntercept = pt1.getY() - (slope * pt1.getX());
                 boolean foundEmpty = false;
@@ -414,6 +420,22 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         if (e.getSource() == graphPanel) {
             lblXCoordinate.setText("X: N/A");
             lblYCoordinate.setText("Y: N/A");
+        }
+    }
+
+    public void keyTyped(KeyEvent e) {
+        //
+    }
+
+    public void keyPressed(KeyEvent e) {
+        //
+    }
+
+    public void keyReleased(KeyEvent e) {
+        if (e.getSource().getClass() == JTextField.class) {
+            if (e.getKeyCode() == 10) {
+                btnGraph.doClick();
+            }
         }
     }
 }
