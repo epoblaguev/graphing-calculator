@@ -22,6 +22,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.geom.Point2D;
 import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.Vector;
@@ -29,8 +30,10 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
@@ -50,6 +53,8 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
     private JTextField txtMinX, txtMaxX, txtMinY, txtMaxY;
     private JButton btnGraph, btnLeft, btnRight, btnUp, btnDown, btnCenter, btnAddEquation, btnRemoveEquation;
     private JScrollPane equationScrollPane;
+    JPopupMenu mnuGraphRightClick;
+    JMenuItem miZoomIn, miZoomOut, miAddPoint, miRemovePoint, miDrawLine;
 
     public GraphingTab() {
         super();
@@ -60,13 +65,14 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         graphPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         eastPanel = new JPanel();
         eastPanel.setLayout(new BoxLayout(eastPanel, BoxLayout.Y_AXIS));
+        eastPanel.setPreferredSize(new Dimension(140, 100));
         southPanel = new JPanel();
         southPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        directionPanel = new JPanel(new BorderLayout());
-        directionPanel.setMaximumSize(new Dimension(120, 80));
+        directionPanel = new JPanel(new GridLayout(3, 3));
+        directionPanel.setMaximumSize(new Dimension(140, 100));
         boundsPanel = new JPanel(new GridLayout(0, 2));
         boundsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        boundsPanel.setMaximumSize(new Dimension(120, 80));
+        boundsPanel.setMaximumSize(new Dimension(140, 80));
         equationPanel = new JPanel();
         equationPanel.setLayout(new GridLayout(0, 1));
         equationScrollPane = new JScrollPane(equationPanel);
@@ -99,11 +105,15 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         txtMinY = new JTextField(5);
 
         //Add to directionPanel
-        directionPanel.add(btnLeft, BorderLayout.WEST);
-        directionPanel.add(btnRight, BorderLayout.EAST);
-        directionPanel.add(btnUp, BorderLayout.NORTH);
-        directionPanel.add(btnDown, BorderLayout.SOUTH);
-        directionPanel.add(btnCenter, BorderLayout.CENTER);
+        directionPanel.add(new JPanel());
+        directionPanel.add(btnUp);
+        directionPanel.add(new JPanel());
+        directionPanel.add(btnLeft);
+        directionPanel.add(btnCenter);
+        directionPanel.add(btnRight);
+        directionPanel.add(new JPanel());
+        directionPanel.add(btnDown);
+        directionPanel.add(new JPanel());
 
         //Add to equationWrapper panel.
         equationPanel.add(new EquationInput("y1=", Color.RED));
@@ -140,6 +150,21 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         boundsPanel.add(lblMinY);
         boundsPanel.add(txtMinY);
 
+        //Create Popup Menu
+        mnuGraphRightClick = new JPopupMenu();
+        miAddPoint = new JMenuItem("Add Point");
+        miRemovePoint = new JMenuItem("Remove Point");
+        miZoomIn = new JMenuItem("Zoom In");
+        miZoomOut = new JMenuItem("Zoom Out");
+        miDrawLine = new JMenuItem("Draw Line Between Points");
+
+        mnuGraphRightClick.add(miZoomIn);
+        mnuGraphRightClick.add(miZoomOut);
+        mnuGraphRightClick.addSeparator();
+        mnuGraphRightClick.add(miAddPoint);
+        mnuGraphRightClick.add(miRemovePoint);
+        mnuGraphRightClick.add(miDrawLine);
+
         //Add Listeners
         btnGraph.addActionListener(this);
         btnLeft.addActionListener(this);
@@ -156,6 +181,11 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         txtMinX.addFocusListener(this);
         txtMaxY.addFocusListener(this);
         txtMinY.addFocusListener(this);
+        miAddPoint.addActionListener(this);
+        miRemovePoint.addActionListener(this);
+        miZoomIn.addActionListener(this);
+        miZoomOut.addActionListener(this);
+        miDrawLine.addActionListener(this);
 
 
         graphPanel.drawGrid();
@@ -224,6 +254,50 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
             }
         }
 
+        if (e.getSource() == miAddPoint) {
+            AddPointDialog addPoint = new AddPointDialog(this, this.xClicked, this.yClicked);
+            addPoint.setLocationRelativeTo(this);
+            addPoint.setVisible(true);
+        }
+        if (e.getSource() == miRemovePoint) {
+            String remove = JOptionPane.showInputDialog(this, "Name of point to remove:");
+            GraphPanel.removePoint(remove);
+            this.repaint();
+        }
+        if (e.getSource() == miZoomIn) {
+            graphPanel.zoom(-50);
+        }
+        if (e.getSource() == miZoomOut) {
+            graphPanel.zoom(100);
+        }
+        if (e.getSource() == miDrawLine) {
+            if (GraphPanel.getPoints().size() < 2) {
+                JOptionPane.showMessageDialog(this, "Less then 2 points are ploted on graph.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            try {
+                Point2D.Double ptA = GraphPanel.getPoint(JOptionPane.showInputDialog("Name of first point:"));
+                Point2D.Double ptB = GraphPanel.getPoint(JOptionPane.showInputDialog("Name of first point:"));
+                double slope = (ptA.getY() - ptB.getY()) / (ptA.getX() - ptB.getX());
+                double yIntercept = ptA.getY() - (slope * ptA.getX());
+                boolean foundEmpty = false;
+                for (int i = 0; i < this.equationCount; i++) {
+                    if (((EquationInput) equationPanel.getComponent(i)).getInput().getText().isEmpty()) {
+                        ((EquationInput) equationPanel.getComponent(i)).getInput().setText(slope + "x+(" + yIntercept + ")");
+                        foundEmpty = true;
+                        break;
+                    }
+                }
+                if (foundEmpty == false) {
+                    btnAddEquation.doClick();
+                    ((EquationInput) equationPanel.getComponent(equationCount - 1)).getInput().setText(slope + "x+(" + yIntercept + ")");
+                }
+                btnGraph.doClick();
+            } catch (Exception exc) {
+                JOptionPane.showMessageDialog(this, exc.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
         //Display the bounds.
         this.setBounds();
     }
@@ -257,10 +331,10 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         if (e.getSource() == graphPanel) {
             double xMoved = e.getX();
             double yMoved = e.getY();
-            double percentX = (xMoved - xPrev)/(graphPanel.getWidth());
-            double percentY = (yMoved - yPrev)/(graphPanel.getHeight());
-            graphPanel.moveHorizontal(-percentX*100);
-            graphPanel.moveVertical(+percentY*100);
+            double percentX = (xMoved - xPrev) / (graphPanel.getWidth());
+            double percentY = (yMoved - yPrev) / (graphPanel.getHeight());
+            graphPanel.moveHorizontal(-percentX * 100);
+            graphPanel.moveVertical(+percentY * 100);
             this.xPrev = (int) xMoved;
             this.yPrev = (int) yMoved;
             this.setBounds();
@@ -320,9 +394,9 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
 
     public void mouseReleased(MouseEvent e) {
         if (e.getSource() == graphPanel && e.getModifiers() == InputEvent.BUTTON3_MASK) {
-            AddPointDialog addPoint = new AddPointDialog(this, graphPanel.PixelToUnitX(e.getX()),graphPanel.PixelToUnitY(e.getY()));
-            addPoint.setLocationRelativeTo(this);
-            addPoint.setVisible(true);
+            this.xClicked = graphPanel.PixelToUnitX(e.getX());
+            this.yClicked = graphPanel.PixelToUnitY(e.getY());
+            mnuGraphRightClick.show(graphPanel, e.getX() + 10, e.getY() + 5);
         }
     }
 

@@ -40,7 +40,6 @@ public class GraphPanel extends JPanel implements Runnable {
 
     public GraphPanel() {
         this.setBackground(GraphSettings.getBgColor());
-        GraphPanel.points.put("A", new Point2D.Double(5.3, 4.2));
     }
 
     @Override
@@ -105,13 +104,21 @@ public class GraphPanel extends JPanel implements Runnable {
         g2.dispose();
     }
 
-    public static void addPoint(String name, double x, double y) {
+    public static void addPoint(String key, double x, double y) {
         Point2D.Double pt = new Point2D.Double(x, y);
-        points.put(name, pt);
+        points.put(key, pt);
     }
 
-    public static void removePoint(String name){
-        points.remove(name);
+    public static void removePoint(String key){
+        points.remove(key);
+    }
+
+    public static HashMap<String, Point2D.Double> getPoints(){
+        return points;
+    }
+
+    public static Point2D.Double getPoint(String key){
+        return points.get(key);
     }
 
     public double getMaxX() {
