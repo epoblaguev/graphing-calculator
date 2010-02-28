@@ -53,7 +53,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
     private JPanel eastPanel, southPanel, directionPanel, boundsPanel, equationPanel, buttonPanel, coordinatePanel;
     private JLabel lblMinX, lblMaxX, lblMinY, lblMaxY, lblXCoordinate, lblYCoordinate;
     private JTextField txtMinX, txtMaxX, txtMinY, txtMaxY;
-    private JButton btnGraph, btnLeft, btnRight, btnUp, btnDown, btnCenter, btnAddEquation, btnRemoveEquation;
+    private JButton btnGraph, btnLeft, btnRight, btnUp, btnDown, btnCenter, btnAddEquation, btnRemoveEquation, btnZoomIn, btnZoomOut;
     private JScrollPane equationScrollPane;
     JPopupMenu mnuGraphRightClick;
     JMenuItem miZoomIn, miZoomOut, miAddPoint, miRemovePoint, miDrawLine;
@@ -73,8 +73,8 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         directionPanel = new JPanel(new GridLayout(3, 3));
         directionPanel.setMaximumSize(new Dimension(140, 100));
         boundsPanel = new JPanel(new GridLayout(0, 2));
-        boundsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        boundsPanel.setMaximumSize(new Dimension(140, 80));
+        boundsPanel.setBorder(BorderFactory.createTitledBorder("Graph Bounds"));
+        boundsPanel.setMaximumSize(new Dimension(140, 90));
         equationPanel = new JPanel();
         equationPanel.setLayout(new GridLayout(0, 1));
         equationScrollPane = new JScrollPane(equationPanel);
@@ -85,6 +85,8 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         coordinatePanel.setMaximumSize(new Dimension(120, 40));
 
         //Initialize directionPanel items
+        btnZoomIn = new JButton("+");
+        btnZoomOut = new JButton("-");
         btnLeft = new JButton("<");
         btnRight = new JButton(">");
         btnUp = new JButton("^");
@@ -107,9 +109,9 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         txtMinY = new JTextField(5);
 
         //Add to directionPanel
-        directionPanel.add(new JPanel());
+        directionPanel.add(btnZoomOut);
         directionPanel.add(btnUp);
-        directionPanel.add(new JPanel());
+        directionPanel.add(btnZoomIn);
         directionPanel.add(btnLeft);
         directionPanel.add(btnCenter);
         directionPanel.add(btnRight);
@@ -177,6 +179,8 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         btnUp.addActionListener(this);
         btnDown.addActionListener(this);
         btnCenter.addActionListener(this);
+        btnZoomIn.addActionListener(this);
+        btnZoomOut.addActionListener(this);
         btnAddEquation.addActionListener(this);
         btnRemoveEquation.addActionListener(this);
         graphPanel.addMouseMotionListener(this);
@@ -241,6 +245,12 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         }
         if (e.getSource() == btnCenter) {
             graphPanel.center();
+        }
+        if (e.getSource() == btnZoomIn) {
+            graphPanel.zoom(-20);
+        }
+        if (e.getSource() == btnZoomOut) {
+            graphPanel.zoom(25);
         }
         if (e.getSource() == btnAddEquation) {
             Random r = new Random();
@@ -407,7 +417,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
             this.yClicked = graphPanel.PixelToUnitY(e.getY());
             mnuGraphRightClick.show(graphPanel, e.getX() + 10, e.getY() + 5);
         }
-        
+
         if (e.getSource() == graphPanel) {
             this.xPrev = e.getX();
             this.yPrev = e.getY();
