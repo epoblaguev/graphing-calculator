@@ -14,6 +14,7 @@ import expressions.VariableList;
 import graphing.GraphingTab;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -189,13 +190,14 @@ public class MainWindow extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == miLoad) {
-            JFileChooser fc = new JFileChooser();
+            FileDialog fd = new FileDialog(this, "Load State", FileDialog.LOAD);
+            fd.setVisible(true);
 
-            if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            if (fd.getFile() != null) {
                 ObjectInputStream in = null;
                 try {
-                    File file = fc.getSelectedFile();
-                    in = new ObjectInputStream(new FileInputStream(file.getPath()));
+                    String filePath = fd.getDirectory() + fd.getFile();
+                    in = new ObjectInputStream(new FileInputStream(filePath));
                     Storage store = (Storage) in.readObject();
                     ExpressionList.setExpressions(store.getExpressions());
                     VariableList.setVariables(store.getVariables());
@@ -215,14 +217,15 @@ public class MainWindow extends JFrame implements ActionListener {
 
         }
         if (e.getSource() == miSave) {
-            JFileChooser fc = new JFileChooser();
+            FileDialog fd = new FileDialog(this, "Load State", FileDialog.LOAD);
+            fd.setVisible(true);
 
-            if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            if (fd.getFile() != null) {
                 Storage store = new Storage(ExpressionList.getExpressionList(), VariableList.getVariables());
                 ObjectOutputStream objstream = null;
                 try {
-                    File file = fc.getSelectedFile();
-                    objstream = new ObjectOutputStream(new FileOutputStream(file.getPath()));
+                    String filePath = fd.getDirectory() + fd.getFile();
+                    objstream = new ObjectOutputStream(new FileOutputStream(filePath));
                     objstream.writeObject(store);
                     objstream.close();
                 } catch (IOException ex) {
@@ -266,7 +269,7 @@ public class MainWindow extends JFrame implements ActionListener {
                 try {
                     float thickness = Float.parseFloat(JOptionPane.showInputDialog(rbCustThickness, "Enter the custom thickness:"));
                     GraphSettings.setLineWidth(thickness);
-                
+
                 } catch (Exception nfe) {
                     JOptionPane.showMessageDialog(this.rbCustThickness, nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
