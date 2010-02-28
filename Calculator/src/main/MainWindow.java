@@ -63,7 +63,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
         this.setJMenuBar(menuBar);
         this.add(tabbedPane, BorderLayout.CENTER);
-        this.setSize(500, 550);
+        this.setSize(510, 550);
         this.setMinimumSize(this.getSize());
     }
 
