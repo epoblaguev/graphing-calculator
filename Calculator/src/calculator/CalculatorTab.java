@@ -266,11 +266,7 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
     }
 
     public void mousePressed(MouseEvent e) {
-        //
-    }
-
-    public void mouseReleased(MouseEvent e) {
-        if (e.getSource() == exprTable &&(e.isPopupTrigger() || e.getModifiers() == InputEvent.BUTTON3_MASK)) {
+        if (e.getSource() == exprTable &&(e.isPopupTrigger())) {
             targetTable = exprTable;
             targetRow = exprTable.rowAtPoint(e.getPoint());
             exprTable.addRowSelectionInterval(targetRow, targetRow);
@@ -283,7 +279,7 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
 
             mnuRightClick.show(exprTable, e.getX() + 10, e.getY() + 5);
         }
-        if (e.getSource() == varTable && (e.isPopupTrigger() || e.getModifiers() == InputEvent.BUTTON3_MASK)) {
+        if (e.getSource() == varTable && (e.isPopupTrigger())) {
             targetTable = varTable;
             targetRow = varTable.rowAtPoint(e.getPoint());
             varTable.addRowSelectionInterval(targetRow, targetRow);
@@ -297,7 +293,7 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
             mnuRightClick.show(varTable, e.getX() + 10, e.getY() + 5);
         }
 
-        if (e.getSource() == txtInput && (e.isPopupTrigger() || e.getModifiers() == InputEvent.BUTTON3_MASK)) {
+        if (e.getSource() == txtInput && (e.isPopupTrigger())) {
             txtInput.requestFocus();
             JMenuItem mnuItem;
             mnuRightClick.removeAll();
@@ -315,6 +311,10 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
 
             mnuRightClick.show(txtInput, e.getX() + 10, e.getY());
         }
+    }
+
+    public void mouseReleased(MouseEvent e) {
+        //
     }
 
     public void mouseEntered(MouseEvent e) {

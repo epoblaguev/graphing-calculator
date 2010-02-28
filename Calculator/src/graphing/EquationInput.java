@@ -98,11 +98,7 @@ public class EquationInput extends JPanel implements ActionListener, MouseListen
     }
 
     public void mousePressed(MouseEvent e) {
-        //
-    }
-
-    public void mouseReleased(MouseEvent e) {
-        if (e.getSource() == input && (e.isPopupTrigger() || e.getModifiers() == InputEvent.BUTTON3_MASK)) {
+        if (e.getSource() == input && (e.isPopupTrigger())) {
             input.requestFocus();
             JMenuItem mnuItem;
             mnuRightClick.removeAll();
@@ -119,6 +115,10 @@ public class EquationInput extends JPanel implements ActionListener, MouseListen
 
             mnuRightClick.show(input, e.getX() + 10, e.getY());
         }
+    }
+
+    public void mouseReleased(MouseEvent e) {
+        //
     }
 
     public void mouseEntered(MouseEvent e) {
