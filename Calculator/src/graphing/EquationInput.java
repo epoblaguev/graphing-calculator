@@ -98,7 +98,7 @@ public class EquationInput extends JPanel implements ActionListener, MouseListen
     }
 
     public void mousePressed(MouseEvent e) {
-        if (e.getSource() == input && (e.isPopupTrigger())) {
+        if (e.getSource() == input && (e.isPopupTrigger() || e.getModifiers() == InputEvent.BUTTON3_MASK)) {
             input.requestFocus();
             JMenuItem mnuItem;
             mnuRightClick.removeAll();

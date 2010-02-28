@@ -402,7 +402,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
     public void mousePressed(MouseEvent e) {
 
         System.out.println(e.isPopupTrigger());
-        if (e.getSource() == graphPanel && (e.isPopupTrigger())) {
+        if (e.getSource() == graphPanel && (e.isPopupTrigger() || e.getModifiers() == InputEvent.BUTTON3_MASK)) {
             this.xClicked = graphPanel.PixelToUnitX(e.getX());
             this.yClicked = graphPanel.PixelToUnitY(e.getY());
             mnuGraphRightClick.show(graphPanel, e.getX() + 10, e.getY() + 5);
