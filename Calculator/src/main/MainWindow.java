@@ -5,6 +5,7 @@
 package main;
 
 import Constants.Info;
+import Settings.GenSettings;
 import Settings.GraphSettings;
 import calculator.*;
 import exceptions.InvalidVariableNameException;
@@ -57,6 +58,7 @@ public class MainWindow extends JFrame implements ActionListener {
         super();
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setTitle("Egor's Calculator");
+        this.setIconImage(GenSettings.getImage(this.getToolkit(), "/images/calculator.png"));
 
         this.createTabbedPane();
         this.createMenuBar();
@@ -184,8 +186,8 @@ public class MainWindow extends JFrame implements ActionListener {
 
         calculatorTab = new CalculatorTab();
         graphingTab = new GraphingTab();
-        tabbedPane.addTab("Calculator", calculatorTab);
-        tabbedPane.addTab("Graphing", graphingTab);
+        tabbedPane.addTab("Calculator",GenSettings.getImageIcon(this.getToolkit(), "/images/calcSmall.png"), calculatorTab);
+        tabbedPane.addTab("Graphing",GenSettings.getImageIcon(this.getToolkit(), "/images/graphSmall.png"), graphingTab);
     }
 
     public void actionPerformed(ActionEvent e) {

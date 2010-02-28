@@ -4,6 +4,7 @@
  */
 package graphing;
 
+import Settings.GenSettings;
 import exceptions.InvalidBoundsException;
 import expressions.Expression;
 import java.awt.BorderLayout;
@@ -25,11 +26,14 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Point2D;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -60,6 +64,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
 
     public GraphingTab() {
         super();
+
         this.setLayout(new BorderLayout());
 
         //Initialize panels
@@ -85,13 +90,14 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         coordinatePanel.setMaximumSize(new Dimension(120, 40));
 
         //Initialize directionPanel items
-        btnZoomIn = new JButton("+");
-        btnZoomOut = new JButton("-");
-        btnLeft = new JButton("<");
-        btnRight = new JButton(">");
-        btnUp = new JButton("^");
-        btnDown = new JButton("\\/");
-        btnCenter = new JButton();
+        btnZoomIn = new JButton(GenSettings.getImageIcon(this.getToolkit(), "/images/zoomIn.png"));
+        btnZoomOut = new JButton(GenSettings.getImageIcon(this.getToolkit(),"/images/zoomOut.png"));
+        //btnLeft = new JButton("\u2190");
+        btnLeft = new JButton(GenSettings.getImageIcon(this.getToolkit(),"/images/arrowLeft.png"));
+        btnRight = new JButton(GenSettings.getImageIcon(this.getToolkit(),"/images/arrowRight.png"));
+        btnUp = new JButton(GenSettings.getImageIcon(this.getToolkit(),"/images/arrowUp.png"));
+        btnDown = new JButton(GenSettings.getImageIcon(this.getToolkit(),"/images/arrowDown.png"));
+        btnCenter = new JButton(GenSettings.getImageIcon(this.getToolkit(),"/images/center.png"));
 
         //Initialize buttonPanel items.
         btnAddEquation = new JButton("Equation +");
