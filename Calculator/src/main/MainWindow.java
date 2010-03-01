@@ -58,14 +58,14 @@ public class MainWindow extends JFrame implements ActionListener {
         super();
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setTitle("Egor's Calculator");
-        this.setIconImage(GenSettings.getImage(this.getToolkit(), "/images/calculator.png"));
+        this.setIconImage(GenSettings.getImage("/images/calculator.png"));
 
         this.createTabbedPane();
         this.createMenuBar();
 
         this.setJMenuBar(menuBar);
         this.add(tabbedPane, BorderLayout.CENTER);
-        this.setSize(510, 550);
+        this.setSize(520, 550);
         this.setMinimumSize(this.getSize());
     }
 
@@ -84,11 +84,11 @@ public class MainWindow extends JFrame implements ActionListener {
         mnuGraphColor = new JMenu("Graph Background");
 
         //Initialize Menu Items
-        miSave = new JMenuItem("Save State", GenSettings.getImageIcon(this.getToolkit(), "/images/saveSMall.png"));
-        miLoad = new JMenuItem("Load State",GenSettings.getImageIcon(this.getToolkit(), "/images/loadSmall.png"));
-        miExit = new JMenuItem("Exit",GenSettings.getImageIcon(this.getToolkit(), "/images/exitSmall.png"));
+        miSave = new JMenuItem("Save State", GenSettings.getImageIcon("/images/saveSmall.png"));
+        miLoad = new JMenuItem("Load State",GenSettings.getImageIcon("/images/loadSmall.png"));
+        miExit = new JMenuItem("Exit",GenSettings.getImageIcon("/images/exitSmall.png"));
         miAbout = new JMenuItem("About");
-        miHelp = new JMenuItem("Help",GenSettings.getImageIcon(this.getToolkit(), "/images/helpSmall.png"));
+        miHelp = new JMenuItem("Help",GenSettings.getImageIcon("/images/helpSmall.png"));
 
         //Initialize radio buttons.
         rbDegrees = new JRadioButtonMenuItem("Degrees");
@@ -186,10 +186,11 @@ public class MainWindow extends JFrame implements ActionListener {
 
         calculatorTab = new CalculatorTab();
         graphingTab = new GraphingTab();
-        tabbedPane.addTab("Calculator",GenSettings.getImageIcon(this.getToolkit(), "/images/calcSmall.png"), calculatorTab);
-        tabbedPane.addTab("Graphing",GenSettings.getImageIcon(this.getToolkit(), "/images/graphSmall.png"), graphingTab);
+        tabbedPane.addTab("Calculator",GenSettings.getImageIcon("/images/calcSmall.png"), calculatorTab);
+        tabbedPane.addTab("Graphing",GenSettings.getImageIcon("/images/graphSmall.png"), graphingTab);
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == miLoad) {
             FileDialog fd = new FileDialog(this, "Load State", FileDialog.LOAD);

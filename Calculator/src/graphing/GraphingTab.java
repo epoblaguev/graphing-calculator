@@ -90,18 +90,18 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         coordinatePanel.setMaximumSize(new Dimension(120, 40));
 
         //Initialize directionPanel items
-        btnZoomIn = new JButton(GenSettings.getImageIcon(this.getToolkit(), "/images/zoomIn.png"));
-        btnZoomOut = new JButton(GenSettings.getImageIcon(this.getToolkit(),"/images/zoomOut.png"));
+        btnZoomIn = new JButton(GenSettings.getImageIcon("/images/zoomIn.png"));
+        btnZoomOut = new JButton(GenSettings.getImageIcon("/images/zoomOut.png"));
         //btnLeft = new JButton("\u2190");
-        btnLeft = new JButton(GenSettings.getImageIcon(this.getToolkit(),"/images/arrowLeft.png"));
-        btnRight = new JButton(GenSettings.getImageIcon(this.getToolkit(),"/images/arrowRight.png"));
-        btnUp = new JButton(GenSettings.getImageIcon(this.getToolkit(),"/images/arrowUp.png"));
-        btnDown = new JButton(GenSettings.getImageIcon(this.getToolkit(),"/images/arrowDown.png"));
-        btnCenter = new JButton(GenSettings.getImageIcon(this.getToolkit(),"/images/center.png"));
+        btnLeft = new JButton(GenSettings.getImageIcon("/images/arrowLeft.png"));
+        btnRight = new JButton(GenSettings.getImageIcon("/images/arrowRight.png"));
+        btnUp = new JButton(GenSettings.getImageIcon("/images/arrowUp.png"));
+        btnDown = new JButton(GenSettings.getImageIcon("/images/arrowDown.png"));
+        btnCenter = new JButton(GenSettings.getImageIcon("/images/center.png"));
 
         //Initialize buttonPanel items.
-        btnAddEquation = new JButton("Equation",GenSettings.getImageIcon(this.getToolkit(), "/images/addSmall.png"));
-        btnRemoveEquation = new JButton("Equation",GenSettings.getImageIcon(this.getToolkit(), "/images/removeSmall.png"));
+        btnAddEquation = new JButton("Equation",GenSettings.getImageIcon("/images/addSmall.png"));
+        btnRemoveEquation = new JButton("Equation",GenSettings.getImageIcon("/images/removeSmall.png"));
         btnGraph = new JButton("Graph");
 
         //Initialize boundsPanel items

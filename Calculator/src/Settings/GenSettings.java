@@ -14,11 +14,11 @@ import javax.swing.ImageIcon;
  */
 public class GenSettings {
 
-    public static ImageIcon getImageIcon(Toolkit tk, String location) {
-        return new ImageIcon(tk.getImage(GenSettings.class.getResource(location)));
+    public static ImageIcon getImageIcon(String location) {
+        return new ImageIcon(Toolkit.getDefaultToolkit().getImage(GenSettings.class.getResource(location)));
     }
 
-    public static Image getImage(Toolkit tk, String location) {
-        return tk.getImage(GenSettings.class.getResource(location));
+    public static Image getImage(String location) {
+        return Toolkit.getDefaultToolkit().getImage(GenSettings.class.getResource(location));
     }
 }

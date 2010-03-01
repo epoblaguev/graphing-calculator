@@ -133,10 +133,10 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
         varScrollPane = new JScrollPane(varTable);
 
         //Create Buttons
-        btnAddVariable = new JButton("Add",GenSettings.getImageIcon(this.getToolkit(), "/images/addSmall.png"));
-        btnRemoveVariable = new JButton("Remove", GenSettings.getImageIcon(this.getToolkit(), "/images/removeSmall.png"));
-        btnClearExpressions = new JButton("Clear", GenSettings.getImageIcon(this.getToolkit(), "/images/clear.png"));
-        btnAppendToInput = new JButton("Append To Input", GenSettings.getImageIcon(this.getToolkit(), "/images/copy.png"));
+        btnAddVariable = new JButton("Add",GenSettings.getImageIcon("/images/addSmall.png"));
+        btnRemoveVariable = new JButton("Remove", GenSettings.getImageIcon("/images/removeSmall.png"));
+        btnClearExpressions = new JButton("Clear", GenSettings.getImageIcon("/images/clear.png"));
+        btnAppendToInput = new JButton("Append To Input", GenSettings.getImageIcon("/images/copy.png"));
 
         //Add Action Listeners
         btnAddVariable.addActionListener(this);
