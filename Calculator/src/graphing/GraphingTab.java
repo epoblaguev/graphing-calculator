@@ -209,6 +209,23 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         this.setBounds();
     }
 
+    public JButton getBtnAddEquation() {
+        return btnAddEquation;
+    }
+
+    public JButton getBtnGraph() {
+        return btnGraph;
+    }
+
+    public int getEquationCount() {
+        return equationCount;
+    }
+    public JPanel getEquationPanel(){
+        return equationPanel;
+    }
+
+
+
     private void setBounds() {
         DecimalFormat df = new DecimalFormat("#.####");
         this.txtMaxX.setText(df.format(graphPanel.getMaxX()));
@@ -291,38 +308,11 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
             graphPanel.zoom(100);
         }
         if (e.getSource() == miDrawLine) {
-            (new DrawLineDialog(equationPanel)).setVisible(true);
             if (GraphPanel.getPoints().size() < 2) {
                 JOptionPane.showMessageDialog(this, "Less then 2 points are ploted on graph.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            try {
-                Point2D.Double pt1 = GraphPanel.getPoint(JOptionPane.showInputDialog("Name of first point:"));
-                Point2D.Double pt2 = GraphPanel.getPoint(JOptionPane.showInputDialog("Name of second point:"));
-
-                if (pt1.equals(pt2)) {
-                    JOptionPane.showMessageDialog(this, "Select different points.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                double slope = (pt1.getY() - pt2.getY()) / (pt1.getX() - pt2.getX());
-                double yIntercept = pt1.getY() - (slope * pt1.getX());
-                boolean foundEmpty = false;
-                for (int i = 0; i < this.equationCount; i++) {
-                    if (((EquationInput) equationPanel.getComponent(i)).getInput().getText().isEmpty()) {
-                        ((EquationInput) equationPanel.getComponent(i)).getInput().setText(slope + "x+(" + yIntercept + ")");
-                        foundEmpty = true;
-                        break;
-                    }
-                }
-                if (foundEmpty == false) {
-                    btnAddEquation.doClick();
-                    ((EquationInput) equationPanel.getComponent(equationCount - 1)).getInput().setText(slope + "x+(" + yIntercept + ")");
-                }
-                btnGraph.doClick();
-            } catch (Exception exc) {
-                JOptionPane.showMessageDialog(this, exc.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            (new DrawLineDialog(this)).setVisible(true);
         }
 
         //Display the bounds.
