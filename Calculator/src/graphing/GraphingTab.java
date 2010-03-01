@@ -100,8 +100,8 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         btnCenter = new JButton(GenSettings.getImageIcon(this.getToolkit(),"/images/center.png"));
 
         //Initialize buttonPanel items.
-        btnAddEquation = new JButton("Equation +");
-        btnRemoveEquation = new JButton("Equation  -");
+        btnAddEquation = new JButton("Equation",GenSettings.getImageIcon(this.getToolkit(), "/images/addSmall.png"));
+        btnRemoveEquation = new JButton("Equation",GenSettings.getImageIcon(this.getToolkit(), "/images/removeSmall.png"));
         btnGraph = new JButton("Graph");
 
         //Initialize boundsPanel items

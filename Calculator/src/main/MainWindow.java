@@ -84,11 +84,11 @@ public class MainWindow extends JFrame implements ActionListener {
         mnuGraphColor = new JMenu("Graph Background");
 
         //Initialize Menu Items
-        miSave = new JMenuItem("Save State");
-        miLoad = new JMenuItem("Load State");
-        miExit = new JMenuItem("Exit");
+        miSave = new JMenuItem("Save State", GenSettings.getImageIcon(this.getToolkit(), "/images/saveSMall.png"));
+        miLoad = new JMenuItem("Load State",GenSettings.getImageIcon(this.getToolkit(), "/images/loadSmall.png"));
+        miExit = new JMenuItem("Exit",GenSettings.getImageIcon(this.getToolkit(), "/images/exitSmall.png"));
         miAbout = new JMenuItem("About");
-        miHelp = new JMenuItem("Help");
+        miHelp = new JMenuItem("Help",GenSettings.getImageIcon(this.getToolkit(), "/images/helpSmall.png"));
 
         //Initialize radio buttons.
         rbDegrees = new JRadioButtonMenuItem("Degrees");

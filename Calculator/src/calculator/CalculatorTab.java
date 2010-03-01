@@ -1,5 +1,6 @@
 package calculator;
 
+import Settings.GenSettings;
 import exceptions.InvalidVariableNameException;
 import expressions.VariableList;
 import expressions.Expression;
@@ -132,10 +133,10 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
         varScrollPane = new JScrollPane(varTable);
 
         //Create Buttons
-        btnAddVariable = new JButton("Add");
-        btnRemoveVariable = new JButton("Remove");
-        btnClearExpressions = new JButton("Clear");
-        btnAppendToInput = new JButton("Append To Input");
+        btnAddVariable = new JButton("Add",GenSettings.getImageIcon(this.getToolkit(), "/images/addSmall.png"));
+        btnRemoveVariable = new JButton("Remove", GenSettings.getImageIcon(this.getToolkit(), "/images/removeSmall.png"));
+        btnClearExpressions = new JButton("Clear", GenSettings.getImageIcon(this.getToolkit(), "/images/clear.png"));
+        btnAppendToInput = new JButton("Append To Input", GenSettings.getImageIcon(this.getToolkit(), "/images/copy.png"));
 
         //Add Action Listeners
         btnAddVariable.addActionListener(this);
