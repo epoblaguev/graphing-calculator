@@ -25,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -133,8 +134,8 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
         varScrollPane = new JScrollPane(varTable);
 
         //Create Buttons
-        btnAddVariable = new JButton("Add",GenSettings.getImageIcon("/images/addSmall.png"));
-        btnRemoveVariable = new JButton("Remove", GenSettings.getImageIcon("/images/removeSmall.png"));
+        btnAddVariable = new JButton(GenSettings.getImageIcon("/images/addSmall.png"));
+        btnRemoveVariable = new JButton(GenSettings.getImageIcon("/images/removeSmall.png"));
         btnClearExpressions = new JButton("Clear", GenSettings.getImageIcon("/images/clear.png"));
         btnAppendToInput = new JButton("Append To Input", GenSettings.getImageIcon("/images/copy.png"));
 
@@ -149,8 +150,9 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
         varTable.addMouseListener(this);
 
         //Add buttons to control panels
-        varControlPanel.add(btnAddVariable);
+        varControlPanel.add(new JLabel("Variable:"));
         varControlPanel.add(btnRemoveVariable);
+        varControlPanel.add(btnAddVariable);
         exprControlPanel.add(btnClearExpressions);
         exprControlPanel.add(btnAppendToInput);
 

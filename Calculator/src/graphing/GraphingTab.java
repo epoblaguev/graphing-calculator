@@ -26,14 +26,11 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Point2D;
-import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -54,8 +51,8 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
     private int xPrev = 0, yPrev = 0;
     private double xClicked = 0, yClicked = 0;
     private GraphPanel graphPanel;
-    private JPanel eastPanel, southPanel, directionPanel, boundsPanel, equationPanel, buttonPanel, coordinatePanel;
-    private JLabel lblMinX, lblMaxX, lblMinY, lblMaxY, lblXCoordinate, lblYCoordinate;
+    private JPanel eastPanel, southPanel, directionPanel, boundsPanel, equationPanel, buttonPanel, cursorCordPanel;
+    private JLabel lblMinX, lblMaxX, lblMinY, lblMaxY, lblCursorX, lblCursorY;
     private JTextField txtMinX, txtMaxX, txtMinY, txtMaxY;
     private JButton btnGraph, btnLeft, btnRight, btnUp, btnDown, btnCenter, btnAddEquation, btnRemoveEquation, btnZoomIn, btnZoomOut;
     private JScrollPane equationScrollPane;
@@ -86,8 +83,8 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         equationScrollPane.setPreferredSize(new Dimension(360, 125));
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
-        coordinatePanel = new JPanel(new GridLayout(0, 1));
-        coordinatePanel.setMaximumSize(new Dimension(120, 40));
+        cursorCordPanel = new JPanel(new GridLayout(0, 1));
+        cursorCordPanel.setMaximumSize(new Dimension(120, 40));
 
         //Initialize directionPanel items
         btnZoomIn = new JButton(GenSettings.getImageIcon("/images/zoomIn.png"));
@@ -139,10 +136,10 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         buttonPanel.add(btnGraph);
 
         //Add to coordinatePanel
-        lblXCoordinate = new JLabel("X: N/A");
-        lblYCoordinate = new JLabel("Y: N/A");
-        coordinatePanel.add(lblXCoordinate);
-        coordinatePanel.add(lblYCoordinate);
+        lblCursorX = new JLabel("X: N/A");
+        lblCursorY = new JLabel("Y: N/A");
+        cursorCordPanel.add(lblCursorX);
+        cursorCordPanel.add(lblCursorY);
 
         //Add to southPanel
         southPanel.add(equationScrollPane);
@@ -151,7 +148,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         //Add to eastPanel
         eastPanel.add(directionPanel);
         eastPanel.add(boundsPanel);
-        eastPanel.add(coordinatePanel);
+        eastPanel.add(cursorCordPanel);
 
         //Add to boundsPanel
         boundsPanel.add(lblMaxX);
@@ -220,6 +217,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         this.txtMinY.setText(df.format(graphPanel.getMinY()));
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnGraph) {
             try {
@@ -293,6 +291,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
             graphPanel.zoom(100);
         }
         if (e.getSource() == miDrawLine) {
+            (new DrawLineDialog(equationPanel)).setVisible(true);
             if (GraphPanel.getPoints().size() < 2) {
                 JOptionPane.showMessageDialog(this, "Less then 2 points are ploted on graph.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -330,17 +329,19 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         this.setBounds();
     }
 
+    @Override
     public void mouseMoved(MouseEvent e) {
         if (e.getSource() == graphPanel) {
             DecimalFormat df = new DecimalFormat("#.#####");
             double x = graphPanel.PixelToUnitX(e.getX());
             double y = graphPanel.PixelToUnitY(e.getY());
 
-            lblXCoordinate.setText("X: " + df.format(x));
-            lblYCoordinate.setText("Y: " + df.format(y));
+            lblCursorX.setText("X: " + df.format(x));
+            lblCursorY.setText("Y: " + df.format(y));
         }
     }
 
+    @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         if (e.getSource() == graphPanel) {
             //If zoom in
@@ -355,6 +356,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         }
     }
 
+    @Override
     public void mouseDragged(MouseEvent e) {
         if (e.getSource() == graphPanel) {
             double xMoved = e.getX();
@@ -369,6 +371,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         }
     }
 
+    @Override
     public void focusGained(FocusEvent e) {
         if (e.getSource() == txtMaxX) {
             txtMaxX.selectAll();
@@ -384,6 +387,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         }
     }
 
+    @Override
     public void focusLost(FocusEvent e) {
         try {
             if (e.getSource() == txtMaxX) {
@@ -409,15 +413,14 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         }
     }
 
+    @Override
     public void mouseClicked(MouseEvent e) {
-
-        System.out.println(e.isPopupTrigger());
-        System.out.println("Mouse Clicked:" + e.getPoint().toString());
+//
     }
 
+    @Override
     public void mousePressed(MouseEvent e) {
-
-        System.out.println(e.isPopupTrigger());
+        
         if (e.getSource() == graphPanel && (e.isPopupTrigger() || e.getModifiers() == InputEvent.BUTTON3_MASK)) {
             this.xClicked = graphPanel.PixelToUnitX(e.getX());
             this.yClicked = graphPanel.PixelToUnitY(e.getY());
@@ -430,29 +433,35 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         }
     }
 
+    @Override
     public void mouseReleased(MouseEvent e) {
         //
     }
 
+    @Override
     public void mouseEntered(MouseEvent e) {
         //
     }
 
+    @Override
     public void mouseExited(MouseEvent e) {
         if (e.getSource() == graphPanel) {
-            lblXCoordinate.setText("X: N/A");
-            lblYCoordinate.setText("Y: N/A");
+            lblCursorX.setText("X: N/A");
+            lblCursorY.setText("Y: N/A");
         }
     }
 
+    @Override
     public void keyTyped(KeyEvent e) {
         //
     }
 
+    @Override
     public void keyPressed(KeyEvent e) {
         //
     }
 
+    @Override
     public void keyReleased(KeyEvent e) {
         if (e.getSource().getClass() == JTextField.class) {
             if (e.getKeyCode() == 10) {
