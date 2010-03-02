@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package graphing;
 
+import expressions.Expression;
 import expressions.MathEvaluator;
 import expressions.Variable;
 import expressions.VariableList;
@@ -15,6 +15,7 @@ import java.awt.Color;
  * @author Egor
  */
 public class Equation {
+
     private String expression;
     private Color color;
 
@@ -39,7 +40,8 @@ public class Equation {
         this.expression = expression;
     }
 
-    public double evaluate(String expression, double x) {
+    public static double evaluate(String expression, double x) {
+        expression = (new Expression(expression)).getExpression();
         MathEvaluator m = new MathEvaluator(expression);
 
         for (Variable var : VariableList.getVariables()) {
@@ -50,5 +52,4 @@ public class Equation {
 
         return m.getValue();
     }
-
 }

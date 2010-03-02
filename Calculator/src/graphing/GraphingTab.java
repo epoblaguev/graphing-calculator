@@ -56,8 +56,8 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
     private JTextField txtMinX, txtMaxX, txtMinY, txtMaxY;
     private JButton btnGraph, btnLeft, btnRight, btnUp, btnDown, btnCenter, btnAddEquation, btnRemoveEquation, btnZoomIn, btnZoomOut;
     private JScrollPane equationScrollPane;
-    JPopupMenu mnuGraphRightClick;
-    JMenuItem miZoomIn, miZoomOut, miAddPoint, miRemovePoint, miDrawLine;
+    private JPopupMenu mnuGraphRightClick;
+    private JMenuItem miZoomIn, miZoomOut, miAddPoint, miRemovePoint, miDrawLine, miDrawTangentLine;
 
     public GraphingTab() {
         super();
@@ -167,6 +167,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         miZoomIn = new JMenuItem("Zoom In");
         miZoomOut = new JMenuItem("Zoom Out");
         miDrawLine = new JMenuItem("Draw Line Between Points");
+        miDrawTangentLine = new JMenuItem("Draw Tangent Line");
 
         mnuGraphRightClick.add(miZoomIn);
         mnuGraphRightClick.add(miZoomOut);
@@ -174,6 +175,8 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         mnuGraphRightClick.add(miAddPoint);
         mnuGraphRightClick.add(miRemovePoint);
         mnuGraphRightClick.add(miDrawLine);
+        mnuGraphRightClick.addSeparator();
+        mnuGraphRightClick.add(miDrawTangentLine);
 
         //Add Listeners
         btnGraph.addActionListener(this);
@@ -198,6 +201,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         miZoomIn.addActionListener(this);
         miZoomOut.addActionListener(this);
         miDrawLine.addActionListener(this);
+        miDrawTangentLine.addActionListener(this);
 
 
         graphPanel.drawGrid();
@@ -308,12 +312,18 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
             graphPanel.zoom(100);
         }
         if (e.getSource() == miDrawLine) {
-//            if (GraphPanel.getPoints().size() < 2) {
-//                JOptionPane.showMessageDialog(this, "Less then 2 points are ploted on graph.", "Error", JOptionPane.ERROR_MESSAGE);
-//                return;
-//            }
-            //(new DrawLineDialog(this)).setVisible(true);
-            (new DrawTangentLineDialog(this)).setVisible(true);
+            if (GraphPanel.getPoints().size() < 2) {
+                JOptionPane.showMessageDialog(this, "Less then 2 points are ploted on graph.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            DrawLineDialog dld = new DrawLineDialog(this);
+            dld.setLocationRelativeTo(this);
+            dld.setVisible(true);
+        }
+        if(e.getSource() == miDrawTangentLine){
+            DrawTangentLineDialog dtld = new DrawTangentLineDialog(this);
+            dtld.setLocationRelativeTo(this);
+            dtld.setVisible(true);
         }
 
         //Display the bounds.
