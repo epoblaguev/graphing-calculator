@@ -84,6 +84,7 @@ public class AddPointDialog extends JFrame implements ActionListener {
         this.add(bottomPanel, BorderLayout.SOUTH);
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         try {
             //If Add.

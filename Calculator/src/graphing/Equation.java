@@ -5,6 +5,9 @@
 
 package graphing;
 
+import expressions.MathEvaluator;
+import expressions.Variable;
+import expressions.VariableList;
 import java.awt.Color;
 
 /**
@@ -34,6 +37,18 @@ public class Equation {
 
     public void setExpression(String expression) {
         this.expression = expression;
+    }
+
+    public double evaluate(String expression, double x) {
+        MathEvaluator m = new MathEvaluator(expression);
+
+        for (Variable var : VariableList.getVariables()) {
+            m.addVariable(var.getVariableName(), var.getVariableValue());
+        }
+
+        m.addVariable("x", x);
+
+        return m.getValue();
     }
 
 }

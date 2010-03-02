@@ -15,21 +15,24 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  *
  * @author Administrator
  */
-public class DrawLineDialog extends JFrame implements ActionListener {
+public class DrawTangentLineDialog extends JFrame implements ActionListener {
 
-    private JLabel lblFrom, lblTo;
+    private JLabel lblEquation, lblXValue;
     private GraphingTab graphTab;
-    private JComboBox cbFrom, cbTo;
+    private JTextField txtInput;
+    private JComboBox cbFrom;
     private JPanel inputPanel, bottomPanel;
     private JButton btnDraw;
     private JButton btnClose;
+    private String expression;
 
-    public DrawLineDialog(GraphingTab graphTab) {
+    public DrawTangentLineDialog(GraphingTab graphTab) {
         super();
         this.setLayout(new BorderLayout());
         this.setTitle("Draw Line");
@@ -39,20 +42,27 @@ public class DrawLineDialog extends JFrame implements ActionListener {
         inputPanel = new JPanel(new GridLayout(0, 2));
         bottomPanel = new JPanel();
 
-        lblFrom = new JLabel("Point 1:");
-        lblTo = new JLabel("Point 2:");
-        cbFrom = new JComboBox(GraphPanel.getPoints().keySet().toArray());
-        cbTo = new JComboBox(GraphPanel.getPoints().keySet().toArray());
+        lblEquation = new JLabel("Equation:");
+        lblXValue = new JLabel("At X Value:");
+        cbFrom = new JComboBox();
+        txtInput = new JTextField();
+
+        for (int i = 0; i < graphTab.getEquationCount(); i++) {
+            if (!((EquationInput) graphTab.getEquationPanel().getComponent(i)).getInput().getText().isEmpty()) {
+                cbFrom.addItem("y"+(i+1));
+                expression = ((EquationInput) graphTab.getEquationPanel().getComponent(i)).getInput().getText();
+            }
+        }
 
         btnDraw = new JButton("Draw");
         btnClose = new JButton("Close");
         btnDraw.addActionListener(this);
         btnClose.addActionListener(this);
 
-        inputPanel.add(lblFrom);
+        inputPanel.add(lblEquation);
         inputPanel.add(cbFrom);
-        inputPanel.add(lblTo);
-        inputPanel.add(cbTo);
+        inputPanel.add(lblXValue);
+        inputPanel.add(txtInput);
         bottomPanel.add(btnDraw);
         bottomPanel.add(btnClose);
 
@@ -67,16 +77,17 @@ public class DrawLineDialog extends JFrame implements ActionListener {
 
         //If Add.
         if (e.getSource() == btnDraw) {
-            Point2D.Double pt1 = GraphPanel.getPoint((String) cbTo.getSelectedItem());
-            Point2D.Double pt2 = GraphPanel.getPoint((String) cbFrom.getSelectedItem());
+            GraphPanel graphPanel = new GraphPanel();
+            double pt1 = Double.parseDouble(this.txtInput.getText())-(1/(2^16));
+            double pt2 = Double.parseDouble(this.txtInput.getText())+(1/(2^16));
 
-            if (pt1.equals(pt2)) {
-                JOptionPane.showMessageDialog(this, "Select different points.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
+            System.out.println(graphPanel.evaluate(expression, pt1));
+            System.out.println(graphPanel.evaluate(expression, pt2));
+            System.out.println(pt1);
+            System.out.println(pt2);
 
-            float slope = (float) ((pt1.getY() - pt2.getY()) / (pt1.getX() - pt2.getX()));
-            float yIntercept = (float) (pt1.getY() - (slope * pt1.getX()));
+            double slope = (graphPanel.evaluate(expression, pt1) - graphPanel.evaluate(expression, pt2)) / (pt1 - pt2);
+            double yIntercept = (graphPanel.evaluate(expression, pt1) - (slope * pt1));
             boolean foundEmpty = false;
             for (int i = 0; i < graphTab.getEquationCount(); i++) {
                 if (((EquationInput) graphTab.getEquationPanel().getComponent(i)).getInput().getText().isEmpty()) {

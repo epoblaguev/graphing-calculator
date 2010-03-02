@@ -76,7 +76,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         directionPanel.setMaximumSize(new Dimension(140, 100));
         boundsPanel = new JPanel(new GridLayout(0, 2));
         boundsPanel.setBorder(BorderFactory.createTitledBorder("Graph Bounds"));
-        boundsPanel.setMaximumSize(new Dimension(140, 90));
+        boundsPanel.setMaximumSize(new Dimension(140, 100));
         equationPanel = new JPanel();
         equationPanel.setLayout(new GridLayout(0, 1));
         equationScrollPane = new JScrollPane(equationPanel);
@@ -308,11 +308,12 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
             graphPanel.zoom(100);
         }
         if (e.getSource() == miDrawLine) {
-            if (GraphPanel.getPoints().size() < 2) {
-                JOptionPane.showMessageDialog(this, "Less then 2 points are ploted on graph.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            (new DrawLineDialog(this)).setVisible(true);
+//            if (GraphPanel.getPoints().size() < 2) {
+//                JOptionPane.showMessageDialog(this, "Less then 2 points are ploted on graph.", "Error", JOptionPane.ERROR_MESSAGE);
+//                return;
+//            }
+            //(new DrawLineDialog(this)).setVisible(true);
+            (new DrawTangentLineDialog(this)).setVisible(true);
         }
 
         //Display the bounds.
