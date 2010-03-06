@@ -6,12 +6,13 @@
 package Settings;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 /**
  * Contains getters and setters for settings.
  * @author Egor
  */
-public class GraphSettings {
+public class GraphSettings implements Serializable{
     private static boolean antialiased = true;
     private static float lineWidth = 1;
     private static Color bgColor = Color.gray;
@@ -62,6 +63,11 @@ public class GraphSettings {
      */
     public static void setBgColor(Color bgColor) {
         GraphSettings.bgColor = bgColor;
+    }
+
+    @Override
+    public GraphSettings clone(){
+        return this.clone();
     }
 
 

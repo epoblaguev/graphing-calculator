@@ -5,6 +5,7 @@
 
 package expressions;
 
+import Constants.ConstValues;
 import exceptions.InvalidVariableNameException;
 import java.util.Iterator;
 import java.util.Vector;
@@ -18,8 +19,8 @@ public class VariableList {
 
     public static void createIfEmpty() throws InvalidVariableNameException{
         if(variables.isEmpty()){
-            variables.add(new Variable("pi", Math.PI));
-            variables.add(new Variable("e", Math.E));
+            variables.add(new Variable("pi", ConstValues.pi));
+            variables.add(new Variable("e", ConstValues.e));
 
             sort();
         }

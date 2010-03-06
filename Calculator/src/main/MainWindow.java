@@ -18,7 +18,6 @@ import java.awt.Color;
 import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -29,7 +28,6 @@ import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JColorChooser;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -202,10 +200,18 @@ public class MainWindow extends JFrame implements ActionListener {
                     String filePath = fd.getDirectory() + fd.getFile();
                     in = new ObjectInputStream(new FileInputStream(filePath));
                     Storage store = (Storage) in.readObject();
+                    
                     ExpressionList.setExpressions(store.getExpressions());
                     VariableList.setVariables(store.getVariables());
                     ExpressionTablePane.refreshTable();
                     VariableTablePane.refreshTable();
+
+
+                    tabbedPane.remove(this.graphingTab);
+                    this.graphingTab = store.getGraphingTab();
+                    tabbedPane.addTab("Graphing",GenSettings.getImageIcon("/images/graphSmall.png"), this.graphingTab);
+                    this.setJMenuBar(menuBar);
+                    this.repaint();
                     in.close();
 
                 } catch (InvalidVariableNameException ex) {
@@ -220,11 +226,11 @@ public class MainWindow extends JFrame implements ActionListener {
 
         }
         if (e.getSource() == miSave) {
-            FileDialog fd = new FileDialog(this, "Load State", FileDialog.LOAD);
+            FileDialog fd = new FileDialog(this, "Save State", FileDialog.SAVE);
             fd.setVisible(true);
 
             if (fd.getFile() != null) {
-                Storage store = new Storage(ExpressionList.getExpressionList(), VariableList.getVariables());
+                Storage store = new Storage(ExpressionList.getExpressionList(), VariableList.getVariables(), this.graphingTab, this.menuBar);
                 ObjectOutputStream objstream = null;
                 try {
                     String filePath = fd.getDirectory() + fd.getFile();

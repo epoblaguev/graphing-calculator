@@ -9,6 +9,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
+import java.text.DecimalFormat;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -20,7 +21,7 @@ import javax.swing.JPanel;
  *
  * @author Administrator
  */
-public class DrawLineDialog extends JFrame implements ActionListener {
+public class DrawLineBetweenPointsDialog extends JFrame implements ActionListener {
 
     private JLabel lblFrom, lblTo;
     private GraphingTab graphTab;
@@ -28,8 +29,9 @@ public class DrawLineDialog extends JFrame implements ActionListener {
     private JPanel inputPanel, bottomPanel;
     private JButton btnDraw;
     private JButton btnClose;
+    private DecimalFormat df = new DecimalFormat("#.##########");
 
-    public DrawLineDialog(GraphingTab graphTab) {
+    public DrawLineBetweenPointsDialog(GraphingTab graphTab) {
         super();
         this.setLayout(new BorderLayout());
         this.setTitle("Draw Line");
@@ -75,12 +77,12 @@ public class DrawLineDialog extends JFrame implements ActionListener {
                 return;
             }
 
-            float slope = (float) ((pt1.getY() - pt2.getY()) / (pt1.getX() - pt2.getX()));
-            float yIntercept = (float) (pt1.getY() - (slope * pt1.getX()));
+            double slope = ((pt1.getY() - pt2.getY()) / (pt1.getX() - pt2.getX()));
+            double yIntercept = (pt1.getY() - (slope * pt1.getX()));
             boolean foundEmpty = false;
             for (int i = 0; i < graphTab.getEquationCount(); i++) {
                 if (((EquationInput) graphTab.getEquationPanel().getComponent(i)).getInput().getText().isEmpty()) {
-                    ((EquationInput) graphTab.getEquationPanel().getComponent(i)).getInput().setText(slope + "x+(" + yIntercept + ")");
+                    ((EquationInput) graphTab.getEquationPanel().getComponent(i)).getInput().setText(df.format(slope) + "x+(" + df.format(yIntercept) + ")");
                     foundEmpty = true;
                     break;
                 }

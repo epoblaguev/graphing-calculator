@@ -9,19 +9,21 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.text.DecimalFormat;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField; 
+import javax.swing.JTextField;
 
 /**
  *
  * @author Egor
  */
-public class AddPointDialog extends JFrame implements ActionListener {
+public class AddPointDialog extends JFrame implements ActionListener, KeyListener {
 
     private JLabel lblPointName, lblXValue, lblYValue;
     private JTextField txtPointName, txtXValue, txtYValue;
@@ -47,6 +49,7 @@ public class AddPointDialog extends JFrame implements ActionListener {
         txtXValue.setText(df.format(x));
         txtYValue.setText(df.format(y));
         this.pack();
+        this.setMinimumSize(this.getSize());
     }
 
     private void makeLayout() {
@@ -57,16 +60,19 @@ public class AddPointDialog extends JFrame implements ActionListener {
         bottomPanel = new JPanel(new FlowLayout());
 
         lblPointName = new JLabel("Point Name:");
-        txtPointName = new JTextField(10);
+        txtPointName = new JTextField();
         lblXValue = new JLabel("X:");
-        txtXValue = new JTextField(10);
+        txtXValue = new JTextField();
         lblYValue = new JLabel("Y:");
-        txtYValue = new JTextField(10);
+        txtYValue = new JTextField();
 
         btnAdd = new JButton("Add");
         btnClose = new JButton("Close");
         btnAdd.addActionListener(this);
         btnClose.addActionListener(this);
+        txtPointName.addKeyListener(this);
+        txtXValue.addKeyListener(this);
+        txtYValue.addKeyListener(this);
 
         topPanel.add(lblPointName);
         topPanel.add(txtPointName);
@@ -104,6 +110,23 @@ public class AddPointDialog extends JFrame implements ActionListener {
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        //
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        //
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == 10) {
+            btnAdd.doClick();
         }
     }
 }

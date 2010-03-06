@@ -4,10 +4,15 @@
  */
 package graphing;
 
+import Constants.ConstValues;
+import Settings.GenSettings;
+import expressions.Expression;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.text.DecimalFormat;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -20,7 +25,7 @@ import javax.swing.JTextField;
  *
  * @author Administrator
  */
-public class DrawTangentLineDialog extends JFrame implements ActionListener {
+public class DrawTangentLineDialog extends JFrame implements ActionListener, KeyListener {
 
     private JLabel lblEquation, lblXValue;
     private GraphingTab graphTab;
@@ -57,6 +62,8 @@ public class DrawTangentLineDialog extends JFrame implements ActionListener {
         btnClose = new JButton("Close");
         btnDraw.addActionListener(this);
         btnClose.addActionListener(this);
+        txtInput.addKeyListener(this);
+        cbFrom.addKeyListener(this);
 
         inputPanel.add(lblEquation);
         inputPanel.add(cbFrom);
@@ -69,9 +76,8 @@ public class DrawTangentLineDialog extends JFrame implements ActionListener {
         this.add(bottomPanel, BorderLayout.SOUTH);
 
         this.pack();
+        this.setMinimumSize(this.getSize());
     }
-
-    
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -84,15 +90,11 @@ public class DrawTangentLineDialog extends JFrame implements ActionListener {
                 }
             }
 
-            double pt1 = Double.parseDouble(this.txtInput.getText()) - (1 / Math.pow(2, 16));
-            double pt2 = Double.parseDouble(this.txtInput.getText()) + (1 / Math.pow(2, 16));
+            double pt1 = new Expression(this.txtInput.getText()).evaluate() - ConstValues.smallestNum;
+            double pt2 = new Expression(this.txtInput.getText()).evaluate() + ConstValues.smallestNum;
 
-            System.out.println(pt1);
-            System.out.println(pt2);
-            System.out.println(expression);
-
-            double slope = ((Equation.evaluate(expression, pt1) - Equation.evaluate(expression, pt2)) / (pt1 - pt2));
-            double yIntercept = (Equation.evaluate(expression, pt1) - (slope * pt1));
+            double slope = ((Equation.evaluate(expression, pt1, true) - Equation.evaluate(expression, pt2, true)) / (pt1 - pt2));
+            double yIntercept = (Equation.evaluate(expression, pt1, true) - (slope * pt1));
             boolean foundEmpty = false;
             for (int i = 0; i < graphTab.getEquationCount(); i++) {
                 if (((EquationInput) graphTab.getEquationPanel().getComponent(i)).getInput().getText().isEmpty()) {
@@ -112,6 +114,23 @@ public class DrawTangentLineDialog extends JFrame implements ActionListener {
         //If Close
         if (e.getSource() == btnClose) {
             this.dispose();
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        //
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        //
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == 10) {
+            btnDraw.doClick();
         }
     }
 }

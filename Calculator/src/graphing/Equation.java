@@ -9,12 +9,13 @@ import expressions.MathEvaluator;
 import expressions.Variable;
 import expressions.VariableList;
 import java.awt.Color;
+import java.io.Serializable;
 
 /**
  *
  * @author Egor
  */
-public class Equation {
+public class Equation implements Serializable {
 
     private String expression;
     private Color color;
@@ -40,8 +41,10 @@ public class Equation {
         this.expression = expression;
     }
 
-    public static double evaluate(String expression, double x) {
-        expression = (new Expression(expression)).getExpression();
+    public static double evaluate(String expression, double x, boolean formatFirst) {
+        if (formatFirst) {
+            expression = (new Expression(expression)).getExpression();
+        }
         MathEvaluator m = new MathEvaluator(expression);
 
         for (Variable var : VariableList.getVariables()) {

@@ -81,10 +81,10 @@ public class GraphPanel extends JPanel implements Runnable {
         //Loop through each string.
         for (Equation eq : equations) {
             String expr = eq.getExpression();
-            polyline.moveTo(UnitToPixelX(minX), UnitToPixelY(evaluate(expr, minX)));
+            polyline.moveTo(UnitToPixelX(minX), UnitToPixelY(Equation.evaluate(expr, minX, false)));
             g2.setColor(eq.getColor());
             for (double x = minX; x <= maxX; x += (maxX - minX) / this.getWidth()) {
-                polyline.lineTo(UnitToPixelX(x), UnitToPixelY(evaluate(expr, x)));
+                polyline.lineTo(UnitToPixelX(x), UnitToPixelY(Equation.evaluate(expr, x, false)));
             }
             g2.draw(polyline);
             polyline.reset();
@@ -97,7 +97,7 @@ public class GraphPanel extends JPanel implements Runnable {
             int x = UnitToPixelX(pt.getX());
             int y = UnitToPixelY(pt.getY());
             g2.fillOval(x - 2, y - 2, 5, 5);
-            g2.drawString(key+"(" + df.format(pt.getX()) + "," + df.format(pt.getY()) + ")", x + 5, y);
+            g2.drawString(key + "(" + df.format(pt.getX()) + "," + df.format(pt.getY()) + ")", x + 5, y);
         }
 
         g2.dispose();
@@ -108,15 +108,15 @@ public class GraphPanel extends JPanel implements Runnable {
         points.put(key, pt);
     }
 
-    public static void removePoint(String key){
+    public static void removePoint(String key) {
         points.remove(key);
     }
 
-    public static HashMap<String, Point2D.Double> getPoints(){
+    public static HashMap<String, Point2D.Double> getPoints() {
         return points;
     }
 
-    public static Point2D.Double getPoint(String key){
+    public static Point2D.Double getPoint(String key) {
         return points.get(key);
     }
 
@@ -237,18 +237,6 @@ public class GraphPanel extends JPanel implements Runnable {
     void drawGrid() {
         this.equations = new Vector<Equation>();
         (new Thread(this)).start();
-    }
-
-    public double evaluate(String expression, double x) {
-        MathEvaluator m = new MathEvaluator(expression);
-
-        for (Variable var : VariableList.getVariables()) {
-            m.addVariable(var.getVariableName(), var.getVariableValue());
-        }
-
-        m.addVariable("x", x);
-
-        return m.getValue();
     }
 
     public void zoom(double percent) {

@@ -7,8 +7,10 @@ package main;
 
 import expressions.Expression;
 import expressions.Variable;
+import graphing.GraphingTab;
 import java.io.Serializable;
 import java.util.Vector;
+import javax.swing.JMenuBar;
 
 /**
  *
@@ -17,10 +19,14 @@ import java.util.Vector;
 public class Storage implements Serializable{
     private Vector<Expression> expressions;
     private Vector<Variable> variables;
+    private GraphingTab graphTab;
+    private JMenuBar menuBar;
 
-    public Storage(Vector<Expression> expressions, Vector<Variable> variables) {
+    public Storage(Vector<Expression> expressions, Vector<Variable> variables, GraphingTab graphingTab, JMenuBar menuBar) {
         this.expressions = expressions;
         this.variables = variables;
+        this.graphTab = graphingTab;
+        this.menuBar = menuBar;
     }
 
     public Vector<Expression> getExpressions() {
@@ -39,5 +45,10 @@ public class Storage implements Serializable{
         this.variables = variables;
     }
 
-    
+    public void setGraphingTab(GraphingTab graphTab){
+        this.graphTab = graphTab;
+    }
+    public GraphingTab getGraphingTab(){
+        return graphTab;
+    }
 }
