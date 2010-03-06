@@ -1,5 +1,7 @@
-package calculator;
+package tables;
 
+import Constants.ConstValues;
+import Settings.GenSettings;
 import expressions.Expression;
 import expressions.ExpressionList;
 import java.text.DecimalFormat;
@@ -60,7 +62,7 @@ public class ExpressionTablePane extends JTable{
             Expression curExpression = (Expression) itr.next();
             row = new Vector(2);
             row.add(curExpression.getExpression());
-            row.add(new DecimalFormat("#.##########").format(curExpression.getValue()));
+            row.add(new DecimalFormat(ConstValues.DF_10).format(curExpression.getValue()));
             row.add(curExpression.getAngleUnits());
 
             ExpressionTablePane.addRow(row);

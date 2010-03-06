@@ -4,6 +4,8 @@
  */
 package graphing;
 
+import equations.Equation;
+import equations.EquationInput;
 import Settings.GenSettings;
 import exceptions.InvalidBoundsException;
 import expressions.Expression;
@@ -58,7 +60,8 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
     private JScrollPane equationScrollPane;
     private JPopupMenu mnuGraphRightClick;
     private JMenu mnuDrawLine, mnuPoints;
-    private JMenuItem miZoomIn, miZoomOut, miAddPoint, miRemovePoint, miDrawLineBetweenPoints, miDrawTangentLine, miAddMinPoint, miAddMaxPoint, miRemoveAllPoints, miClearGraph;
+    private JMenuItem miZoomIn, miZoomOut, miPlotPoint, miRemovePoint, miDrawLineBetweenPoints, miDrawTangentLine, miPlotMinPoint, miPlotMaxPoint, miRemoveAllPoints, miClearGraph;
+    private JMenuItem miViewTableOfPoints, miViewTableOfValues, miPlotAtXValue;
 
     public GraphingTab() {
         super();
@@ -196,16 +199,19 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
 
     private void createRightClickMenu() {
         mnuGraphRightClick = new JPopupMenu();
-        miAddPoint = new JMenuItem("Plot Free Point");
+        miPlotPoint = new JMenuItem("Plot Free Point");
+        miPlotAtXValue = new JMenuItem("Plot On Equation");
         miRemovePoint = new JMenuItem("Remove Point");
         miZoomIn = new JMenuItem("Zoom In");
         miZoomOut = new JMenuItem("Zoom Out");
         miDrawLineBetweenPoints = new JMenuItem("Between Points");
         miDrawTangentLine = new JMenuItem("Tangent to Equation");
-        miAddMinPoint = new JMenuItem("Plot Min Point");
-        miAddMaxPoint = new JMenuItem("Plot Max Point");
-        miRemoveAllPoints = new JMenuItem("Remove All Points.");
+        miPlotMinPoint = new JMenuItem("Plot Min Point");
+        miPlotMaxPoint = new JMenuItem("Plot Max Point");
+        miRemoveAllPoints = new JMenuItem("Remove All Points");
         miClearGraph = new JMenuItem("Clear");
+        miViewTableOfPoints = new JMenuItem("Table of Points");
+        miViewTableOfValues = new JMenuItem("Table of Values");
 
         mnuDrawLine = new JMenu("Draw Line");
         mnuPoints = new JMenu("Plot Points");
@@ -216,30 +222,37 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         mnuGraphRightClick.add(mnuPoints);
         mnuGraphRightClick.add(mnuDrawLine);
         mnuGraphRightClick.addSeparator();
+        mnuGraphRightClick.add(miViewTableOfPoints);
+        mnuGraphRightClick.add(miViewTableOfValues);
+        mnuGraphRightClick.addSeparator();
         mnuGraphRightClick.add(miClearGraph);
 
         mnuDrawLine.add(miDrawLineBetweenPoints);
         mnuDrawLine.add(miDrawTangentLine);
 
-        mnuPoints.add(miAddPoint);
+        mnuPoints.add(miPlotPoint);
+        mnuPoints.add(miPlotAtXValue);
         mnuPoints.addSeparator();
-        mnuPoints.add(miAddMaxPoint);
-        mnuPoints.add(miAddMinPoint);
+        mnuPoints.add(miPlotMaxPoint);
+        mnuPoints.add(miPlotMinPoint);
         mnuPoints.addSeparator();
         mnuPoints.add(miRemovePoint);
         mnuPoints.add(miRemoveAllPoints);
 
         //Add listeners
-        miAddPoint.addActionListener(this);
+        miPlotPoint.addActionListener(this);
+        miPlotAtXValue.addActionListener(this);
         miRemovePoint.addActionListener(this);
         miRemoveAllPoints.addActionListener(this);
         miZoomIn.addActionListener(this);
         miZoomOut.addActionListener(this);
         miDrawLineBetweenPoints.addActionListener(this);
         miDrawTangentLine.addActionListener(this);
-        miAddMinPoint.addActionListener(this);
-        miAddMaxPoint.addActionListener(this);
+        miPlotMinPoint.addActionListener(this);
+        miPlotMaxPoint.addActionListener(this);
         miClearGraph.addActionListener(this);
+        miViewTableOfPoints.addActionListener(this);
+        miViewTableOfValues.addActionListener(this);
     }
 
     public JButton getBtnAddEquation() {
@@ -327,7 +340,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
             }
         }
 
-        if (e.getSource() == miAddPoint) {
+        if (e.getSource() == miPlotPoint) {
             AddPointDialog addPoint = new AddPointDialog(this, this.xClicked, this.yClicked);
             addPoint.setLocationRelativeTo(this);
             addPoint.setVisible(true);
@@ -355,7 +368,11 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
             dld.setLocationRelativeTo(this);
             dld.setVisible(true);
         }
-        if (e.getSource() == miDrawTangentLine || e.getSource() == miAddMinPoint || e.getSource() == miAddMaxPoint) {
+
+        //Things that require equations to be present.
+        if (e.getSource() == miDrawTangentLine || e.getSource() == miPlotMinPoint || e.getSource() == miPlotMaxPoint 
+                || e.getSource() == miViewTableOfValues || e.getSource() == miPlotAtXValue) {
+
             boolean allEmpty = true;
             for (Component eq : equationPanel.getComponents()) {
                 if (((EquationInput) eq).getInput().getText().isEmpty() == false) {
@@ -364,30 +381,49 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
                 }
             }
             if (!allEmpty) {
+                //Draw Tangent Line.
                 if (e.getSource() == miDrawTangentLine) {
                     DrawTangentLineDialog dtld = new DrawTangentLineDialog(this);
                     dtld.setLocationRelativeTo(this);
                     dtld.setVisible(true);
-                } else if (e.getSource() == miAddMinPoint) {
-                    AddMinPointDialog ampd = new AddMinPointDialog(this, this.xClicked, graphPanel.getMaxX() - graphPanel.getMinX());
-                    ampd.setLocationRelativeTo(this);
-                    ampd.setVisible(true);
-                } else if (e.getSource() == miAddMaxPoint) {
-                    AddMaxPointDialog ampd = new AddMaxPointDialog(this, this.xClicked, graphPanel.getMaxX() - graphPanel.getMinX());
-                    ampd.setLocationRelativeTo(this);
-                    ampd.setVisible(true);
+                } //Plot Min or Max points.
+                else if (e.getSource() == miPlotMinPoint || e.getSource() == miPlotMaxPoint) {
+                    AddMinMaxPointDialog addPoint;
+                    //Plot Min Point.
+                    if (e.getSource() == miPlotMinPoint) {
+                        addPoint = new AddMinMaxPointDialog(this, this.xClicked, graphPanel.getMaxX() - graphPanel.getMinX(), AddMinMaxPointDialog.MIN);
+                    } //Plot Max Point
+                    else {
+                        addPoint = new AddMinMaxPointDialog(this, this.xClicked, graphPanel.getMaxX() - graphPanel.getMinX(), AddMinMaxPointDialog.MAX);
+                    }
+                    addPoint.setLocationRelativeTo(this);
+                    addPoint.setVisible(true);
+                }
+                if(e.getSource() == miViewTableOfValues){
+                    EquationValueTableWindow evtb = new EquationValueTableWindow(equationPanel);
+                    evtb.setLocationRelativeTo(this);
+                    evtb.setVisible(true);
+                }
+                if(e.getSource() == miPlotAtXValue){
+                    AddPointAtXValueDialog addPoint = new AddPointAtXValueDialog(this);
+                    addPoint.setLocationRelativeTo(this);
+                    addPoint.setVisible(true);
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "All equation inputs are empty.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
         if (e.getSource() == miClearGraph) {
-            for(Component eq : equationPanel.getComponents()){
-                ((EquationInput)eq).getInput().setText("");
+            GraphPanel.getPoints().clear();
+            for (Component eq : equationPanel.getComponents()) {
+                ((EquationInput) eq).getInput().setText("");
                 btnGraph.doClick();
             }
 
             this.repaint();
+        }
+        if(e.getSource() == miViewTableOfPoints){
+            (new PointValuesTableWindow()).setVisible(true);
         }
 
         //Display the bounds.

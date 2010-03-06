@@ -70,4 +70,9 @@ public class Expression implements Serializable{
         this.value = m.getValue();
         return value;
     }
+
+    public static double evaluate(String expression){
+        Expression expr = new Expression(expression);
+        return expr.evaluate();
+    }
 }

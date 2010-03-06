@@ -1,5 +1,7 @@
 package calculator;
 
+import tables.VariableTablePane;
+import tables.ExpressionTablePane;
 import Settings.GenSettings;
 import exceptions.InvalidVariableNameException;
 import expressions.VariableList;
@@ -179,15 +181,16 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
         VariableTablePane.refreshTable();
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         //If Enter is pressed.
         if (e.getSource() == btnEnter) {
-            Expression exp = new Expression(txtInput.getText());
+            Expression expr = new Expression(txtInput.getText());
             try {
-                ExpressionList.addExpression(exp);
+                ExpressionList.addExpression(expr);
                 ExpressionTablePane.refreshTable();
             } catch (Exception exc) {
-                ExpressionList.removeExpression(exp);
+                ExpressionList.removeExpression(expr);
                 JOptionPane.showMessageDialog(this, exc, "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -264,10 +267,12 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
         }
     }
 
+    @Override
     public void mouseClicked(MouseEvent e) {
         //
     }
 
+    @Override
     public void mousePressed(MouseEvent e) {
         if (e.getSource() == exprTable &&(e.isPopupTrigger() || e.getModifiers() == InputEvent.BUTTON3_MASK)) {
             targetTable = exprTable;
@@ -316,30 +321,37 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
         }
     }
 
+    @Override
     public void mouseReleased(MouseEvent e) {
         //
     }
 
+    @Override
     public void mouseEntered(MouseEvent e) {
         //
     }
 
+    @Override
     public void mouseExited(MouseEvent e) {
         //
     }
 
+    @Override
     public void lostOwnership(Clipboard clipboard, Transferable contents) {
         //Lost ownership.
     }
 
+    @Override
     public void keyTyped(KeyEvent e) {
         //
     }
 
+    @Override
     public void keyPressed(KeyEvent e) {
         //
     }
 
+    @Override
     public void keyReleased(KeyEvent e) {
         if (e.getSource() == txtInput) {
             if (e.getKeyCode() == 10) {

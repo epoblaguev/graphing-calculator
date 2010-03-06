@@ -4,8 +4,13 @@
  */
 package graphing;
 
+import equations.Equation;
+import equations.EquationInput;
 import Constants.ConstValues;
+import Settings.GenSettings;
+import expressions.Expression;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,9 +29,10 @@ import javax.swing.JTextField;
  *
  * @author Administrator
  */
-public class AddMinPointDialog extends JFrame implements ActionListener, KeyListener {
+public class AddMinMaxPointDialog extends JFrame implements ActionListener, KeyListener {
 
-    private JLabel lblEquation, lblLowX, lblHighX, lblPointName;
+    public static final int MIN = 1;
+    public static final int MAX = 2;
     private GraphingTab graphTab;
     private JTextField txtLowX, txtHighX, txtPointName;
     private JComboBox cbEquation;
@@ -34,30 +40,28 @@ public class AddMinPointDialog extends JFrame implements ActionListener, KeyList
     private JButton btnDraw;
     private JButton btnClose;
     private String expression;
-    private DecimalFormat df = new DecimalFormat("#.#######");
+    private DecimalFormat df = new DecimalFormat(ConstValues.DF_10);
+    private int MinOrMax;
 
-    public AddMinPointDialog(GraphingTab graphTab, double x, double range) {
+    public AddMinMaxPointDialog(GraphingTab graphTab, double x, double range, int MinOrMax) {
         super();
         this.setLayout(new BorderLayout());
         this.setTitle("Draw Tangent Line");
 
         this.graphTab = graphTab;
+        this.MinOrMax = MinOrMax;
 
         inputPanel = new JPanel(new GridLayout(0, 2));
         bottomPanel = new JPanel();
 
-        lblPointName = new JLabel("Point Name:");
-        lblEquation = new JLabel("Equation:");
-        lblLowX = new JLabel("Low X:");
-        lblHighX = new JLabel("High X:");
         cbEquation = new JComboBox();
         txtPointName = new JTextField();
         txtLowX = new JTextField(df.format(x - (range / 20.0)));
         txtHighX = new JTextField(df.format(x + (range / 20.0)));
 
-        for (int i = 0; i < graphTab.getEquationCount(); i++) {
-            if (!((EquationInput) graphTab.getEquationPanel().getComponent(i)).getInput().getText().isEmpty()) {
-                cbEquation.addItem(((EquationInput) graphTab.getEquationPanel().getComponent(i)).getBtnName().getText());
+        for (Component eq : graphTab.getEquationPanel().getComponents()) {
+            if (!((EquationInput) eq).getInput().getText().isEmpty()) {
+                cbEquation.addItem(((EquationInput) eq).getBtnName().getText());
             }
         }
 
@@ -70,13 +74,13 @@ public class AddMinPointDialog extends JFrame implements ActionListener, KeyList
         txtPointName.addKeyListener(this);
         cbEquation.addKeyListener(this);
 
-        inputPanel.add(lblPointName);
+        inputPanel.add(new JLabel("Point Name:"));
         inputPanel.add(txtPointName);
-        inputPanel.add(lblEquation);
+        inputPanel.add(new JLabel("Equation:"));
         inputPanel.add(cbEquation);
-        inputPanel.add(lblLowX);
+        inputPanel.add(new JLabel("Low X:"));
         inputPanel.add(txtLowX);
-        inputPanel.add(lblHighX);
+        inputPanel.add(new JLabel("High X:"));
         inputPanel.add(txtHighX);
         bottomPanel.add(btnDraw);
         bottomPanel.add(btnClose);
@@ -99,9 +103,9 @@ public class AddMinPointDialog extends JFrame implements ActionListener, KeyList
                 }
             }
 
-            double start = Double.parseDouble(txtLowX.getText());
-            double finish = Double.parseDouble(txtHighX.getText());
-            double interval = (finish-start) / 1000;
+            double start = Math.min(Expression.evaluate(txtLowX.getText()),Expression.evaluate(txtHighX.getText()));
+            double finish = Math.max(Expression.evaluate(txtLowX.getText()),Expression.evaluate(txtHighX.getText()));
+            double interval = Math.abs(finish - start) / 1000;
             boolean foundMin = false;
             double xValue = start;
             double yValue = Equation.evaluate(expression, xValue, true);
@@ -114,29 +118,44 @@ public class AddMinPointDialog extends JFrame implements ActionListener, KeyList
 
                 for (double i = start + interval; i <= finish; i += interval) {
                     double next = Equation.evaluate(expression, i, true);
-                    
-                    if (prev > cur && cur < next) {
-                        foundMin = true;
-                        xValue = i - interval;
-                        yValue = cur;
-                        break;
+
+                    if (MinOrMax == AddMinMaxPointDialog.MIN) {
+                        if (prev > cur && cur < next) {
+                            foundMin = true;
+                            xValue = i - interval;
+                            yValue = cur;
+                            break;
+                        }
+                    } else {
+                        if (prev < cur && cur > next) {
+                            foundMin = true;
+                            xValue = i - interval;
+                            yValue = cur;
+                            break;
+                        }
                     }
+
                     prev = cur;
                     cur = next;
                     tracker = i;
                 }
 
-                if(!foundMin) break;
-                
+                if (!foundMin) {
+                    break;
+                }
+
                 start = tracker - interval;
-                interval = interval/2;
+                interval = interval / 2;
             }
 
             if (foundMin) {
                 GraphPanel.addPoint(txtPointName.getText(), xValue, yValue);
-            }
-            else{
-                JOptionPane.showMessageDialog(this, "Minimum point not found.");
+            } else {
+                if (MinOrMax == AddMinMaxPointDialog.MIN) {
+                    JOptionPane.showMessageDialog(this, "Minimum point not found.");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Maximum point not found.");
+                }
             }
             graphTab.repaint();
             this.dispose();

@@ -4,12 +4,10 @@
  */
 package graphing;
 
+import equations.Equation;
 import Settings.GraphSettings;
 import exceptions.InvalidBoundsException;
 import expressions.Expression;
-import expressions.MathEvaluator;
-import expressions.Variable;
-import expressions.VariableList;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;

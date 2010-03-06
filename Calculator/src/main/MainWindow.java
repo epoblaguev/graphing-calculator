@@ -4,6 +4,8 @@
  */
 package main;
 
+import tables.VariableTablePane;
+import tables.ExpressionTablePane;
 import Constants.Info;
 import Settings.GenSettings;
 import Settings.GraphSettings;

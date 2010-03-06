@@ -4,6 +4,9 @@
  */
 package graphing;
 
+import Constants.ConstValues;
+import Settings.GenSettings;
+import expressions.Expression;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -25,7 +28,6 @@ import javax.swing.JTextField;
  */
 public class AddPointDialog extends JFrame implements ActionListener, KeyListener {
 
-    private JLabel lblPointName, lblXValue, lblYValue;
     private JTextField txtPointName, txtXValue, txtYValue;
     private JButton btnAdd, btnClose;
     private JPanel topPanel, bottomPanel, caller;
@@ -45,7 +47,7 @@ public class AddPointDialog extends JFrame implements ActionListener, KeyListene
         makeLayout();
 
         this.caller = caller;
-        DecimalFormat df = new DecimalFormat("#.#########");
+        DecimalFormat df = new DecimalFormat(ConstValues.DF_10);
         txtXValue.setText(df.format(x));
         txtYValue.setText(df.format(y));
         this.pack();
@@ -59,11 +61,8 @@ public class AddPointDialog extends JFrame implements ActionListener, KeyListene
         topPanel = new JPanel(new GridLayout(0, 2));
         bottomPanel = new JPanel(new FlowLayout());
 
-        lblPointName = new JLabel("Point Name:");
         txtPointName = new JTextField();
-        lblXValue = new JLabel("X:");
         txtXValue = new JTextField();
-        lblYValue = new JLabel("Y:");
         txtYValue = new JTextField();
 
         btnAdd = new JButton("Add");
@@ -74,13 +73,13 @@ public class AddPointDialog extends JFrame implements ActionListener, KeyListene
         txtXValue.addKeyListener(this);
         txtYValue.addKeyListener(this);
 
-        topPanel.add(lblPointName);
+        topPanel.add(new JLabel("Point Name:"));
         topPanel.add(txtPointName);
 
-        topPanel.add(lblXValue);
+        topPanel.add(new JLabel("X:"));
         topPanel.add(txtXValue);
 
-        topPanel.add(lblYValue);
+        topPanel.add(new JLabel("Y:"));
         topPanel.add(txtYValue);
 
         bottomPanel.add(btnAdd);
@@ -96,8 +95,8 @@ public class AddPointDialog extends JFrame implements ActionListener, KeyListene
             //If Add.
             if (e.getSource() == btnAdd) {
                 String name = txtPointName.getText();
-                double x = Double.parseDouble(txtXValue.getText());
-                double y = Double.parseDouble(txtYValue.getText());
+                double x = Expression.evaluate(txtXValue.getText());
+                double y = Expression.evaluate(txtYValue.getText());
                 GraphPanel.addPoint(name, x, y);
 
                 this.caller.repaint();

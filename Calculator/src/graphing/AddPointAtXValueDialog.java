@@ -7,6 +7,7 @@ package graphing;
 import equations.Equation;
 import equations.EquationInput;
 import Constants.ConstValues;
+import Settings.GenSettings;
 import expressions.Expression;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -27,10 +28,10 @@ import javax.swing.JTextField;
  *
  * @author Administrator
  */
-public class DrawTangentLineDialog extends JFrame implements ActionListener, KeyListener {
+public class AddPointAtXValueDialog extends JFrame implements ActionListener, KeyListener {
 
     private GraphingTab graphTab;
-    private JTextField txtInput;
+    private JTextField txtInput, txtPointName;
     private JComboBox cbEquation;
     private JPanel inputPanel, bottomPanel;
     private JButton btnDraw;
@@ -38,18 +39,19 @@ public class DrawTangentLineDialog extends JFrame implements ActionListener, Key
     private String expression;
     private DecimalFormat df = new DecimalFormat(ConstValues.DF_10);
 
-    public DrawTangentLineDialog(GraphingTab graphTab) {
+    public AddPointAtXValueDialog(GraphingTab graphTab) {
         super();
         this.setLayout(new BorderLayout());
-        this.setTitle("Draw Tangent Line");
+        this.setTitle("Add Point to Equation");
 
         this.graphTab = graphTab;
 
         inputPanel = new JPanel(new GridLayout(0, 2));
         bottomPanel = new JPanel();
-        
+
         cbEquation = new JComboBox();
         txtInput = new JTextField();
+        txtPointName = new JTextField();
 
         for (Component eq : graphTab.getEquationPanel().getComponents()) {
             if (!((EquationInput) eq).getInput().getText().isEmpty()) {
@@ -62,8 +64,11 @@ public class DrawTangentLineDialog extends JFrame implements ActionListener, Key
         btnDraw.addActionListener(this);
         btnClose.addActionListener(this);
         txtInput.addKeyListener(this);
+        txtPointName.addActionListener(this);
         cbEquation.addKeyListener(this);
 
+        inputPanel.add(new JLabel("Point Name:"));
+        inputPanel.add(txtPointName);
         inputPanel.add(new JLabel("Equation:"));
         inputPanel.add(cbEquation);
         inputPanel.add(new JLabel("At X Value:"));
@@ -83,31 +88,16 @@ public class DrawTangentLineDialog extends JFrame implements ActionListener, Key
 
         //If Add.
         if (e.getSource() == btnDraw) {
+            double x = Expression.evaluate(txtInput.getText());
+
             for (Component eq : graphTab.getEquationPanel().getComponents()) {
                 if (((EquationInput) eq).getBtnName().getText().equals(cbEquation.getSelectedItem())) {
                     expression = ((EquationInput) eq).getInput().getText();
                 }
             }
 
-            double pt1 = Expression.evaluate(this.txtInput.getText()) - ConstValues.smallestNum;
-            double pt2 = Expression.evaluate(this.txtInput.getText()) + ConstValues.smallestNum;
-
-            double slope = ((Equation.evaluate(expression, pt1, true) - Equation.evaluate(expression, pt2, true)) / (pt1 - pt2));
-            double yIntercept = (Equation.evaluate(expression, pt1, true) - (slope * pt1));
-            boolean foundEmpty = false;
-            for (int i = 0; i < graphTab.getEquationCount(); i++) {
-                if (((EquationInput) graphTab.getEquationPanel().getComponent(i)).getInput().getText().isEmpty()) {
-                    ((EquationInput) graphTab.getEquationPanel().getComponent(i)).getInput().setText(df.format(slope) + "x+(" + df.format(yIntercept) + ")");
-                    foundEmpty = true;
-                    break;
-                }
-            }
-            if (foundEmpty == false) {
-                graphTab.getBtnAddEquation().doClick();
-                ((EquationInput) graphTab.getEquationPanel().getComponent(graphTab.getEquationCount() - 1)).getInput().setText(df.format(slope) + "x+(" + df.format(yIntercept) + ")");
-            }
-            graphTab.getBtnGraph().doClick();
-            this.dispose();
+            GraphPanel.addPoint(txtPointName.getText(), x, Equation.evaluate(expression, x, true));
+            graphTab.repaint();
         }
 
         //If Close
