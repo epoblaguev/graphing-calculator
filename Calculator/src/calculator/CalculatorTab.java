@@ -274,50 +274,52 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (e.getSource() == exprTable &&(e.isPopupTrigger() || e.getModifiers() == InputEvent.BUTTON3_MASK)) {
-            targetTable = exprTable;
-            targetRow = exprTable.rowAtPoint(e.getPoint());
-            exprTable.addRowSelectionInterval(targetRow, targetRow);
+        if (e.isPopupTrigger() || e.getModifiers() == InputEvent.BUTTON3_MASK) {
+            if (e.getSource() == exprTable) {
+                targetTable = exprTable;
+                targetRow = exprTable.rowAtPoint(e.getPoint());
+                exprTable.addRowSelectionInterval(targetRow, targetRow);
 
-            miCopyExpression.setText("Copy Expression");
-            mnuRightClick.removeAll();
-            mnuRightClick.add(miCopyExpression);
-            mnuRightClick.add(miCopyValue);
-            mnuRightClick.add(miRemoveRow);
+                miCopyExpression.setText("Copy Expression");
+                mnuRightClick.removeAll();
+                mnuRightClick.add(miCopyExpression);
+                mnuRightClick.add(miCopyValue);
+                mnuRightClick.add(miRemoveRow);
 
-            mnuRightClick.show(exprTable, e.getX() + 10, e.getY() + 5);
-        }
-        if (e.getSource() == varTable && (e.isPopupTrigger() || e.getModifiers() == InputEvent.BUTTON3_MASK)) {
-            targetTable = varTable;
-            targetRow = varTable.rowAtPoint(e.getPoint());
-            varTable.addRowSelectionInterval(targetRow, targetRow);
+                mnuRightClick.show(exprTable, e.getX() + 10, e.getY() + 5);
+            }
+            if (e.getSource() == varTable) {
+                targetTable = varTable;
+                targetRow = varTable.rowAtPoint(e.getPoint());
+                varTable.addRowSelectionInterval(targetRow, targetRow);
 
-            miCopyExpression.setText("Copy Variable Name");
-            mnuRightClick.removeAll();
-            mnuRightClick.add(miCopyExpression);
-            mnuRightClick.add(miCopyValue);
-            mnuRightClick.add(miRemoveRow);
+                miCopyExpression.setText("Copy Variable Name");
+                mnuRightClick.removeAll();
+                mnuRightClick.add(miCopyExpression);
+                mnuRightClick.add(miCopyValue);
+                mnuRightClick.add(miRemoveRow);
 
-            mnuRightClick.show(varTable, e.getX() + 10, e.getY() + 5);
-        }
+                mnuRightClick.show(varTable, e.getX() + 10, e.getY() + 5);
+            }
 
-        if (e.getSource() == txtInput && (e.isPopupTrigger() || e.getModifiers() == InputEvent.BUTTON3_MASK)) {
-            txtInput.requestFocus();
-            JMenuItem mnuItem;
-            mnuRightClick.removeAll();
+            if (e.getSource() == txtInput) {
+                txtInput.requestFocus();
+                JMenuItem mnuItem;
+                mnuRightClick.removeAll();
 
-            mnuItem = new JMenuItem(new DefaultEditorKit.CutAction());
-            mnuItem.setText("Cut");
-            mnuRightClick.add(mnuItem);
-            mnuItem = new JMenuItem(new DefaultEditorKit.CopyAction());
-            mnuItem.setText("Copy");
-            mnuRightClick.add(mnuItem);
-            mnuItem = new JMenuItem(new DefaultEditorKit.PasteAction());
-            mnuItem.setText("Paste");
-            mnuRightClick.add(mnuItem);
+                mnuItem = new JMenuItem(new DefaultEditorKit.CutAction());
+                mnuItem.setText("Cut");
+                mnuRightClick.add(mnuItem);
+                mnuItem = new JMenuItem(new DefaultEditorKit.CopyAction());
+                mnuItem.setText("Copy");
+                mnuRightClick.add(mnuItem);
+                mnuItem = new JMenuItem(new DefaultEditorKit.PasteAction());
+                mnuItem.setText("Paste");
+                mnuRightClick.add(mnuItem);
 
 
-            mnuRightClick.show(txtInput, e.getX() + 10, e.getY());
+                mnuRightClick.show(txtInput, e.getX() + 10, e.getY());
+            }
         }
     }
 
