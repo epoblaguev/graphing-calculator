@@ -95,7 +95,11 @@ public class EquationValueTableWindow extends JFrame implements ActionListener {
 
         double start = Expression.evaluate(txtLowX.getText());
         double finish = Expression.evaluate(txtHighX.getText());
-        double interval = Expression.evaluate(txtLowX.getText());
+        double interval = Expression.evaluate(txtInterval.getText());
+
+        System.out.println(start);
+        System.out.println(finish);
+        System.out.println(interval);
 
         String equation = "";
 
@@ -103,16 +107,19 @@ public class EquationValueTableWindow extends JFrame implements ActionListener {
             ((EquationInput) eq).getInput().getText();
             if (((EquationInput) eq).getBtnName().getText().equals(cbEquation.getSelectedItem())) {
                 equation = ((EquationInput) eq).getInput().getText();
+                equation = Expression.formatExpression(equation);
+                break;
             }
         }
         
         for (double i = start; i <= finish; i+=interval) {
             Vector row = new Vector(2);
             row.add(df.format(i));
-            row.add(df.format(Equation.evaluate(equation, i, true)));
+            row.add(df.format(Equation.evaluate(equation, i, false)));
 
             tableModel.addRow(row);
         }
+        this.repaint();
     }
 
     @Override

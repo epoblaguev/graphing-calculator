@@ -9,7 +9,7 @@ package Constants;
  * @author Egor
  */
 public class ConstValues {
-    public static final double smallestNum = (1 / Math.pow(2, 40));
+    public static final double smallestNum = (1 / Math.pow(2, 16));
     public static final double e = Math.E;
     public static final double pi = Math.PI;
     public static final String DF_10 = "#.##########";

@@ -46,7 +46,7 @@ public class AddMinMaxPointDialog extends JFrame implements ActionListener, KeyL
     public AddMinMaxPointDialog(GraphingTab graphTab, double x, double range, int MinOrMax) {
         super();
         this.setLayout(new BorderLayout());
-        this.setTitle("Draw Tangent Line");
+        this.setTitle("Add Min/Max Point");
 
         this.graphTab = graphTab;
         this.MinOrMax = MinOrMax;

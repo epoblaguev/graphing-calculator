@@ -17,10 +17,10 @@ public class Expression implements Serializable{
     private String angleUnits;
 
     public Expression(String expression) {
-        this.expression = this.formatExpression(expression);
+        this.expression = Expression.formatExpression(expression);
     }
 
-    private String formatExpression(String expression){
+    public static String formatExpression(String expression){
         expression = expression.replace(" ", "");
         
         for (int i = 0; i <= 9; i++) {

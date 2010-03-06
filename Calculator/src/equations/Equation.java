@@ -43,7 +43,7 @@ public class Equation implements Serializable {
 
     public static double evaluate(String expression, double x, boolean formatFirst) {
         if (formatFirst) {
-            expression = (new Expression(expression)).getExpression();
+            expression = Expression.formatExpression(expression);
         }
         MathEvaluator m = new MathEvaluator(expression);
 
