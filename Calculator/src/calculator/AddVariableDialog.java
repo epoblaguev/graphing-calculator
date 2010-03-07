@@ -2,6 +2,7 @@ package calculator;
 
 import tables.VariableTablePane;
 import exceptions.InvalidVariableNameException;
+import expressions.Expression;
 import expressions.Variable;
 import expressions.VariableList;
 import java.awt.BorderLayout;
@@ -64,11 +65,12 @@ public class AddVariableDialog extends JFrame implements ActionListener {
         this.add(bottomPanel);
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         try {
             //If Add.
             if (e.getSource() == btnAdd) {
-                Variable var = new Variable(txtVariableName.getText(), Double.valueOf(txtVariableValue.getText()));
+                Variable var = new Variable(txtVariableName.getText(), Expression.evaluate(txtVariableValue.getText()));
 
                 Iterator itr = VariableList.getVariables().iterator();
 

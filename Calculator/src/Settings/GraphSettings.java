@@ -16,6 +16,25 @@ public class GraphSettings implements Serializable{
     private static boolean antialiased = true;
     private static float lineWidth = 1;
     private static Color bgColor = Color.gray;
+    private static boolean drawGrid = false;
+
+    /**
+     * Check if grid should be drawn.
+     * @return - true if grid should be drawn, false otherwise.
+     */
+    public static boolean isDrawGrid() {
+        return drawGrid;
+    }
+
+    /**
+     * Change the grid setting.
+     * @param drawGrid - true if grid should be drawn, false otherwise.
+     */
+    public static void setDrawGrid(boolean drawGrid) {
+        GraphSettings.drawGrid = drawGrid;
+    }
+
+
 
     /**
      * Check if graph should be antialiased.

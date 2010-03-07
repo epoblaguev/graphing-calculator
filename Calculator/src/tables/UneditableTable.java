@@ -6,7 +6,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 /**
- * A pane that displays a table of expressions and their computed values;
+ * Creates an uneditable table.
  * @author Egor
  */
 public class UneditableTable extends JTable{

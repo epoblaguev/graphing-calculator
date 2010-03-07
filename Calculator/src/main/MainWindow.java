@@ -51,7 +51,7 @@ public class MainWindow extends JFrame implements ActionListener {
     JMenu mnuFile, mnuSettings, mnuInfo, mnuLineWidth, mnuGraphColor;
     JMenuItem miExit, miSave, miAbout, miHelp, miLoad;
     JRadioButtonMenuItem rbDegrees, rbRadians, rbThin, rbMedium, rbThick, rbCustThickness, rbWhite, rbLightGray, rbGray, rbCustColor;
-    JCheckBoxMenuItem ckAntiAlias;
+    JCheckBoxMenuItem ckAntiAlias, ckDrawGrid;
     ButtonGroup bgAngle, bgLineWidth, bgGraphColor;
 
     public MainWindow() {
@@ -104,6 +104,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
         //Initialize check buttons.
         ckAntiAlias = new JCheckBoxMenuItem("Use Antialiasing");
+        ckDrawGrid = new JCheckBoxMenuItem("Draw Grid");
 
         //Add to file menu.
         mnuFile.add(miLoad);
@@ -143,6 +144,7 @@ public class MainWindow extends JFrame implements ActionListener {
         mnuSettings.add(rbRadians);
         mnuSettings.addSeparator();
         mnuSettings.add(ckAntiAlias);
+        mnuSettings.add(ckDrawGrid);
         mnuSettings.addSeparator();
         mnuSettings.add(mnuLineWidth);
         mnuSettings.add(mnuGraphColor);
@@ -165,6 +167,7 @@ public class MainWindow extends JFrame implements ActionListener {
         rbDegrees.addActionListener(this);
         rbRadians.addActionListener(this);
         ckAntiAlias.addActionListener(this);
+        ckDrawGrid.addActionListener(this);
         rbThin.addActionListener(this);
         rbMedium.addActionListener(this);
         rbThick.addActionListener(this);
@@ -268,6 +271,9 @@ public class MainWindow extends JFrame implements ActionListener {
         }
         if (e.getSource() == this.ckAntiAlias) {
             GraphSettings.setAntialiased(this.ckAntiAlias.isSelected());
+        }
+        if(e.getSource() == this.ckDrawGrid){
+            GraphSettings.setDrawGrid(this.ckDrawGrid.isSelected());
         }
         if (e.getSource() == this.rbThin || e.getSource() == this.rbMedium || e.getSource() == this.rbThick || e.getSource() == this.rbCustThickness) {
             if (this.rbThin.isSelected()) {

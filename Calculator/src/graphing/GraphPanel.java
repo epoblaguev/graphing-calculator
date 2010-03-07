@@ -4,6 +4,7 @@
  */
 package graphing;
 
+import Constants.ConstValues;
 import equations.Equation;
 import Settings.GraphSettings;
 import exceptions.InvalidBoundsException;
@@ -30,6 +31,8 @@ public class GraphPanel extends JPanel implements Runnable {
     private double maxX = 10;
     private double minY = -10;
     private double maxY = 10;
+    private double xInterval;
+    private double yInterval;
     private int xAxis = 0;
     private int yAxis = 0;
     private Vector<Equation> equations = new Vector<Equation>();
@@ -48,11 +51,32 @@ public class GraphPanel extends JPanel implements Runnable {
 
         super.paintComponent(g2);
 
-        DecimalFormat df = new DecimalFormat("#.###");
-        g2.setColor(Color.black);
+        DecimalFormat df = new DecimalFormat(ConstValues.DF_3);
 
         yAxis = UnitToPixelX(0);
         xAxis = UnitToPixelY(0);
+
+        //Draw Grid
+        if (GraphSettings.isDrawGrid()) {
+            g2.setColor(Color.GRAY);
+            xInterval = Math.pow(10, String.valueOf((int) (maxX - minX) / 4).length() - 1);
+            yInterval = Math.pow(10, String.valueOf((int) (maxY - minY) / 4).length() - 1);
+
+            for (double i = 0 + xInterval; i <= maxX; i += xInterval) {
+                g2.drawLine(UnitToPixelX(i), 0, UnitToPixelX(i), this.getHeight());
+            }
+            for (double i = 0 - xInterval; i >= minX; i -= xInterval) {
+                g2.drawLine(UnitToPixelX(i), 0, UnitToPixelX(i), this.getHeight());
+            }
+            for (double i = 0 + yInterval; i <= maxY; i += yInterval) {
+                g2.drawLine(0, UnitToPixelY(i), this.getWidth(), UnitToPixelY(i));
+            }
+            for (double i = 0 - yInterval; i >= minY; i -= yInterval) {
+                g2.drawLine(0, UnitToPixelY(i), this.getWidth(), UnitToPixelY(i));
+            }
+        }
+
+        g2.setColor(Color.black);
 
         //Draw crossheir
         g2.drawLine(this.getWidth() / 2 - 5, this.getHeight() / 2, this.getWidth() / 2 + 5, this.getHeight() / 2);
@@ -70,7 +94,7 @@ public class GraphPanel extends JPanel implements Runnable {
         //Write Numbers
         g2.drawString("0", yAxis + 2, xAxis - 1);
         g2.drawString(df.format(minX), 5, xAxis - 1);
-        g2.drawString(df.format(maxX), this.getWidth() - 35, xAxis - 1);
+        g2.drawString(df.format(maxX), this.getWidth() - df.format(maxX).length() * 7, xAxis - 1);
         g2.drawString(df.format(minY), yAxis + 2, this.getHeight() - 5);
         g2.drawString(df.format(maxY), yAxis + 2, 15);
 
@@ -99,6 +123,14 @@ public class GraphPanel extends JPanel implements Runnable {
         }
 
         g2.dispose();
+    }
+
+    public double getxInterval() {
+        return xInterval;
+    }
+
+    public double getyInterval() {
+        return yInterval;
     }
 
     public static void addPoint(String key, double x, double y) {

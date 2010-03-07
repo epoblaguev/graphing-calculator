@@ -4,6 +4,7 @@
  */
 package graphing;
 
+import Constants.ConstValues;
 import equations.Equation;
 import equations.EquationInput;
 import Settings.GenSettings;
@@ -77,7 +78,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         this.add(southPanel, BorderLayout.SOUTH);
 
         graphPanel.repaint();
-        this.setBounds();
+        this.resetStats();
     }
 
     private void createLayout() {
@@ -275,8 +276,8 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         return graphPanel;
     }
 
-    private void setBounds() {
-        DecimalFormat df = new DecimalFormat("#.####");
+    private void resetStats() {
+        DecimalFormat df = new DecimalFormat(ConstValues.DF_6);
         this.txtMaxX.setText(df.format(graphPanel.getMaxX()));
         this.txtMinX.setText(df.format(graphPanel.getMinX()));
         this.txtMaxY.setText(df.format(graphPanel.getMaxY()));
@@ -370,7 +371,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         }
 
         //Things that require equations to be present.
-        if (e.getSource() == miDrawTangentLine || e.getSource() == miPlotMinPoint || e.getSource() == miPlotMaxPoint 
+        if (e.getSource() == miDrawTangentLine || e.getSource() == miPlotMinPoint || e.getSource() == miPlotMaxPoint
                 || e.getSource() == miViewTableOfValues || e.getSource() == miPlotAtXValue) {
 
             boolean allEmpty = true;
@@ -399,12 +400,12 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
                     addPoint.setLocationRelativeTo(this);
                     addPoint.setVisible(true);
                 }
-                if(e.getSource() == miViewTableOfValues){
+                if (e.getSource() == miViewTableOfValues) {
                     EquationValueTableWindow evtb = new EquationValueTableWindow(equationPanel);
                     evtb.setLocationRelativeTo(this);
                     evtb.setVisible(true);
                 }
-                if(e.getSource() == miPlotAtXValue){
+                if (e.getSource() == miPlotAtXValue) {
                     AddPointAtXValueDialog addPoint = new AddPointAtXValueDialog(this);
                     addPoint.setLocationRelativeTo(this);
                     addPoint.setVisible(true);
@@ -422,12 +423,12 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
 
             this.repaint();
         }
-        if(e.getSource() == miViewTableOfPoints){
+        if (e.getSource() == miViewTableOfPoints) {
             (new PointValuesTableWindow()).setVisible(true);
         }
 
         //Display the bounds.
-        this.setBounds();
+        this.resetStats();
     }
 
     @Override
@@ -438,7 +439,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
     @Override
     public void mouseMoved(MouseEvent e) {
         if (e.getSource() == graphPanel) {
-            DecimalFormat df = new DecimalFormat("#.#####");
+            DecimalFormat df = new DecimalFormat(ConstValues.DF_6);
             double x = graphPanel.PixelToUnitX(e.getX());
             double y = graphPanel.PixelToUnitY(e.getY());
 
@@ -458,7 +459,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
                 graphPanel.zoom(25);
             }
 
-            this.setBounds();
+            this.resetStats();
         }
     }
 
@@ -473,7 +474,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
             graphPanel.moveVertical(+percentY * 100);
             this.xPrev = (int) xMoved;
             this.yPrev = (int) yMoved;
-            this.setBounds();
+            this.resetStats();
         }
     }
 
