@@ -93,7 +93,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         directionPanel = new JPanel(new GridLayout(3, 3));
         directionPanel.setMaximumSize(new Dimension(140, 100));
         boundsPanel = new JPanel(new GridLayout(0, 2));
-        boundsPanel.setBorder(BorderFactory.createTitledBorder("Graph Bounds"));
+        boundsPanel.setBorder(BorderFactory.createEtchedBorder());
         boundsPanel.setMaximumSize(new Dimension(140, 100));
         equationPanel = new JPanel();
         equationPanel.setLayout(new GridLayout(0, 1));
@@ -277,7 +277,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
     }
 
     private void resetStats() {
-        DecimalFormat df = new DecimalFormat(ConstValues.DF_6);
+        DecimalFormat df = new DecimalFormat(ConstValues.DF_5);
         this.txtMaxX.setText(df.format(graphPanel.getMaxX()));
         this.txtMinX.setText(df.format(graphPanel.getMinX()));
         this.txtMaxY.setText(df.format(graphPanel.getMaxY()));
@@ -439,7 +439,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
     @Override
     public void mouseMoved(MouseEvent e) {
         if (e.getSource() == graphPanel) {
-            DecimalFormat df = new DecimalFormat(ConstValues.DF_6);
+            DecimalFormat df = new DecimalFormat(ConstValues.DF_5);
             double x = graphPanel.PixelToUnitX(e.getX());
             double y = graphPanel.PixelToUnitY(e.getY());
 

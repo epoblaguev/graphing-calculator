@@ -32,7 +32,7 @@ public class ConstValues {
     /**
      * Template used for by DecimalFormat that has 6 decimal places.
      */
-    public static final String DF_6 = "#.######";
+    public static final String DF_5 = "#.#####";
 
     /**
      * Template used for by DecimalFormat that has 3 decimal places.
