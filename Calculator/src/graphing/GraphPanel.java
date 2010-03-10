@@ -100,13 +100,33 @@ public class GraphPanel extends JPanel implements Runnable {
 
         g2.setStroke(new BasicStroke(GraphSettings.getLineWidth()));
 
-        //Loop through each string.
+        //Loop through each equation.
         for (Equation eq : equations) {
+            boolean firstPoint = true;
+            Double eqVal;
+            Double eqPrev = 0.0;
             String expr = eq.getExpression();
-            polyline.moveTo(UnitToPixelX(minX), UnitToPixelY(Equation.evaluate(expr, minX, false)));
             g2.setColor(eq.getColor());
             for (double x = minX; x <= maxX; x += (maxX - minX) / this.getWidth()) {
-                polyline.lineTo(UnitToPixelX(x), UnitToPixelY(Equation.evaluate(expr, x, false)));
+                eqVal = Equation.evaluate(expr, x, false);
+                if (Math.max(eqVal, eqPrev) - Math.min(eqVal, eqPrev) > maxY - minY) {
+                    if (eqPrev > eqVal) {
+                        polyline.lineTo(UnitToPixelX(x), UnitToPixelY(maxY));
+                    } else {
+                        polyline.lineTo(UnitToPixelX(x), UnitToPixelY(minY));
+                    }
+                    polyline.moveTo(UnitToPixelX(x), UnitToPixelY(eqVal));
+
+                }
+                if (eqVal.isNaN() || eqVal.isInfinite()) {
+                    firstPoint = true;
+                } else if (firstPoint) {
+                    polyline.moveTo(UnitToPixelX(x), UnitToPixelY(eqVal));
+                    firstPoint = false;
+                } else {
+                    polyline.lineTo(UnitToPixelX(x), UnitToPixelY(eqVal));
+                }
+                eqPrev = eqVal;
             }
             g2.draw(polyline);
             polyline.reset();

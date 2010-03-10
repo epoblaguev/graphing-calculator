@@ -178,7 +178,7 @@ public class MainWindow extends JFrame implements ActionListener {
         rbCustColor.addActionListener(this);
 
         //Set default settings..
-        rbDegrees.doClick();
+        rbRadians.doClick();
         rbThin.doClick();
         ckAntiAlias.doClick();
         rbLightGray.doClick();

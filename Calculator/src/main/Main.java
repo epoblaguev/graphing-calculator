@@ -27,19 +27,8 @@ public class Main {
 
             @Override
             public void run() {
-                try {
-                    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                        if ("Nimbus".equals(info.getName())) {
-                            UIManager.setLookAndFeel(info.getClassName());
-                            break;
-                        }
-                    }
-                } catch (Exception e) {
-                    UIManager.put("swing.boldMetal", Boolean.FALSE);
-                } finally {
                     UIManager.put("swing.boldMetal", Boolean.FALSE);
                     showMainWindow();
-                }
             }
         });
     }
