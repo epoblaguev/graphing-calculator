@@ -50,7 +50,7 @@ public class MainWindow extends JFrame implements ActionListener {
     JMenuBar menuBar;
     JMenu mnuFile, mnuSettings, mnuInfo, mnuLineWidth, mnuGraphColor;
     JMenuItem miExit, miSave, miAbout, miHelp, miLoad;
-    JRadioButtonMenuItem rbDegrees, rbRadians, rbThin, rbMedium, rbThick, rbCustThickness, rbWhite, rbLightGray, rbGray, rbCustColor;
+    JRadioButtonMenuItem rbDegrees, rbRadians, rbGradians, rbThin, rbMedium, rbThick, rbCustThickness, rbWhite, rbLightGray, rbGray, rbCustColor;
     JCheckBoxMenuItem ckAntiAlias, ckDrawGrid;
     ButtonGroup bgAngle, bgLineWidth, bgGraphColor;
 
@@ -93,6 +93,7 @@ public class MainWindow extends JFrame implements ActionListener {
         //Initialize radio buttons.
         rbDegrees = new JRadioButtonMenuItem("Degrees");
         rbRadians = new JRadioButtonMenuItem("Radians");
+        rbGradians = new JRadioButtonMenuItem("Gradians");
         rbThin = new JRadioButtonMenuItem("Thin");
         rbMedium = new JRadioButtonMenuItem("Medium");
         rbThick = new JRadioButtonMenuItem("Thick");
@@ -114,6 +115,7 @@ public class MainWindow extends JFrame implements ActionListener {
         //Add to Angle button group
         bgAngle.add(rbDegrees);
         bgAngle.add(rbRadians);
+        bgAngle.add(rbGradians);
 
         //Add to Line thickness button group.
         bgLineWidth.add(rbThin);
@@ -142,6 +144,7 @@ public class MainWindow extends JFrame implements ActionListener {
         //Add to settings menu
         mnuSettings.add(rbDegrees);
         mnuSettings.add(rbRadians);
+        mnuSettings.add(rbGradians);
         mnuSettings.addSeparator();
         mnuSettings.add(ckAntiAlias);
         mnuSettings.add(ckDrawGrid);
@@ -166,6 +169,7 @@ public class MainWindow extends JFrame implements ActionListener {
         miAbout.addActionListener(this);
         rbDegrees.addActionListener(this);
         rbRadians.addActionListener(this);
+        rbGradians.addActionListener(this);
         ckAntiAlias.addActionListener(this);
         ckDrawGrid.addActionListener(this);
         rbThin.addActionListener(this);
@@ -265,10 +269,19 @@ public class MainWindow extends JFrame implements ActionListener {
         }
 
         //Settings items.
-        if (e.getSource() == this.rbDegrees || e.getSource() == this.rbRadians) {
+        if (e.getSource() == this.rbDegrees || e.getSource() == this.rbRadians || e.getSource() == rbGradians) {
             MathEvaluator m = new MathEvaluator();
-            m.setUsingRadians(this.rbRadians.isSelected());
+            if(this.rbRadians.isSelected()){
+                MathEvaluator.setAngleUnits(MathEvaluator.RADIANS);
+            }
+            else if(this.rbDegrees.isSelected()){
+                MathEvaluator.setAngleUnits(MathEvaluator.DEGREES);
+            }
+            else if(this.rbGradians.isSelected()){
+                MathEvaluator.setAngleUnits(MathEvaluator.GRADIANS);
+            }
         }
+        
         if (e.getSource() == this.ckAntiAlias) {
             GraphSettings.setAntialiased(this.ckAntiAlias.isSelected());
         }

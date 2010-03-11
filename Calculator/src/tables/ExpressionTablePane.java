@@ -1,7 +1,6 @@
 package tables;
 
 import Constants.ConstValues;
-import Settings.GenSettings;
 import expressions.Expression;
 import expressions.ExpressionList;
 import java.text.DecimalFormat;
@@ -14,13 +13,14 @@ import javax.swing.table.DefaultTableModel;
  * A pane that displays a table of expressions and their computed values;
  * @author Egor
  */
-public class ExpressionTablePane extends JTable{
+public class ExpressionTablePane extends JTable {
+
     private static DefaultTableModel tableModel = new DefaultTableModel();
 
     /**
      * Create the table pane.
      */
-    public ExpressionTablePane(){
+    public ExpressionTablePane() {
         this.setModel(tableModel);
         tableModel.addColumn("Expression");
         tableModel.addColumn("Value");
@@ -38,7 +38,7 @@ public class ExpressionTablePane extends JTable{
      * @param row
      *  The row to be added
      */
-    public static void addRow(Vector row){
+    public static void addRow(Vector row) {
         tableModel.addRow(row);
     }
 
@@ -46,23 +46,29 @@ public class ExpressionTablePane extends JTable{
      * Sets the row count.
      * @param rowCount
      */
-    public static void setRowCount(int rowCount){
+    public static void setRowCount(int rowCount) {
         tableModel.setRowCount(rowCount);
     }
 
     /**
      * Refreshes the table.
      */
-    public static void refreshTable(){
+    public static void refreshTable() {
+        double curValue;
         Vector row;
         ExpressionTablePane.setRowCount(0);
         Iterator itr = ExpressionList.getExpressionList().iterator();
 
-        while(itr.hasNext()){
+        while (itr.hasNext()) {
             Expression curExpression = (Expression) itr.next();
+            curValue = curExpression.getValue();
             row = new Vector(2);
             row.add(curExpression.getExpression());
-            row.add(new DecimalFormat(ConstValues.DF_10).format(curExpression.getValue()));
+            if (!Double.isInfinite(curValue) && !Double.isNaN(curValue)) {
+                row.add(new DecimalFormat(ConstValues.DF_10).format(curExpression.getValue()));
+            } else {
+                row.add("NaN");
+            }
             row.add(curExpression.getAngleUnits());
 
             ExpressionTablePane.addRow(row);

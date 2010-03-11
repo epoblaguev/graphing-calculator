@@ -17,19 +17,22 @@ import java.util.HashMap;
  * @date     April 2001
  ************************************************************************/
 public class MathEvaluator {
+    public static final int RADIANS = 1;
+    public static final int DEGREES = 2;
+    public static final int GRADIANS = 3;
 
     protected static Operator[] operators = null;
     private Node node = null;
     private String expression = null;
     private HashMap variables = new HashMap();
-    private static boolean usingRadians = true;
+    private static int angleUnits = MathEvaluator.RADIANS;
 
-    public boolean isUsingRadians() {
-        return usingRadians;
+    public int getAngleUnits() {
+        return angleUnits;
     }
 
-    public void setUsingRadians(boolean useRadians) {
-        MathEvaluator.usingRadians = useRadians;
+    public static void setAngleUnits(int angleUnits) {
+        MathEvaluator.angleUnits = angleUnits;
     }
 
     /**
@@ -38,9 +41,16 @@ public class MathEvaluator {
      * @return The angle if using radians, a conversion to radians if using degrees.
      */
     private static double getAngleValue(double angle) {
-        if (usingRadians) {
+        //If radians.
+        if (angleUnits == MathEvaluator.RADIANS ) {
             return angle;
-        } else {
+        }
+        //If gradians.
+        else if (angleUnits == MathEvaluator.GRADIANS){
+            return Math.toRadians(angle)*(9/10);
+        }
+        //If degrees.
+        else{
             return Math.toRadians(angle);
         }
     }

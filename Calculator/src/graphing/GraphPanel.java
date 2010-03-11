@@ -103,28 +103,40 @@ public class GraphPanel extends JPanel implements Runnable {
         //Loop through each equation.
         for (Equation eq : equations) {
             boolean firstPoint = true;
+            double interval;
             Double eqVal;
             Double eqPrev = 0.0;
             String expr = eq.getExpression();
             g2.setColor(eq.getColor());
-            for (double x = minX; x <= maxX; x += (maxX - minX) / this.getWidth()) {
+
+            //Set values for loop.
+            eqPrev = Equation.evaluate(expr, minX, false);
+            polyline.moveTo(UnitToPixelX(minX), UnitToPixelY(eqPrev));
+            interval = (maxX - minX) / this.getWidth();
+
+            //Start loop.
+            for (double x = minX; x <= maxX; x += interval) {
+                //eqVal and pixValX are used a lot. Solve only once.
                 eqVal = Equation.evaluate(expr, x, false);
-                if (Math.max(eqVal, eqPrev) - Math.min(eqVal, eqPrev) > maxY - minY) {
+                double pixValX = UnitToPixelX(x);
+                
+                if (Math.signum(eqVal) != Math.signum(eqPrev) && Math.abs(eqVal - eqPrev) > (maxY-minY)/this.getHeight()) {
                     if (eqPrev > eqVal) {
-                        polyline.lineTo(UnitToPixelX(x), UnitToPixelY(maxY));
+                        polyline.lineTo(pixValX, UnitToPixelY(maxY));
+                        polyline.moveTo(pixValX, UnitToPixelY(minY));
                     } else {
-                        polyline.lineTo(UnitToPixelX(x), UnitToPixelY(minY));
+                        polyline.lineTo(pixValX, UnitToPixelY(minY));
+                        polyline.moveTo(pixValX, UnitToPixelY(maxY));
                     }
-                    polyline.moveTo(UnitToPixelX(x), UnitToPixelY(eqVal));
 
                 }
                 if (eqVal.isNaN() || eqVal.isInfinite()) {
                     firstPoint = true;
                 } else if (firstPoint) {
-                    polyline.moveTo(UnitToPixelX(x), UnitToPixelY(eqVal));
+                    polyline.moveTo(pixValX, UnitToPixelY(eqVal));
                     firstPoint = false;
                 } else {
-                    polyline.lineTo(UnitToPixelX(x), UnitToPixelY(eqVal));
+                    polyline.lineTo(pixValX, UnitToPixelY(eqVal));
                 }
                 eqPrev = eqVal;
             }

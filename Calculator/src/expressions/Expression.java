@@ -61,11 +61,13 @@ public class Expression implements Serializable{
             m.addVariable(var.getVariableName(), var.getVariableValue());
         }
 
-        if(m.isUsingRadians()){
+        if(m.getAngleUnits() == MathEvaluator.RADIANS){
             this.angleUnits = "RAD";
         }
-        else{
+        else if(m.getAngleUnits() == MathEvaluator.DEGREES){
             this.angleUnits = "DEG";
+        }else if(m.getAngleUnits() == MathEvaluator.GRADIANS){
+            this.angleUnits = "GRAD";
         }
         this.value = m.getValue();
         return value;

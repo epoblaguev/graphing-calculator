@@ -70,19 +70,29 @@ public class AddVariableDialog extends JFrame implements ActionListener {
         try {
             //If Add.
             if (e.getSource() == btnAdd) {
+                boolean nameExists = false;
                 Variable var = new Variable(txtVariableName.getText(), Expression.evaluate(txtVariableValue.getText()));
+
+                if (Double.isInfinite(var.getVariableValue()) || Double.isNaN(var.getVariableValue())) {
+                    JOptionPane.showMessageDialog(this, "Variable value is invalid.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
                 Iterator itr = VariableList.getVariables().iterator();
 
-                while (itr.hasNext()) {
-                    Variable curVar = (Variable) itr.next();
+                for (Variable curVar : VariableList.getVariables()) {
                     if (var.getVariableName().equals(curVar.getVariableName())) {
-                        JOptionPane.showMessageDialog(this, "Variable with that name already exists");
-                        return;
+                        curVar.setVariableValue(var.getVariableValue());
+                        nameExists = true;
+                        break;
                     }
                 }
-                VariableList.addVariable(var);
+                if(!nameExists){
+                    VariableList.addVariable(var);
+                }
                 VariableTablePane.refreshTable();
+                txtVariableName.setText("");
+                txtVariableValue.setText("");
             }
 
             //If Close

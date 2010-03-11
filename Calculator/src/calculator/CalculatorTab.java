@@ -189,6 +189,7 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
             try {
                 ExpressionList.addExpression(expr);
                 ExpressionTablePane.refreshTable();
+                txtInput.setText("");
             } catch (Exception exc) {
                 ExpressionList.removeExpression(expr);
                 JOptionPane.showMessageDialog(this, exc, "Error", JOptionPane.ERROR_MESSAGE);
