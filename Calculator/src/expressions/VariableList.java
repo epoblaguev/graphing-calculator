@@ -49,7 +49,7 @@ public class VariableList {
     }
 
     public static void removeVariable(Variable variable){
-        variables.remove(variables);
+        variables.remove(variable);
         sort();
     }
 

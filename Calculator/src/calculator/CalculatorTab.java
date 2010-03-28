@@ -1,8 +1,9 @@
 package calculator;
 
-import tables.VariableTablePane;
-import tables.ExpressionTablePane;
+import components.VariableTablePane;
+import components.ExpressionTablePane;
 import Settings.GenSettings;
+import components.SmartTextField;
 import exceptions.InvalidVariableNameException;
 import expressions.VariableList;
 import expressions.Expression;
@@ -34,7 +35,6 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.text.DefaultEditorKit;
 
@@ -48,7 +48,7 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
     JScrollPane exprScrollPane, varScrollPane;
     JPanel controlPanel, controlPanelEast;
     JPanel centerPanel, centerPanelEast, centerPanelWest, exprControlPanel, varControlPanel;
-    JTextField txtInput;
+    SmartTextField txtInput;
     JButton btnEnter, btnAddVariable, btnRemoveVariable, btnClearExpressions, btnAppendToInput;
     JTable varTable, exprTable, targetTable;
     JPopupMenu mnuRightClick;
@@ -82,7 +82,7 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
         controlPanel.setLayout(new BorderLayout());
         controlPanelEast.setLayout(new FlowLayout());
 
-        txtInput = new JTextField();
+        txtInput = new SmartTextField();
 
         btnEnter = new JButton("Enter");
         btnEnter.addActionListener(this);

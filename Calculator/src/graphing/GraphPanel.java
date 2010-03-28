@@ -112,24 +112,25 @@ public class GraphPanel extends JPanel implements Runnable {
             //Set values for loop.
             eqPrev = Equation.evaluate(expr, minX, false);
             polyline.moveTo(UnitToPixelX(minX), UnitToPixelY(eqPrev));
-            interval = (maxX - minX) / this.getWidth();
+            interval = (maxX - minX) /(this.getWidth());
 
             //Start loop.
             for (double x = minX; x <= maxX; x += interval) {
                 //eqVal and pixValX are used a lot. Solve only once.
                 eqVal = Equation.evaluate(expr, x, false);
                 double pixValX = UnitToPixelX(x);
-                
-                if (Math.signum(eqVal) != Math.signum(eqPrev) && Math.abs(eqVal - eqPrev) > (maxY-minY)/this.getHeight()) {
-                    if (eqPrev > eqVal) {
-                        polyline.lineTo(pixValX, UnitToPixelY(maxY));
-                        polyline.moveTo(pixValX, UnitToPixelY(minY));
-                    } else {
-                        polyline.lineTo(pixValX, UnitToPixelY(minY));
-                        polyline.moveTo(pixValX, UnitToPixelY(maxY));
-                    }
 
-                }
+
+//                if (Math.signum(eqVal) != Math.signum(eqPrev) && Math.abs(eqVal - eqPrev) > (maxY - minY) / this.getHeight()) {
+//                    if (eqPrev > eqVal) {
+//                        polyline.lineTo(pixValX, UnitToPixelY(maxY));
+//                        polyline.moveTo(pixValX, UnitToPixelY(minY));
+//                    } else {
+//                        polyline.lineTo(pixValX, UnitToPixelY(minY));
+//                        polyline.moveTo(pixValX, UnitToPixelY(maxY));
+//                    }
+//                }
+                
                 if (eqVal.isNaN() || eqVal.isInfinite()) {
                     firstPoint = true;
                 } else if (firstPoint) {
@@ -344,7 +345,10 @@ public class GraphPanel extends JPanel implements Runnable {
         (new Thread(this)).start();
     }
 
+    @Override
     public void run() {
         repaint();
     }
+
+
 }

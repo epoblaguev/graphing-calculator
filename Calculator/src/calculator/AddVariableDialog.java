@@ -1,6 +1,6 @@
 package calculator;
 
-import tables.VariableTablePane;
+import components.VariableTablePane;
 import exceptions.InvalidVariableNameException;
 import expressions.Expression;
 import expressions.Variable;

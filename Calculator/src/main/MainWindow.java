@@ -4,8 +4,8 @@
  */
 package main;
 
-import tables.VariableTablePane;
-import tables.ExpressionTablePane;
+import components.VariableTablePane;
+import components.ExpressionTablePane;
 import Constants.Info;
 import Settings.GenSettings;
 import Settings.GraphSettings;

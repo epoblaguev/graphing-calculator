@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package tables;
+package components;
 
 import exceptions.InvalidVariableNameException;
 import expressions.VariableList;

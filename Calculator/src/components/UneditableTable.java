@@ -1,4 +1,4 @@
-package tables;
+package components;
 
 import java.util.Vector;
 import javax.swing.JTable;
