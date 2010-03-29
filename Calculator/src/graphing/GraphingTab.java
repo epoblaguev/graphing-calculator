@@ -8,6 +8,7 @@ import Constants.ConstValues;
 import equations.Equation;
 import equations.EquationInput;
 import Settings.GenSettings;
+import components.SmartTextField;
 import exceptions.InvalidBoundsException;
 import expressions.Expression;
 import java.awt.BorderLayout;
@@ -570,7 +571,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getSource().getClass() == JTextField.class) {
+        if (e.getSource().getClass() == SmartTextField.class) {
             if (e.getKeyCode() == 10) {
                 btnGraph.doClick();
             }

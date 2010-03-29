@@ -4,6 +4,7 @@
  */
 package equations;
 
+import components.SmartTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -17,7 +18,6 @@ import javax.swing.JColorChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.text.DefaultEditorKit;
 
@@ -29,7 +29,7 @@ public class EquationInput extends JPanel implements ActionListener, MouseListen
 
     private JButton btnName;
     private JPanel labelPanel;
-    private JTextField input;
+    private SmartTextField input;
     private JPopupMenu mnuRightClick;
     private Color color;
 
@@ -37,7 +37,7 @@ public class EquationInput extends JPanel implements ActionListener, MouseListen
         super();
         this.setLayout(new FlowLayout());
         this.btnName = new JButton(name);
-        this.input = new JTextField(20);
+        this.input = new SmartTextField(20);
         this.labelPanel = new JPanel();
         this.color = color;
 
@@ -58,11 +58,11 @@ public class EquationInput extends JPanel implements ActionListener, MouseListen
         labelPanel.add(input);
     }
 
-    public JTextField getInput() {
+    public SmartTextField getInput() {
         return input;
     }
 
-    public void setInput(JTextField input) {
+    public void setInput(SmartTextField input) {
         this.input = input;
     }
 
@@ -82,6 +82,7 @@ public class EquationInput extends JPanel implements ActionListener, MouseListen
         this.color = color;
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnName) {
             Color clr = JColorChooser.showDialog(btnName, "Color Chooser", btnName.getForeground());
@@ -93,10 +94,12 @@ public class EquationInput extends JPanel implements ActionListener, MouseListen
         }
     }
 
+    @Override
     public void mouseClicked(MouseEvent e) {
         //
     }
 
+    @Override
     public void mousePressed(MouseEvent e) {
         if (e.getSource() == input && (e.isPopupTrigger() || e.getModifiers() == InputEvent.BUTTON3_MASK)) {
             input.requestFocus();
@@ -117,14 +120,17 @@ public class EquationInput extends JPanel implements ActionListener, MouseListen
         }
     }
 
+    @Override
     public void mouseReleased(MouseEvent e) {
         //
     }
 
+    @Override
     public void mouseEntered(MouseEvent e) {
         //
     }
 
+    @Override
     public void mouseExited(MouseEvent e) {
         //
     }

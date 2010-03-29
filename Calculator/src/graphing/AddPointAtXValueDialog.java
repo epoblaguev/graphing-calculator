@@ -8,6 +8,7 @@ import equations.Equation;
 import equations.EquationInput;
 import Constants.ConstValues;
 import Settings.GenSettings;
+import components.SmartTextField;
 import expressions.Expression;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -31,7 +32,8 @@ import javax.swing.JTextField;
 public class AddPointAtXValueDialog extends JFrame implements ActionListener, KeyListener {
 
     private GraphingTab graphTab;
-    private JTextField txtInput, txtPointName;
+    private SmartTextField txtValue;
+    private JTextField txtPointName;
     private JComboBox cbEquation;
     private JPanel inputPanel, bottomPanel;
     private JButton btnDraw;
@@ -50,7 +52,7 @@ public class AddPointAtXValueDialog extends JFrame implements ActionListener, Ke
         bottomPanel = new JPanel();
 
         cbEquation = new JComboBox();
-        txtInput = new JTextField();
+        txtValue = new SmartTextField();
         txtPointName = new JTextField();
 
         for (Component eq : graphTab.getEquationPanel().getComponents()) {
@@ -63,7 +65,7 @@ public class AddPointAtXValueDialog extends JFrame implements ActionListener, Ke
         btnClose = new JButton("Close");
         btnDraw.addActionListener(this);
         btnClose.addActionListener(this);
-        txtInput.addKeyListener(this);
+        txtValue.addKeyListener(this);
         txtPointName.addActionListener(this);
         cbEquation.addKeyListener(this);
 
@@ -72,7 +74,7 @@ public class AddPointAtXValueDialog extends JFrame implements ActionListener, Ke
         inputPanel.add(new JLabel("Equation:"));
         inputPanel.add(cbEquation);
         inputPanel.add(new JLabel("At X Value:"));
-        inputPanel.add(txtInput);
+        inputPanel.add(txtValue);
         bottomPanel.add(btnDraw);
         bottomPanel.add(btnClose);
 
@@ -88,7 +90,7 @@ public class AddPointAtXValueDialog extends JFrame implements ActionListener, Ke
 
         //If Add.
         if (e.getSource() == btnDraw) {
-            double x = Expression.evaluate(txtInput.getText());
+            double x = Expression.evaluate(txtValue.getText());
 
             for (Component eq : graphTab.getEquationPanel().getComponents()) {
                 if (((EquationInput) eq).getBtnName().getText().equals(cbEquation.getSelectedItem())) {

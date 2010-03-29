@@ -6,6 +6,7 @@ package graphing;
 
 import Constants.ConstValues;
 import Settings.GenSettings;
+import components.SmartTextField;
 import expressions.Expression;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -28,7 +29,8 @@ import javax.swing.JTextField;
  */
 public class AddPointDialog extends JFrame implements ActionListener, KeyListener {
 
-    private JTextField txtPointName, txtXValue, txtYValue;
+    private JTextField txtPointName;
+    private SmartTextField txtXValue, txtYValue;
     private JButton btnAdd, btnClose;
     private JPanel topPanel, bottomPanel, caller;
 
@@ -62,8 +64,8 @@ public class AddPointDialog extends JFrame implements ActionListener, KeyListene
         bottomPanel = new JPanel(new FlowLayout());
 
         txtPointName = new JTextField();
-        txtXValue = new JTextField();
-        txtYValue = new JTextField();
+        txtXValue = new SmartTextField();
+        txtYValue = new SmartTextField();
 
         btnAdd = new JButton("Add");
         btnClose = new JButton("Close");

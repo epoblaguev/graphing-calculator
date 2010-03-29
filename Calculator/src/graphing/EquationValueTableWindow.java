@@ -5,6 +5,7 @@
 package graphing;
 
 import Constants.ConstValues;
+import components.SmartTextField;
 import equations.Equation;
 import equations.EquationInput;
 import expressions.Expression;
@@ -34,7 +35,7 @@ public class EquationValueTableWindow extends JFrame implements ActionListener {
 
     private DefaultTableModel tableModel = new DefaultTableModel();
     private UneditableTable table = new UneditableTable(tableModel);
-    private JTextField txtLowX, txtHighX, txtInterval;
+    private SmartTextField txtLowX, txtHighX, txtInterval;
     private JScrollPane scrollPane = new JScrollPane(table);
     private JButton btnRefresh, btnClose;
     private JPanel buttonPanel, optionsPanel, equationPanel;
@@ -47,9 +48,9 @@ public class EquationValueTableWindow extends JFrame implements ActionListener {
 
         this.equationPanel = equationPanel;
 
-        txtLowX = new JTextField();
-        txtHighX = new JTextField();
-        txtInterval = new JTextField();
+        txtLowX = new SmartTextField();
+        txtHighX = new SmartTextField();
+        txtInterval = new SmartTextField();
         scrollPane = new JScrollPane(table);
         buttonPanel = new JPanel();
         optionsPanel = new JPanel(new GridLayout(0, 2));

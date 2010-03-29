@@ -8,6 +8,7 @@ import equations.Equation;
 import equations.EquationInput;
 import Constants.ConstValues;
 import Settings.GenSettings;
+import components.SmartTextField;
 import expressions.Expression;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -34,7 +35,8 @@ public class AddMinMaxPointDialog extends JFrame implements ActionListener, KeyL
     public static final int MIN = 1;
     public static final int MAX = 2;
     private GraphingTab graphTab;
-    private JTextField txtLowX, txtHighX, txtPointName;
+    private SmartTextField txtLowX, txtHighX;
+    private JTextField txtPointName;
     private JComboBox cbEquation;
     private JPanel inputPanel, bottomPanel;
     private JButton btnDraw;
@@ -56,8 +58,8 @@ public class AddMinMaxPointDialog extends JFrame implements ActionListener, KeyL
 
         cbEquation = new JComboBox();
         txtPointName = new JTextField();
-        txtLowX = new JTextField(df.format(x - (range / 20.0)));
-        txtHighX = new JTextField(df.format(x + (range / 20.0)));
+        txtLowX = new SmartTextField(df.format(x - (range / 20.0)));
+        txtHighX = new SmartTextField(df.format(x + (range / 20.0)));
 
         for (Component eq : graphTab.getEquationPanel().getComponents()) {
             if (!((EquationInput) eq).getInput().getText().isEmpty()) {

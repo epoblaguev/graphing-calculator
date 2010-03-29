@@ -7,6 +7,7 @@ package graphing;
 import equations.Equation;
 import equations.EquationInput;
 import Constants.ConstValues;
+import components.SmartTextField;
 import expressions.Expression;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -30,7 +31,7 @@ import javax.swing.JTextField;
 public class DrawTangentLineDialog extends JFrame implements ActionListener, KeyListener {
 
     private GraphingTab graphTab;
-    private JTextField txtInput;
+    private SmartTextField txtInput;
     private JComboBox cbEquation;
     private JPanel inputPanel, bottomPanel;
     private JButton btnDraw;
@@ -49,7 +50,7 @@ public class DrawTangentLineDialog extends JFrame implements ActionListener, Key
         bottomPanel = new JPanel();
         
         cbEquation = new JComboBox();
-        txtInput = new JTextField();
+        txtInput = new SmartTextField();
 
         for (Component eq : graphTab.getEquationPanel().getComponents()) {
             if (!((EquationInput) eq).getInput().getText().isEmpty()) {

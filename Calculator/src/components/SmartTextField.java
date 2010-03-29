@@ -5,8 +5,6 @@
 package components;
 
 import Constants.BlackLists;
-import java.awt.Component;
-import java.awt.MenuItem;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,8 +14,6 @@ import java.util.ArrayList;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
 
 /**
  *
@@ -31,14 +27,17 @@ public class SmartTextField extends JTextField implements KeyListener, ActionLis
 
     public SmartTextField(String text, int columns) {
         super(text, columns);
+        setUp();
     }
 
     public SmartTextField(int columns) {
         super(columns);
+        setUp();
     }
 
     public SmartTextField(String text) {
         super(text);
+        setUp();
     }
 
     public SmartTextField() {
@@ -64,20 +63,38 @@ public class SmartTextField extends JTextField implements KeyListener, ActionLis
             this.setText(this.getText().substring(0, position) + ")" + this.getText().substring(position));
             this.setCaretPosition(position);
             this.curString = "";
-        }
-        else if ((e.getKeyChar() >= 'a' && e.getKeyChar() <= 'z')||(e.getKeyChar() >= 'A' && e.getKeyChar() <= 'Z')) {
+        } else if (e.getKeyChar() == ')' && this.getText().substring(position, position + 1).equals(")")) {
+            //Check if parens are balanced.
+            int left = 0;
+            int right = 0;
+            String txt = this.getText();
+            for (int i = 0; i < txt.length(); i++) {
+                if (txt.charAt(i) == '(' && i < position) {
+                    left++;
+                }
+                if (txt.charAt(i) == ')') {
+                    right++;
+                }
+            }
+            if(left >= right){
+                this.setText(this.getText().substring(0, position) + this.getText().substring(position+1));
+                this.setCaretPosition(position);
+            }
+
+        } else if ((e.getKeyChar() >= 'a' && e.getKeyChar() <= 'z') || (e.getKeyChar() >= 'A' && e.getKeyChar() <= 'Z')) {
             this.curString += e.getKeyChar();
             for (String str : list) {
                 if (str.contains(curString)) {
                     JMenuItem mi = new JMenuItem(str);
                     mi.addActionListener(this);
+                    mi.addKeyListener(this);
                     autoCompleteMenu.add(mi);
                 }
             }
             if (autoCompleteMenu.getComponents().length > 0) {
                 autoCompleteMenu.show(this, this.getCaret().getMagicCaretPosition().x + 7, (this.getHeight() / 2) + 4);
+                this.requestFocus();
             }
-            this.requestFocus();
         } else {
             this.curString = "";
         }
@@ -94,6 +111,7 @@ public class SmartTextField extends JTextField implements KeyListener, ActionLis
                 String next = this.getText().substring(position, position + 1);
                 if (prev.equals("(") && next.equals(")")) {
                     this.setText(this.getText().substring(0, position - 1) + this.getText().substring(position));
+                    this.setCaretPosition(position);
                 }
             }
         }
@@ -101,30 +119,33 @@ public class SmartTextField extends JTextField implements KeyListener, ActionLis
 
     @Override
     public void keyReleased(KeyEvent e) {
-        System.out.println(curString);
-        int[] validCodes = {16, 17, 18};
-        if (e.getKeyCode() < 65 || e.getKeyCode() > 90) {
-            boolean valid = false;
-            for (int i : validCodes) {
-                if (e.getKeyCode() == i) {
-                    valid = true;
+        if (e.getSource() == this) {
+            int[] validCodes = {16, 17, 18, 38, 40};
+            if (e.getKeyCode() < 65 || e.getKeyCode() > 90) {
+                boolean valid = false;
+                for (int i : validCodes) {
+                    if (e.getKeyCode() == i) {
+                        valid = true;
+                    }
+                }
+                if (!valid) {
+                    this.curString = "";
+                    autoCompleteMenu.setVisible(false);
                 }
             }
-            if (!valid) {
-                this.curString = "";
-                autoCompleteMenu.setVisible(false);
+            if (e.getKeyCode() == 40) {
+                autoCompleteMenu.requestFocus();
             }
         }
-        System.out.println(curString);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource().getClass() == JMenuItem.class){
+        if (e.getSource().getClass() == JMenuItem.class) {
             int position = this.getCaretPosition();
             String str = this.getText();
-            String toInsert = ((JMenuItem)e.getSource()).getText();
-             this.setText(str.substring(0, position-curString.length()) + toInsert + str.substring(position));
+            String toInsert = ((JMenuItem) e.getSource()).getText();
+            this.setText(str.substring(0, position - curString.length()) + toInsert + str.substring(position));
             this.setCaretPosition(position + toInsert.length() - curString.length());
             this.curString = "";
         }

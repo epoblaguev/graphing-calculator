@@ -1,5 +1,6 @@
 package calculator;
 
+import components.SmartTextField;
 import components.VariableTablePane;
 import exceptions.InvalidVariableNameException;
 import expressions.Expression;
@@ -25,7 +26,8 @@ import javax.swing.JTextField;
 public class AddVariableDialog extends JFrame implements ActionListener {
 
     private JLabel lblVariableName, lblVariableValue;
-    private JTextField txtVariableName, txtVariableValue;
+    private JTextField txtVariableName;
+    private SmartTextField txtVariableValue;
     private JButton btnAdd, btnClose;
     private JPanel topPanel, middlePanel, bottomPanel;
 
@@ -44,7 +46,7 @@ public class AddVariableDialog extends JFrame implements ActionListener {
         lblVariableName = new JLabel("Variable Name:");
         txtVariableName = new JTextField(10);
         lblVariableValue = new JLabel("Variable Value:");
-        txtVariableValue = new JTextField(10);
+        txtVariableValue = new SmartTextField(10);
 
         btnAdd = new JButton("Add");
         btnClose = new JButton("Close");
