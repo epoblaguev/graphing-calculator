@@ -351,15 +351,15 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
 
     @Override
     public void keyPressed(KeyEvent e) {
-        //
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
         if (e.getSource() == txtInput) {
             if (e.getKeyCode() == 10) {
                 btnEnter.doClick();
             }
         }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        
     }
 }

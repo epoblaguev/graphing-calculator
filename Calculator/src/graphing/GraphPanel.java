@@ -19,6 +19,7 @@ import java.awt.geom.Point2D;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Vector;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -110,9 +111,15 @@ public class GraphPanel extends JPanel implements Runnable {
             g2.setColor(eq.getColor());
 
             //Set values for loop.
+            try{
             eqPrev = Equation.evaluate(expr, minX, false);
+            }catch(Exception exc){
+                equations.clear();
+                JOptionPane.showMessageDialog(this, exc, "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             polyline.moveTo(UnitToPixelX(minX), UnitToPixelY(eqPrev));
-            interval = intervalFormula = (maxX - minX) /(this.getWidth());
+            interval = intervalFormula = (maxX - minX) / (this.getWidth());
 
             //Start loop.
             for (double x = minX; x <= maxX; x += interval) {
@@ -130,7 +137,7 @@ public class GraphPanel extends JPanel implements Runnable {
 //                        polyline.moveTo(pixValX, UnitToPixelY(maxY));
 //                    }
 //                }
-                
+
                 if (eqVal.isNaN() || eqVal.isInfinite()) {
                     firstPoint = true;
                 } else if (firstPoint) {
@@ -141,13 +148,14 @@ public class GraphPanel extends JPanel implements Runnable {
                 }
 
                 //Set interval.
-                slope = Math.abs((eqVal - eqPrev)/(x-(x-interval)));
-                if(slope>GraphSettings.getMinCalcPerPixel()){
-                    if(slope>GraphSettings.getMaxCalcPerPixel()) slope = GraphSettings.getMaxCalcPerPixel();
-                    interval = intervalFormula/slope;
-                }
-                else{
-                    interval = intervalFormula/GraphSettings.getMinCalcPerPixel();
+                slope = Math.abs((eqVal - eqPrev) / (x - (x - interval)));
+                if (slope > GraphSettings.getMinCalcPerPixel()) {
+                    if (slope > GraphSettings.getMaxCalcPerPixel()) {
+                        slope = GraphSettings.getMaxCalcPerPixel();
+                    }
+                    interval = intervalFormula / slope;
+                } else {
+                    interval = intervalFormula / GraphSettings.getMinCalcPerPixel();
                 }
                 eqPrev = eqVal;
             }
@@ -357,8 +365,10 @@ public class GraphPanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        repaint();
+        try {
+            repaint();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
-
-
 }

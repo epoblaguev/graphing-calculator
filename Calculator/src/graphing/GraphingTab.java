@@ -575,15 +575,15 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
 
     @Override
     public void keyPressed(KeyEvent e) {
-        //
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
         if (e.getSource().getClass() == SmartTextField.class) {
             if (e.getKeyCode() == 10) {
                 btnGraph.doClick();
             }
         }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        
     }
 }

@@ -53,6 +53,8 @@ public class Equation implements Serializable {
 
         m.addVariable("x", x);
 
+
         return m.getValue();
+
     }
 }

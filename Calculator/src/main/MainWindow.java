@@ -313,6 +313,8 @@ public class MainWindow extends JFrame implements ActionListener {
         if (e.getSource() == this.ckDrawGrid) {
             GraphSettings.setDrawGrid(this.ckDrawGrid.isSelected());
         }
+
+        //Line thickness.
         if (e.getSource() == this.rbThin || e.getSource() == this.rbMedium || e.getSource() == this.rbThick || e.getSource() == this.rbCustThickness) {
             if (this.rbThin.isSelected()) {
                 GraphSettings.setLineWidth(1);
@@ -330,6 +332,8 @@ public class MainWindow extends JFrame implements ActionListener {
                 }
             }
         }
+
+        //Graph color.
         if (e.getSource() == this.rbWhite || e.getSource() == this.rbLightGray || e.getSource() == this.rbGray || e.getSource() == this.rbCustColor) {
             if (this.rbWhite.isSelected()) {
                 GraphSettings.setBgColor(Color.WHITE);
@@ -345,6 +349,7 @@ public class MainWindow extends JFrame implements ActionListener {
             }
         }
 
+        //Precision.
         if (e.getSource() == this.rbNoAcc || e.getSource() == this.rbSmallAcc || e.getSource() == this.rbMedAcc || e.getSource() == this.rbHighAcc) {
             if (this.rbNoAcc.isSelected()) {
                 GraphSettings.setMinCalcPerPixel(1);
