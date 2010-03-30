@@ -32,6 +32,8 @@ import java.awt.event.MouseWheelListener;
 import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -350,7 +352,14 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         if (e.getSource() == miRemovePoint) {
             String remove = JOptionPane.showInputDialog(this, "Name of point to remove:");
             GraphPanel.removePoint(remove);
-            this.repaint();
+            try {
+                this.wait(10);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(GraphingTab.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            finally{
+                this.repaint();
+            }
         }
         if (e.getSource() == miRemoveAllPoints) {
             GraphPanel.getPoints().clear();

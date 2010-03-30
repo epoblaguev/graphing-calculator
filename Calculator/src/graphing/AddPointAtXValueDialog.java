@@ -7,7 +7,6 @@ package graphing;
 import equations.Equation;
 import equations.EquationInput;
 import Constants.ConstValues;
-import Settings.GenSettings;
 import components.SmartTextField;
 import expressions.Expression;
 import java.awt.BorderLayout;

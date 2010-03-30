@@ -17,6 +17,8 @@ public class GraphSettings implements Serializable{
     private static float lineWidth = 1;
     private static Color bgColor = Color.gray;
     private static boolean drawGrid = false;
+    private static int minCalcPerPixel = 1;
+    private static int maxCalcPerPixel = 10;
 
     /**
      * Check if grid should be drawn.
@@ -84,10 +86,23 @@ public class GraphSettings implements Serializable{
         GraphSettings.bgColor = bgColor;
     }
 
-    @Override
-    public GraphSettings clone(){
-        return this.clone();
+    public static int getMaxCalcPerPixel() {
+        return maxCalcPerPixel;
     }
+
+    public static void setMaxCalcPerPixel(int maxCalcPerPixel) {
+        GraphSettings.maxCalcPerPixel = maxCalcPerPixel;
+    }
+
+    public static int getMinCalcPerPixel() {
+        return minCalcPerPixel;
+    }
+
+    public static void setMinCalcPerPixel(int minCalcPerPixel) {
+        GraphSettings.minCalcPerPixel = minCalcPerPixel;
+    }
+
+    
 
 
 }

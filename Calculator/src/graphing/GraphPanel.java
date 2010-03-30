@@ -103,7 +103,7 @@ public class GraphPanel extends JPanel implements Runnable {
         //Loop through each equation.
         for (Equation eq : equations) {
             boolean firstPoint = true;
-            double interval;
+            double interval, intervalFormula, slope;
             Double eqVal;
             Double eqPrev = 0.0;
             String expr = eq.getExpression();
@@ -112,7 +112,7 @@ public class GraphPanel extends JPanel implements Runnable {
             //Set values for loop.
             eqPrev = Equation.evaluate(expr, minX, false);
             polyline.moveTo(UnitToPixelX(minX), UnitToPixelY(eqPrev));
-            interval = (maxX - minX) /(this.getWidth());
+            interval = intervalFormula = (maxX - minX) /(this.getWidth());
 
             //Start loop.
             for (double x = minX; x <= maxX; x += interval) {
@@ -138,6 +138,16 @@ public class GraphPanel extends JPanel implements Runnable {
                     firstPoint = false;
                 } else {
                     polyline.lineTo(pixValX, UnitToPixelY(eqVal));
+                }
+
+                //Set interval.
+                slope = Math.abs((eqVal - eqPrev)/(x-(x-interval)));
+                if(slope>GraphSettings.getMinCalcPerPixel()){
+                    if(slope>GraphSettings.getMaxCalcPerPixel()) slope = GraphSettings.getMaxCalcPerPixel();
+                    interval = intervalFormula/slope;
+                }
+                else{
+                    interval = intervalFormula/GraphSettings.getMinCalcPerPixel();
                 }
                 eqPrev = eqVal;
             }

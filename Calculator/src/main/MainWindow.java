@@ -48,11 +48,11 @@ public class MainWindow extends JFrame implements ActionListener {
     CalculatorTab calculatorTab;
     GraphingTab graphingTab;
     JMenuBar menuBar;
-    JMenu mnuFile, mnuSettings, mnuInfo, mnuLineWidth, mnuGraphColor;
+    JMenu mnuFile, mnuSettings, mnuInfo, mnuLineWidth, mnuGraphColor, mnuPrecision, mnuAngleUnits;
     JMenuItem miExit, miSave, miAbout, miHelp, miLoad;
-    JRadioButtonMenuItem rbDegrees, rbRadians, rbGradians, rbThin, rbMedium, rbThick, rbCustThickness, rbWhite, rbLightGray, rbGray, rbCustColor;
+    JRadioButtonMenuItem rbDegrees, rbRadians, rbGradians, rbThin, rbMedium, rbThick, rbCustThickness, rbWhite, rbLightGray, rbGray, rbCustColor, rbNoAcc, rbSmallAcc, rbMedAcc, rbHighAcc;
     JCheckBoxMenuItem ckAntiAlias, ckDrawGrid;
-    ButtonGroup bgAngle, bgLineWidth, bgGraphColor;
+    ButtonGroup bgAngle, bgLineWidth, bgGraphColor, bgPrecision;
 
     public MainWindow() {
         super();
@@ -74,21 +74,24 @@ public class MainWindow extends JFrame implements ActionListener {
         bgAngle = new ButtonGroup();
         bgLineWidth = new ButtonGroup();
         bgGraphColor = new ButtonGroup();
+        bgPrecision = new ButtonGroup();
 
         //Initialize Menu Bar
         menuBar = new JMenuBar();
         mnuFile = new JMenu("File");
         mnuSettings = new JMenu("Settings");
         mnuInfo = new JMenu("Info");
+        mnuAngleUnits = new JMenu("Angle Units");
         mnuLineWidth = new JMenu("Line Width");
         mnuGraphColor = new JMenu("Graph Background");
+        mnuPrecision = new JMenu("Precision Modifier");
 
         //Initialize Menu Items
         miSave = new JMenuItem("Save State", GenSettings.getImageIcon("/images/saveSmall.png"));
-        miLoad = new JMenuItem("Load State",GenSettings.getImageIcon("/images/loadSmall.png"));
-        miExit = new JMenuItem("Exit",GenSettings.getImageIcon("/images/exitSmall.png"));
+        miLoad = new JMenuItem("Load State", GenSettings.getImageIcon("/images/loadSmall.png"));
+        miExit = new JMenuItem("Exit", GenSettings.getImageIcon("/images/exitSmall.png"));
         miAbout = new JMenuItem("About");
-        miHelp = new JMenuItem("Help",GenSettings.getImageIcon("/images/helpSmall.png"));
+        miHelp = new JMenuItem("Help", GenSettings.getImageIcon("/images/helpSmall.png"));
 
         //Initialize radio buttons.
         rbDegrees = new JRadioButtonMenuItem("Degrees");
@@ -102,6 +105,10 @@ public class MainWindow extends JFrame implements ActionListener {
         rbLightGray = new JRadioButtonMenuItem("Light Gray");
         rbGray = new JRadioButtonMenuItem("Gray");
         rbCustColor = new JRadioButtonMenuItem("Custom");
+        rbNoAcc = new JRadioButtonMenuItem("None");
+        rbSmallAcc = new JRadioButtonMenuItem("Small");
+        rbMedAcc = new JRadioButtonMenuItem("Medium");
+        rbHighAcc = new JRadioButtonMenuItem("High");
 
         //Initialize check buttons.
         ckAntiAlias = new JCheckBoxMenuItem("Use Antialiasing");
@@ -129,6 +136,12 @@ public class MainWindow extends JFrame implements ActionListener {
         bgGraphColor.add(rbGray);
         bgGraphColor.add(rbCustColor);
 
+        //Add to precision button group;
+        bgPrecision.add(rbNoAcc);
+        bgPrecision.add(rbSmallAcc);
+        bgPrecision.add(rbMedAcc);
+        bgPrecision.add(rbHighAcc);
+
         //Add to graph color menu
         mnuGraphColor.add(rbWhite);
         mnuGraphColor.add(rbLightGray);
@@ -141,16 +154,25 @@ public class MainWindow extends JFrame implements ActionListener {
         mnuLineWidth.add(rbThick);
         mnuLineWidth.add(rbCustThickness);
 
+        //Add to precision menu
+        mnuPrecision.add(rbNoAcc);
+        mnuPrecision.add(rbSmallAcc);
+        mnuPrecision.add(rbMedAcc);
+        mnuPrecision.add(rbHighAcc);
+
+        //Add to angle units menu
+        mnuAngleUnits.add(rbDegrees);
+        mnuAngleUnits.add(rbRadians);
+        mnuAngleUnits.add(rbGradians);
+
         //Add to settings menu
-        mnuSettings.add(rbDegrees);
-        mnuSettings.add(rbRadians);
-        mnuSettings.add(rbGradians);
+        mnuSettings.add(mnuAngleUnits);
+        mnuSettings.add(mnuPrecision);
+        mnuSettings.add(mnuLineWidth);
+        mnuSettings.add(mnuGraphColor);
         mnuSettings.addSeparator();
         mnuSettings.add(ckAntiAlias);
         mnuSettings.add(ckDrawGrid);
-        mnuSettings.addSeparator();
-        mnuSettings.add(mnuLineWidth);
-        mnuSettings.add(mnuGraphColor);
 
         //Add to Info menu
         mnuInfo.add(miHelp);
@@ -180,12 +202,17 @@ public class MainWindow extends JFrame implements ActionListener {
         rbLightGray.addActionListener(this);
         rbGray.addActionListener(this);
         rbCustColor.addActionListener(this);
+        rbNoAcc.addActionListener(this);
+        rbSmallAcc.addActionListener(this);
+        rbMedAcc.addActionListener(this);
+        rbHighAcc.addActionListener(this);
 
         //Set default settings..
         rbRadians.doClick();
         rbThin.doClick();
         ckAntiAlias.doClick();
         rbLightGray.doClick();
+        rbSmallAcc.doClick();
     }
 
     private void createTabbedPane() {
@@ -193,8 +220,8 @@ public class MainWindow extends JFrame implements ActionListener {
 
         calculatorTab = new CalculatorTab();
         graphingTab = new GraphingTab();
-        tabbedPane.addTab("Calculator",GenSettings.getImageIcon("/images/calcSmall.png"), calculatorTab);
-        tabbedPane.addTab("Graphing",GenSettings.getImageIcon("/images/graphSmall.png"), graphingTab);
+        tabbedPane.addTab("Calculator", GenSettings.getImageIcon("/images/calcSmall.png"), calculatorTab);
+        tabbedPane.addTab("Graphing", GenSettings.getImageIcon("/images/graphSmall.png"), graphingTab);
     }
 
     @Override
@@ -209,7 +236,7 @@ public class MainWindow extends JFrame implements ActionListener {
                     String filePath = fd.getDirectory() + fd.getFile();
                     in = new ObjectInputStream(new FileInputStream(filePath));
                     Storage store = (Storage) in.readObject();
-                    
+
                     ExpressionList.setExpressions(store.getExpressions());
                     VariableList.setVariables(store.getVariables());
                     ExpressionTablePane.refreshTable();
@@ -218,7 +245,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
                     tabbedPane.remove(this.graphingTab);
                     this.graphingTab = store.getGraphingTab();
-                    tabbedPane.addTab("Graphing",GenSettings.getImageIcon("/images/graphSmall.png"), this.graphingTab);
+                    tabbedPane.addTab("Graphing", GenSettings.getImageIcon("/images/graphSmall.png"), this.graphingTab);
                     this.setJMenuBar(menuBar);
                     this.repaint();
                     in.close();
@@ -271,21 +298,19 @@ public class MainWindow extends JFrame implements ActionListener {
         //Settings items.
         if (e.getSource() == this.rbDegrees || e.getSource() == this.rbRadians || e.getSource() == rbGradians) {
             MathEvaluator m = new MathEvaluator();
-            if(this.rbRadians.isSelected()){
+            if (this.rbRadians.isSelected()) {
                 MathEvaluator.setAngleUnits(MathEvaluator.RADIANS);
-            }
-            else if(this.rbDegrees.isSelected()){
+            } else if (this.rbDegrees.isSelected()) {
                 MathEvaluator.setAngleUnits(MathEvaluator.DEGREES);
-            }
-            else if(this.rbGradians.isSelected()){
+            } else if (this.rbGradians.isSelected()) {
                 MathEvaluator.setAngleUnits(MathEvaluator.GRADIANS);
             }
         }
-        
+
         if (e.getSource() == this.ckAntiAlias) {
             GraphSettings.setAntialiased(this.ckAntiAlias.isSelected());
         }
-        if(e.getSource() == this.ckDrawGrid){
+        if (e.getSource() == this.ckDrawGrid) {
             GraphSettings.setDrawGrid(this.ckDrawGrid.isSelected());
         }
         if (e.getSource() == this.rbThin || e.getSource() == this.rbMedium || e.getSource() == this.rbThick || e.getSource() == this.rbCustThickness) {
@@ -317,6 +342,22 @@ public class MainWindow extends JFrame implements ActionListener {
                 if (clr != null) {
                     GraphSettings.setBgColor(clr);
                 }
+            }
+        }
+
+        if (e.getSource() == this.rbNoAcc || e.getSource() == this.rbSmallAcc || e.getSource() == this.rbMedAcc || e.getSource() == this.rbHighAcc) {
+            if (this.rbNoAcc.isSelected()) {
+                GraphSettings.setMinCalcPerPixel(1);
+                GraphSettings.setMaxCalcPerPixel(1);
+            } else if (this.rbSmallAcc.isSelected()) {
+                GraphSettings.setMinCalcPerPixel(1);
+                GraphSettings.setMaxCalcPerPixel(10);
+            } else if (this.rbMedAcc.isSelected()) {
+                GraphSettings.setMinCalcPerPixel(2);
+                GraphSettings.setMaxCalcPerPixel(20);
+            } else if (this.rbHighAcc.isSelected()) {
+                GraphSettings.setMinCalcPerPixel(3);
+                GraphSettings.setMaxCalcPerPixel(30);
             }
         }
         this.repaint();

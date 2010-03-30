@@ -5,6 +5,8 @@
 package components;
 
 import Constants.BlackLists;
+import expressions.Variable;
+import expressions.VariableList;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +23,7 @@ import javax.swing.JTextField;
  */
 public class SmartTextField extends JTextField implements KeyListener, ActionListener {
 
-    private ArrayList<String> list = new ArrayList<String>();
+    private static ArrayList<String> list = new ArrayList<String>();
     private JPopupMenu autoCompleteMenu = new JPopupMenu();
     private String curString;
 
@@ -45,12 +47,21 @@ public class SmartTextField extends JTextField implements KeyListener, ActionLis
     }
 
     private void setUp() {
+        list.clear();
         this.addKeyListener(this);
         this.getCaret().setMagicCaretPosition(new Point(0, 0));
         this.curString = "";
 
+        SmartTextField.rebuildList();
+    }
+
+    public static void rebuildList(){
+        list.clear();
         for (String str : BlackLists.variableBlackList) {
             list.add(str);
+        }
+        for(Variable var : VariableList.getVariables()){
+            list.add(var.getVariableName());
         }
     }
 
@@ -63,7 +74,7 @@ public class SmartTextField extends JTextField implements KeyListener, ActionLis
             this.setText(this.getText().substring(0, position) + ")" + this.getText().substring(position));
             this.setCaretPosition(position);
             this.curString = "";
-        } else if (e.getKeyChar() == ')' && this.getText().substring(position, position + 1).equals(")")) {
+        } else if (this.getText().length() != position && e.getKeyChar() == ')' && this.getText().substring(position, position + 1).equals(")")) {
             //Check if parens are balanced.
             int left = 0;
             int right = 0;
@@ -92,7 +103,7 @@ public class SmartTextField extends JTextField implements KeyListener, ActionLis
                 }
             }
             if (autoCompleteMenu.getComponents().length > 0) {
-                autoCompleteMenu.show(this, this.getCaret().getMagicCaretPosition().x + 7, (this.getHeight() / 2) + 4);
+                autoCompleteMenu.show(this, this.getCaret().getMagicCaretPosition().x + 7, (int) (this.getHeight() * 0.75));
                 this.requestFocus();
             }
         } else {

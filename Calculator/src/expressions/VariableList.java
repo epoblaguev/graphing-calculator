@@ -6,8 +6,8 @@
 package expressions;
 
 import Constants.ConstValues;
+import components.SmartTextField;
 import exceptions.InvalidVariableNameException;
-import java.util.Iterator;
 import java.util.Vector;
 
 /**
@@ -21,7 +21,6 @@ public class VariableList {
         if(variables.isEmpty()){
             variables.add(new Variable("pi", ConstValues.pi));
             variables.add(new Variable("e", ConstValues.e));
-
             sort();
         }
     }
@@ -36,6 +35,7 @@ public class VariableList {
 
     public static void clearVariableList(){
         variables = new Vector<Variable>();
+        sort();
     }
 
     public static void addVariable(Variable variable){
@@ -58,16 +58,6 @@ public class VariableList {
         sort();
     }
 
-    public static String replaceVariables(String expression){
-        Iterator itr = variables.iterator();
-
-        while(itr.hasNext()){
-            Variable var = (Variable) itr.next();
-            expression = expression.replace(var.getVariableName(), String.valueOf(var.getVariableValue()));
-        }
-        return expression;
-    }
-
     private static void sort(){
         boolean swapped;
 
@@ -85,5 +75,6 @@ public class VariableList {
                 }
             }
         }while(swapped == true);
+        SmartTextField.rebuildList();
     }
 }
