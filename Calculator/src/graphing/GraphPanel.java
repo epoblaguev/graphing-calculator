@@ -111,12 +111,12 @@ public class GraphPanel extends JPanel implements Runnable {
             g2.setColor(eq.getColor());
 
             //Set values for loop.
-            try{
-            eqPrev = Equation.evaluate(expr, minX, false);
-            }catch(Exception exc){
+            try {
+                eqPrev = Equation.evaluate(expr, minX, false);
+            } catch (Exception exc) {
                 equations.clear();
-                JOptionPane.showMessageDialog(this, exc, "Error", JOptionPane.ERROR_MESSAGE);
-                return;
+                JOptionPane.showMessageDialog(this, "Invalid Argument.", "Error", JOptionPane.ERROR_MESSAGE);
+                continue;
             }
             polyline.moveTo(UnitToPixelX(minX), UnitToPixelY(eqPrev));
             interval = intervalFormula = (maxX - minX) / (this.getWidth());
@@ -155,7 +155,7 @@ public class GraphPanel extends JPanel implements Runnable {
                     }
                     interval = intervalFormula / slope;
                 } else {
-                    interval = intervalFormula / GraphSettings.getMinCalcPerPixel();
+                    interval = intervalFormula;
                 }
                 eqPrev = eqVal;
             }

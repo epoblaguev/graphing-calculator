@@ -358,10 +358,10 @@ public class MainWindow extends JFrame implements ActionListener {
                 GraphSettings.setMinCalcPerPixel(1);
                 GraphSettings.setMaxCalcPerPixel(10);
             } else if (this.rbMedAcc.isSelected()) {
-                GraphSettings.setMinCalcPerPixel(2);
+                GraphSettings.setMinCalcPerPixel(1);
                 GraphSettings.setMaxCalcPerPixel(20);
             } else if (this.rbHighAcc.isSelected()) {
-                GraphSettings.setMinCalcPerPixel(3);
+                GraphSettings.setMinCalcPerPixel(1);
                 GraphSettings.setMaxCalcPerPixel(30);
             }
         }
