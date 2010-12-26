@@ -48,7 +48,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 
 /**
- *
+ * Creates the Graphing Panel
  * @author Egor
  */
 public class GraphingTab extends JPanel implements ActionListener, MouseWheelListener, MouseMotionListener, MouseListener, FocusListener, KeyListener {
@@ -67,6 +67,9 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
     private JMenuItem miZoomIn, miZoomOut, miPlotPoint, miRemovePoint, miDrawLineBetweenPoints, miDrawTangentLine, miPlotMinPoint, miPlotMaxPoint, miRemoveAllPoints, miClearGraph;
     private JMenuItem miViewTableOfPoints, miViewTableOfValues, miPlotAtXValue;
 
+    /**
+     * Constructor to create the graphing panel
+     */
     public GraphingTab() {
         super();
 
@@ -84,6 +87,9 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         this.resetStats();
     }
 
+    /**
+     * Creates a panel layout with the graphPanel and equations as well as graph dimension controls
+     */
     private void createLayout() {
         //Initialize panels
         graphPanel = new GraphPanel();
@@ -200,7 +206,11 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         txtMaxY.addFocusListener(this);
         txtMinY.addFocusListener(this);
     }
-
+    
+    /**
+     * Creates the menu that is generated when a user right clicks 
+     * on the graph panel
+     */
     private void createRightClickMenu() {
         mnuGraphRightClick = new JPopupMenu();
         miPlotPoint = new JMenuItem("Plot Free Point");
@@ -259,26 +269,47 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         miViewTableOfValues.addActionListener(this);
     }
 
+    /**
+     * Get the button to add an equation
+     * @return
+     */
     public JButton getBtnAddEquation() {
         return btnAddEquation;
     }
 
+    /**
+     * Get the graph button
+     * @return
+     */
     public JButton getBtnGraph() {
         return btnGraph;
     }
-
+    /**
+     * Get the number of equations
+     * @return
+     */
     public int getEquationCount() {
         return equationCount;
     }
-
+    /**
+     * Gets the Panel of equations
+     * @return
+     */
     public JPanel getEquationPanel() {
         return equationPanel;
     }
 
+    /**
+     * Gets the graph panel
+     * @return
+     */
     public GraphPanel getGraphPanel() {
         return graphPanel;
     }
 
+    /**
+     * Resets the max/min values for the graph window
+     */
     private void resetStats() {
         DecimalFormat df = new DecimalFormat(ConstValues.DF_5);
         this.txtMaxX.setText(df.format(graphPanel.getMaxX()));
@@ -287,7 +318,10 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         this.txtMinY.setText(df.format(graphPanel.getMinY()));
     }
 
-    @Override
+    /**
+     * Listens for actions to be performed and performs the appropriate actions
+     * when they are called
+     */
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnGraph) {
             try {
@@ -441,12 +475,10 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         this.resetStats();
     }
 
-    @Override
-    public GraphingTab clone() {
-        return this.clone();
-    }
-
-    @Override
+    
+    /**
+     * When the mouse moves over the graph the x&y numbers are updated
+     */
     public void mouseMoved(MouseEvent e) {
         if (e.getSource() == graphPanel) {
             DecimalFormat df = new DecimalFormat(ConstValues.DF_5);
@@ -457,8 +489,9 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
             lblCursorY.setText("Y: " + df.format(y));
         }
     }
-
-    @Override
+/**
+ * When the mouse wheel is moved the graph is zoomed
+ */
     public void mouseWheelMoved(MouseWheelEvent e) {
         if (e.getSource() == graphPanel) {
             //If zoom in
@@ -473,7 +506,9 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         }
     }
 
-    @Override
+    /**
+     * When the mouse is dragged the area it covers is changed
+     */
     public void mouseDragged(MouseEvent e) {
         if (e.getSource() == graphPanel) {
             double xMoved = e.getX();
@@ -488,7 +523,9 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         }
     }
 
-    @Override
+    /**
+     * When the focus is on one of the max/min boxes its all selected
+     */
     public void focusGained(FocusEvent e) {
         if (e.getSource() == txtMaxX) {
             txtMaxX.selectAll();
@@ -503,8 +540,10 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
             txtMinY.selectAll();
         }
     }
-
-    @Override
+    
+    /**
+     * When the focus is moved off the max/min boxes the values are updated
+     */
     public void focusLost(FocusEvent e) {
         try {
             if (e.getSource() == txtMaxX) {
@@ -530,12 +569,13 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         }
     }
 
-    @Override
     public void mouseClicked(MouseEvent e) {
 //
     }
 
-    @Override
+    /**
+     * Performs the appropriate actions when the mouse is pressed
+     */
     public void mousePressed(MouseEvent e) {
 
         if (e.getSource() == graphPanel && (e.isPopupTrigger() || e.getModifiers() == InputEvent.BUTTON3_MASK)) {
@@ -550,17 +590,17 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         }
     }
 
-    @Override
     public void mouseReleased(MouseEvent e) {
         //
     }
 
-    @Override
     public void mouseEntered(MouseEvent e) {
         //
     }
-
-    @Override
+    
+    /**
+     * When the mouse leaves the graph area the x & y values are set to N/A
+     */
     public void mouseExited(MouseEvent e) {
         if (e.getSource() == graphPanel) {
             lblCursorX.setText("X: N/A");
@@ -568,12 +608,12 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         }
     }
 
-    @Override
     public void keyTyped(KeyEvent e) {
         //
     }
-
-    @Override
+    /**
+     * When enter is pressed while entering an equation, click the graph button
+     */
     public void keyPressed(KeyEvent e) {
         if (e.getSource().getClass() == SmartTextField.class) {
             if (e.getKeyCode() == 10) {
@@ -582,7 +622,6 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         }
     }
 
-    @Override
     public void keyReleased(KeyEvent e) {
         
     }

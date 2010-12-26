@@ -21,7 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
- *
+ *-- Needs Commenting --
  * @author Administrator
  */
 public class DrawLineBetweenPointsDialog extends JFrame implements ActionListener {
@@ -64,7 +64,6 @@ public class DrawLineBetweenPointsDialog extends JFrame implements ActionListene
         this.pack();
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
 
         //If Add.

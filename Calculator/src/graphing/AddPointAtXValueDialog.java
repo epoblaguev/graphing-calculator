@@ -25,7 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- *
+ * -- Needs Commenting --
  * @author Administrator
  */
 public class AddPointAtXValueDialog extends JFrame implements ActionListener, KeyListener {
@@ -84,7 +84,7 @@ public class AddPointAtXValueDialog extends JFrame implements ActionListener, Ke
         this.setMinimumSize(this.getSize());
     }
 
-    @Override
+    
     public void actionPerformed(ActionEvent e) {
 
         //If Add.
@@ -107,17 +107,14 @@ public class AddPointAtXValueDialog extends JFrame implements ActionListener, Ke
         }
     }
 
-    @Override
     public void keyTyped(KeyEvent e) {
         //
     }
 
-    @Override
     public void keyPressed(KeyEvent e) {
         //
     }
 
-    @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == 10) {
             btnDraw.doClick();

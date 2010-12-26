@@ -28,7 +28,7 @@ import javax.swing.table.DefaultTableModel;
 import components.UneditableTable;
 
 /**
- *
+ * -- Needs Commenting --
  * @author Egor
  */
 public class EquationValueTableWindow extends JFrame implements ActionListener {
@@ -123,7 +123,6 @@ public class EquationValueTableWindow extends JFrame implements ActionListener {
         this.repaint();
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnRefresh) {
             refreshTable();

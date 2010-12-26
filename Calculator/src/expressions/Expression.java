@@ -7,7 +7,7 @@ package expressions;
 import java.io.Serializable;
 
 /**
- *
+ *A Class to represent a math expression
  * @author Egor
  */
 public class Expression implements Serializable{
@@ -16,10 +16,19 @@ public class Expression implements Serializable{
     private double value;
     private String angleUnits;
 
+    /**
+     * Constructor that takes a string representing the expression and formats it
+     * @param expression
+     */
     public Expression(String expression) {
         this.expression = Expression.formatExpression(expression);
     }
-
+    /**
+     * Formats the expression in a way that the machine can process
+     * Adds an * in between any implicit multiplication situations
+     * @param expression
+     * @return
+     */
     public static String formatExpression(String expression){
         expression = expression.replace(" ", "");
         
@@ -37,6 +46,10 @@ public class Expression implements Serializable{
         return expression;
     }
 
+    /**
+     * Returns the formatted expression
+     * @return
+     */
     public String getExpression() {
         return expression;
     }

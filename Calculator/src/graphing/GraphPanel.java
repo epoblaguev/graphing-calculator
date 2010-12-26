@@ -23,7 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
- *
+ * Class to represent the graph
  * @author Egor
  */
 public class GraphPanel extends JPanel implements Runnable {
@@ -39,11 +39,16 @@ public class GraphPanel extends JPanel implements Runnable {
     private Vector<Equation> equations = new Vector<Equation>();
     private static HashMap<String, Point2D.Double> points = new HashMap<String, Point2D.Double>();
 
+    /**
+     * Constructor, sets the background
+     */
     public GraphPanel() {
         this.setBackground(GraphSettings.getBgColor());
     }
 
-    @Override
+   /**
+    * Paints the graph
+    */
     public void paintComponent(Graphics g) {
         this.setBackground(GraphSettings.getBgColor());
 
@@ -176,35 +181,66 @@ public class GraphPanel extends JPanel implements Runnable {
         g2.dispose();
     }
 
+    /**
+     * gets the x interval
+     * @return
+     */
     public double getxInterval() {
         return xInterval;
     }
-
+    /**
+     * Gets the y interval
+     * @return
+     */
     public double getyInterval() {
         return yInterval;
     }
 
+    /**
+     * Add a point to the graph
+     * @param key
+     * @param x
+     * @param y
+     */
     public static void addPoint(String key, double x, double y) {
         Point2D.Double pt = new Point2D.Double(x, y);
         points.put(key, pt);
     }
-
+    /**
+     * Remove point
+     * @param key
+     */
     public static void removePoint(String key) {
         points.remove(key);
     }
-
+    /**
+     * Get the points on the graph
+     * @return
+     */
     public static HashMap<String, Point2D.Double> getPoints() {
         return points;
     }
-
+    /**
+     * Gets a point with the specified key
+     * @param key
+     * @return
+     */
     public static Point2D.Double getPoint(String key) {
         return points.get(key);
     }
 
+    /**
+     * Get the maximum x value
+     * @return
+     */
     public double getMaxX() {
         return maxX;
     }
-
+    /**
+     * Set the maximum x
+     * @param maxX
+     * @throws InvalidBoundsException
+     */
     public void setMaxX(double maxX) throws InvalidBoundsException {
         if (maxX <= this.minX) {
             throw new InvalidBoundsException("Max X must be greater then Min X");
@@ -213,11 +249,19 @@ public class GraphPanel extends JPanel implements Runnable {
         }
         (new Thread(this)).start();
     }
-
+    /**
+     * Gets the maximum Y
+     * @return
+     */
     public double getMaxY() {
         return maxY;
     }
 
+    /**
+     * Set the maximum Y
+     * @param maxY
+     * @throws InvalidBoundsException
+     */
     public void setMaxY(double maxY) throws InvalidBoundsException {
         if (maxY <= this.minY) {
             throw new InvalidBoundsException("Max Y must be greater than Min Y");
@@ -227,10 +271,19 @@ public class GraphPanel extends JPanel implements Runnable {
         (new Thread(this)).start();
     }
 
+    /**
+     * Get the minimum x
+     * @return
+     */
     public double getMinX() {
         return minX;
     }
-
+    
+    /**
+     * Set the minimum x
+     * @param minX
+     * @throws InvalidBoundsException
+     */
     public void setMinX(double minX) throws InvalidBoundsException {
         if (minX >= this.maxX) {
             throw new InvalidBoundsException("Max X must be greater then Min X");
@@ -240,10 +293,19 @@ public class GraphPanel extends JPanel implements Runnable {
         (new Thread(this)).start();
     }
 
+    /**
+     * Get minimum Y
+     * @return
+     */
     public double getMinY() {
         return minY;
     }
-
+    
+    /**
+     * Set minimum Y
+     * @param minY
+     * @throws InvalidBoundsException
+     */
     public void setMinY(double minY) throws InvalidBoundsException {
         if (minY >= this.maxY) {
             throw new InvalidBoundsException("Max Y must be greater then Min Y");
@@ -253,10 +315,18 @@ public class GraphPanel extends JPanel implements Runnable {
         (new Thread(this)).start();
     }
 
+    /** 
+     * Get the x axis
+     * @return
+     */
     public int getxAxis() {
         return xAxis;
     }
-
+    
+    /**
+     * Get the Y axis
+     * @return
+     */
     public int getyAxis() {
         return yAxis;
     }
@@ -306,6 +376,10 @@ public class GraphPanel extends JPanel implements Runnable {
         return y;
     }
 
+    /**
+     * Draws the graph with the equations
+     * @param eq
+     */
     void drawGraph(Vector<Equation> eq) {
         this.equations = new Vector<Equation>();
         for (Equation e : eq) {
@@ -314,12 +388,18 @@ public class GraphPanel extends JPanel implements Runnable {
         }
         (new Thread(this)).start();
     }
-
+    /**
+     * Draws the grid
+     */
     void drawGrid() {
         this.equations = new Vector<Equation>();
         (new Thread(this)).start();
     }
-
+    
+    /**
+     * Zooms the graph
+     * @param percent
+     */
     public void zoom(double percent) {
 
         double xCenter = (this.maxX + this.minX) / 2;
@@ -336,21 +416,31 @@ public class GraphPanel extends JPanel implements Runnable {
 
         (new Thread(this)).start();
     }
-
+    
+    /**
+     * Moves the x values view
+     * @param percent
+     */
     public void moveHorizontal(double percent) {
         double move = (this.maxX - this.minX) * (percent / 100);
         this.minX += move;
         this.maxX += move;
         (new Thread(this)).start();
     }
-
+    /**
+     * Moves the Y values view
+     * @param percent
+     */
     public void moveVertical(double percent) {
         double move = (this.maxY - this.minY) * (percent / 100);
         this.minY += move;
         this.maxY += move;
         (new Thread(this)).start();
     }
-
+    
+    /**
+     * Centers the graph on the middle
+     */
     public void center() {
         double x = maxX - minX;
         double y = maxY - minY;
@@ -363,7 +453,9 @@ public class GraphPanel extends JPanel implements Runnable {
         (new Thread(this)).start();
     }
 
-    @Override
+    /**
+     * Repaints the pane
+     */
     public void run() {
         try {
             repaint();

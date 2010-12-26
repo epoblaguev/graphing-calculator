@@ -39,7 +39,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTabbedPane;
 
 /**
- *
+ * Class to display the main Calculator window
  * @author Egor
  */
 public class MainWindow extends JFrame implements ActionListener {
@@ -54,6 +54,9 @@ public class MainWindow extends JFrame implements ActionListener {
     JCheckBoxMenuItem ckAntiAlias, ckDrawGrid;
     ButtonGroup bgAngle, bgLineWidth, bgGraphColor, bgPrecision;
 
+    /**
+     * Constructor to create the main window
+     */
     public MainWindow() {
         super();
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -69,6 +72,9 @@ public class MainWindow extends JFrame implements ActionListener {
         this.setMinimumSize(this.getSize());
     }
 
+    /**
+     * Creates the Menu Bar
+     */
     private void createMenuBar() {
         //Initialize Button Groups;
         bgAngle = new ButtonGroup();
@@ -214,7 +220,10 @@ public class MainWindow extends JFrame implements ActionListener {
         rbLightGray.doClick();
         rbSmallAcc.doClick();
     }
-
+    
+    /**
+     * Creates a set of tabbed panes, one for graphing, one for the calculator
+     */
     private void createTabbedPane() {
         tabbedPane = new JTabbedPane();
 
@@ -223,8 +232,10 @@ public class MainWindow extends JFrame implements ActionListener {
         tabbedPane.addTab("Calculator", GenSettings.getImageIcon("/images/calcSmall.png"), calculatorTab);
         tabbedPane.addTab("Graphing", GenSettings.getImageIcon("/images/graphSmall.png"), graphingTab);
     }
-
-    @Override
+    
+    /**
+     * Listens for various events and performs the appropriate actions
+     */
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == miLoad) {
             FileDialog fd = new FileDialog(this, "Load State", FileDialog.LOAD);

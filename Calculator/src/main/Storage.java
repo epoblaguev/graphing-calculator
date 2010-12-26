@@ -13,7 +13,7 @@ import java.util.Vector;
 import javax.swing.JMenuBar;
 
 /**
- *
+ * A class to store Expressions, Variables, the Graphing Tab, and the Menu Bar
  * @author Egor
  */
 public class Storage implements Serializable{
@@ -29,25 +29,48 @@ public class Storage implements Serializable{
         this.menuBar = menuBar;
     }
 
+    /**
+     * Return all the expressions
+     * @return
+     */
     public Vector<Expression> getExpressions() {
         return expressions;
     }
 
+    /**
+     * Set the list of Expressions
+     * @param expressions
+     */
     public void setExpressions(Vector<Expression> expressions) {
         this.expressions = expressions;
     }
-
+    /**
+     * Get the list of Variables
+     * @return
+     */
     public Vector<Variable> getVariables() {
         return variables;
     }
-
+    /**
+     * Set the list of Variables
+     * @param variables
+     */
     public void setVariables(Vector<Variable> variables) {
         this.variables = variables;
     }
 
+    /**
+     * Set the Graphing Tab
+     * @param graphTab
+     */
     public void setGraphingTab(GraphingTab graphTab){
         this.graphTab = graphTab;
     }
+    
+    /**
+     * Get the graphing tab
+     * @return
+     */
     public GraphingTab getGraphingTab(){
         return graphTab;
     }

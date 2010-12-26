@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
 import components.UneditableTable;
 
 /**
- *
+ * -- Needs Commenting --
  * @author Egor
  */
 public class PointValuesTableWindow extends JFrame implements ActionListener{
@@ -69,7 +69,6 @@ public class PointValuesTableWindow extends JFrame implements ActionListener{
         }
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == btnRefresh){
             refreshTable();

@@ -27,7 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- *
+ *  ---NEEDS TO BE COMMENTED---
  * @author Administrator
  */
 public class AddMinMaxPointDialog extends JFrame implements ActionListener, KeyListener {
@@ -94,7 +94,6 @@ public class AddMinMaxPointDialog extends JFrame implements ActionListener, KeyL
         this.setMinimumSize(this.getSize());
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
 
         //If Add.
@@ -169,17 +168,14 @@ public class AddMinMaxPointDialog extends JFrame implements ActionListener, KeyL
         }
     }
 
-    @Override
     public void keyTyped(KeyEvent e) {
         //
     }
 
-    @Override
     public void keyPressed(KeyEvent e) {
         //
     }
 
-    @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == 10) {
             btnDraw.doClick();
