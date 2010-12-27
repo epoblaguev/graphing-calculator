@@ -6,15 +6,15 @@
 
 ==Intended Features==
 
- *Working Expression Parsing/Solving
- *Easier to use autocomplete
- *Handle grid implementation better
+ * Working Expression Parsing/Solving
+ * Easier to use autocomplete
+ * Handle grid implementation better
 
 
 == Other Intended Additions==
 
- *Better commenting throughout code to facilitate cooperation
- *JUnit Testing to identify expression parsing/solving bugs and maintain base functions as project is expanded
+ * Better commenting throughout code to facilitate cooperation
+ * JUnit Testing to identify expression parsing/solving bugs and maintain base functions as project is expanded
 
 
 == Intended due date ==
