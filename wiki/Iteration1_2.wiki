@@ -1,5 +1,5 @@
 #summary Description of Iteration 1 & 2
-#sidebar sideBar
+#sidebar SideBar
 
 = Iteration 1 & 2 =
 
