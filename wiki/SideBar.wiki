@@ -4,11 +4,9 @@
 
 
 * [ProjectSummary Project Summary]
-
 * Project Roadmap
-
+  * [iteration1_2 Iterations 1 & 2 description]
+  * [iteration3 Iteration 3 Goals]
 * Project Design
-
 * Project Requirements
-
 * Authors
