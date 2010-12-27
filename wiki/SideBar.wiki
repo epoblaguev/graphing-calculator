@@ -3,14 +3,10 @@
 =Contents=
 
 
-* [ProjectSummary Project Summary]
-
-* Project Roadmap
+ * [ProjectSummary Project Summary]
+ * Project Roadmap
   * [Iteration1_2 Iterations 1 & 2 description]
   * [iteration3 Iteration 3 Goals]
-
-* Project Design
-
-* Project Requirements
-
-* Authors
+ * Project Design
+ * Project Requirements
+ * Authors
