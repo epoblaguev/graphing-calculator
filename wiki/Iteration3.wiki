@@ -1,9 +1,6 @@
 #summary Goals for Iteration 3
 #sidebar SideBar
 
-= Iteration 3 =
-
-
 ==Intended Features==
 
  * Working Expression Parsing/Solving
