@@ -4,6 +4,7 @@
 ==Intended Features==
 
  * Working Expression Parsing/Solving
+ * Handle arc-trig functions and bitwise operations
  * Easier to use autocomplete
  * Handle grid implementation better
 
