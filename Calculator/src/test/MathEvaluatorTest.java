@@ -334,4 +334,34 @@ public class MathEvaluatorTest extends TestCase {
 		assertFalse(x == y); 
 	}
 	
+	/**Test Order of Operations with functions involved */
+	public void testOrderOfOperationsWithFunctions()
+	{
+		DecimalFormat df = new DecimalFormat("#.###############");
+		MathEvaluator me = new MathEvaluator("sin(2*10+10)");
+		me.setAngleUnits(MathEvaluator.DEGREES);
+		double x = me.getValue();
+		assertEquals(df.format(x),df.format(0.5));
+		
+		me.setExpression("sin(neg((2^1-12^0-11)*3))");
+		x = me.getValue();
+		assertEquals(df.format(x),df.format(0.5));
+		
+	}
+	/**Tests implicit multiplications */
+	public void testImplicitMultiplication()
+	{
+		MathEvaluator me = new MathEvaluator("3(2+3)");
+		double x = me.getValue();
+		assertEquals(x,15.0);
+		
+		me.setExpression("(2-1)(1+1)");
+	    x = me.getValue();
+		assertEquals(x,2.0);
+	}
+	
+	
+	
+	
+	
 }
