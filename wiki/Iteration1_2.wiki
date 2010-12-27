@@ -1,4 +1,4 @@
-#summary One-Description of Iteration 1 & 2
+#summary Description of Iteration 1 & 2
 #sidebar sideBar
 
 = Iteration 1 & 2 =
