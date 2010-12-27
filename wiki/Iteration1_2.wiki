@@ -17,4 +17,4 @@ These iterations were completed prior to this documentation being written.  As o
 
  * Some problems with Expression handler (handles operations Out of order?)
  * Autocomplete causes problems when entering functions
- * Unable to handle asin,acos,atan functions (gives null pointer exceptions), as well as bitwise functions & and | (it treats them as addition)
+ * Unable to handle asin,acos,atan,min,max functions (give null pointer exceptions), as well as bitwise functions & and | (it treats them as addition)
