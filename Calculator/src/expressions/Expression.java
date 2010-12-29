@@ -68,18 +68,18 @@ public class Expression implements Serializable{
 
     public double evaluate() {
 
-        MathEvaluator m = new MathEvaluator(this.expression);
+        IEvaluator m = new MathEvaluator(this.expression);
 
         for (Variable var : VariableList.getVariables()) {
             m.addVariable(var.getVariableName(), var.getVariableValue());
         }
 
-        if(m.getAngleUnits() == MathEvaluator.RADIANS){
+        if(m.getAngleUnits() == IEvaluator.RADIANS){
             this.angleUnits = "RAD";
         }
-        else if(m.getAngleUnits() == MathEvaluator.DEGREES){
+        else if(m.getAngleUnits() == IEvaluator.DEGREES){
             this.angleUnits = "DEG";
-        }else if(m.getAngleUnits() == MathEvaluator.GRADIANS){
+        }else if(m.getAngleUnits() == IEvaluator.GRADIANS){
             this.angleUnits = "GRAD";
         }
         this.value = m.getValue();

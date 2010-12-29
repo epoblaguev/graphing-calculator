@@ -5,6 +5,7 @@
 package equations;
 
 import expressions.Expression;
+import expressions.IEvaluator;
 import expressions.MathEvaluator;
 import expressions.Variable;
 import expressions.VariableList;
@@ -45,7 +46,7 @@ public class Equation implements Serializable {
         if (formatFirst) {
             expression = Expression.formatExpression(expression);
         }
-        MathEvaluator m = new MathEvaluator(expression);
+        IEvaluator m = new MathEvaluator(expression);
 
         for (Variable var : VariableList.getVariables()) {
             m.addVariable(var.getVariableName(), var.getVariableValue());

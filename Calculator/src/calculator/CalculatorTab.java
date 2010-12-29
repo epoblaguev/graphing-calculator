@@ -5,9 +5,7 @@ import components.ExpressionTablePane;
 import Settings.GenSettings;
 import components.SmartTextField;
 import exceptions.InvalidVariableNameException;
-import expressions.VariableList;
-import expressions.Expression;
-import expressions.ExpressionList;
+import expressions.*;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -181,7 +179,6 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
         VariableTablePane.refreshTable();
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
         //If Enter is pressed.
         if (e.getSource() == btnEnter) {
@@ -268,12 +265,10 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
         }
     }
 
-    @Override
     public void mouseClicked(MouseEvent e) {
         //
     }
 
-    @Override
     public void mousePressed(MouseEvent e) {
         if (e.isPopupTrigger() || e.getModifiers() == InputEvent.BUTTON3_MASK) {
             if (e.getSource() == exprTable) {
@@ -324,32 +319,26 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
         }
     }
 
-    @Override
     public void mouseReleased(MouseEvent e) {
         //
     }
 
-    @Override
     public void mouseEntered(MouseEvent e) {
         //
     }
 
-    @Override
     public void mouseExited(MouseEvent e) {
         //
     }
 
-    @Override
     public void lostOwnership(Clipboard clipboard, Transferable contents) {
         //Lost ownership.
     }
 
-    @Override
     public void keyTyped(KeyEvent e) {
         //
     }
 
-    @Override
     public void keyPressed(KeyEvent e) {
         if (e.getSource() == txtInput) {
             if (e.getKeyCode() == 10) {
@@ -358,7 +347,6 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
         }
     }
 
-    @Override
     public void keyReleased(KeyEvent e) {
         
     }

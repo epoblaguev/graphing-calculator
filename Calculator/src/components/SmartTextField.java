@@ -65,7 +65,7 @@ public class SmartTextField extends JTextField implements KeyListener, ActionLis
         }
     }
 
-    @Override
+    
     public void keyTyped(KeyEvent e) {
         int position = this.getCaretPosition();
         autoCompleteMenu.setVisible(false);
@@ -112,7 +112,7 @@ public class SmartTextField extends JTextField implements KeyListener, ActionLis
 
     }
 
-    @Override
+    
     public void keyPressed(KeyEvent e) {
 
         if (e.getKeyCode() == 8) {
@@ -128,7 +128,7 @@ public class SmartTextField extends JTextField implements KeyListener, ActionLis
         }
     }
 
-    @Override
+   
     public void keyReleased(KeyEvent e) {
         if (e.getSource() == this) {
             int[] validCodes = {16, 17, 18, 38, 40};
@@ -150,7 +150,7 @@ public class SmartTextField extends JTextField implements KeyListener, ActionLis
         }
     }
 
-    @Override
+    
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().getClass() == JMenuItem.class) {
             int position = this.getCaretPosition();

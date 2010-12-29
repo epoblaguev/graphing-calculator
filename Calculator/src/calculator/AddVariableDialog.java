@@ -67,7 +67,6 @@ public class AddVariableDialog extends JFrame implements ActionListener {
         this.add(bottomPanel);
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
         try {
             //If Add.

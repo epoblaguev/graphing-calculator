@@ -82,7 +82,7 @@ public class EquationInput extends JPanel implements ActionListener, MouseListen
         this.color = color;
     }
 
-    @Override
+    
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnName) {
             Color clr = JColorChooser.showDialog(btnName, "Color Chooser", btnName.getForeground());
@@ -94,12 +94,12 @@ public class EquationInput extends JPanel implements ActionListener, MouseListen
         }
     }
 
-    @Override
+    
     public void mouseClicked(MouseEvent e) {
         //
     }
 
-    @Override
+    
     public void mousePressed(MouseEvent e) {
         if (e.getSource() == input && (e.isPopupTrigger() || e.getModifiers() == InputEvent.BUTTON3_MASK)) {
             input.requestFocus();
@@ -120,17 +120,17 @@ public class EquationInput extends JPanel implements ActionListener, MouseListen
         }
     }
 
-    @Override
+    
     public void mouseReleased(MouseEvent e) {
         //
     }
 
-    @Override
+    
     public void mouseEntered(MouseEvent e) {
         //
     }
 
-    @Override
+   
     public void mouseExited(MouseEvent e) {
         //
     }
