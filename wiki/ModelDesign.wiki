@@ -15,8 +15,6 @@
 
 
 
-[https://docs.google.com/uc?id=0B6l7K2cNVOdVZDhjYTlmMzAtNTViMC00YTJmLTljZDItM2ZjNDJhNWVmZjkz&export=download&authkey=CNfA34kP&hl=eng&x=y.jpg Iteration 2 class diagram]
-
-
+[http://www.duke.edu/~bnm2/graphingcalculator/graphcalc_model_class_full_It2.jpg Iteration 2 class diagram]
 
 
