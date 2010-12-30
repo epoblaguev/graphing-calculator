@@ -15,4 +15,4 @@
 
 
 
-[http://www.duke.edu/~bnm2/graph1213.jpg Iteration 2 class diagram]
+[http://www.duke.edu/~bnm2/graph1213_1.jpg Iteration 2 class diagram]
