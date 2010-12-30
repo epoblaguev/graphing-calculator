@@ -15,6 +15,4 @@
 
 
 
-[http://www.duke.edu/~bnm2/graphingcalculator/graphcalc_model_class_full_It2.jpg Iteration 2 class diagram]
-
-
+[http://www.duke.edu/~bnm2/graph1213.jpg Iteration 2 class diagram]
