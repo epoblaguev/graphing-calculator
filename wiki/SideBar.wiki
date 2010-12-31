@@ -8,6 +8,8 @@
   * [Iteration1_2 Iterations 1 & 2 description]
   * [Iteration3 Iteration 3 Goals]
  * Project Design
+  * [ModelDesign Model Design]
+  * [GUIDesign GUI Design]
  * Project Requirements
   * [Iteration3Requirements Iteration 3 Requirements]
  * Authors
