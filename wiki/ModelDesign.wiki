@@ -1,10 +1,11 @@
 #summary The design for the model
+#labels Phase-Design
 #sidebar SideBar
 
 
-===Iteration 3 Design ==
+===Proposed Iteration 3 Design ==
 
-
+For Iteration 3, the goal is to make this design a bit easier to handle, with evaluation responsibilities spread out to multiple classes.  The general structure will be to Tokenize the string, form the tokens into an expression tree, and evaluate the expression tree, with separate classes to represent the Tokenizer, TreeBuilder, and TreeNodes, and another class to aggregate these classes and drive the process.  To facilitate easy integration into the system, the driver will share an interface with the existing MathEvaluator class, allowing easy refactoring of the code.
 
 
 
@@ -13,6 +14,6 @@
 ===Iteration 2 Design ===
 
 
+The following link leads to a class diagram for the Iteration 2 form of the model.  The structure essentially revolves around Expressions (objects that basically wrap a string holding the input to the calculator) and MathEvaluator, which evaluates the value of an Expression.  Math Evaluator holds 2 internal classes, Node and Operator, but basically acts as a mega class for expression evaluation, with pretty much all of the parsing and evaluating happening within the class and or its contained classes.
 
-
-[http://www.duke.edu/~bnm2/graph1213_1.jpg Iteration 2 class diagram]
+[http://www.duke.edu/~bnm2/graphingcalculator/graphcalc_model_class_full_It2.jpg Iteration 2 class diagram]
