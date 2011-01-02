@@ -49,7 +49,7 @@ public class FuncNode extends OpNode {
 		}
 		if(name.equals("log(")) //needs to be fixed
 		{
-			return Math.log(child.getValue());
+			return (Math.log(child.getValue())/Math.log(10.0));
 		}
 		if(name.equals("ln("))
 		{
@@ -89,7 +89,10 @@ public class FuncNode extends OpNode {
 	
 	public String toString()
 	{
+		if(child != null)
 		return name+child.toString()+")";
+		
+		return name;
 	}
 	
 	

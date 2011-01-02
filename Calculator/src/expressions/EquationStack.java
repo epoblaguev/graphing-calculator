@@ -44,6 +44,10 @@ public class EquationStack {
 		return stack.isEmpty();
 	}
 	
+	public String toString()
+	{
+		return stack.toString();
+	}
 	
 
 }

@@ -19,7 +19,10 @@ public class PowerNode extends BinOpNode {
 	
 	public String toString()
 	{
-		return lchild+"^"+rchild;
+		if(lchild != null && rchild != null)
+			return lchild.toString()+"^"+rchild.toString();
+			else
+				return "^";
 	}
 
 }

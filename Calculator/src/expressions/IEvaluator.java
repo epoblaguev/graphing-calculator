@@ -13,8 +13,9 @@ public interface IEvaluator {
 
 	/***
 	 * sets the expression
+	 * @throws Exception 
 	 */
-	public abstract void setExpression(String s);
+	public abstract void setExpression(String s) throws Exception;
 
 	/***
 	 * resets the evaluator

@@ -21,20 +21,18 @@ import equationnodes.*;
  */
 public class EquationTreeBuilder {
 	
-public final int TABLE_SIZE =16, NUMP=5;
-String type,sval, instr,ctok,ctokval;
-int ref, index=-1,cstate=0,nstate, k, i;
-EquationScanner myScan;
-Integer intval;
-boolean loop;
-Production p;
-EquationNode root=null;
-String[] headings,temp, tokens;
-String[][] table;
-ArrayList<Production> prods=new ArrayList<Production>();
-ArrayList<String> stack =new ArrayList<String>(), steps=new ArrayList<String>(),right=new ArrayList<String>();
-EquationStack eqstack =new EquationStack();
-symTab sym;
+private final int TABLE_SIZE =16;
+private String instr,ctok;
+private int  index=-1,cstate=0;
+private EquationScanner myScan;
+private Production p;
+private EquationNode root=null;
+private String[] headings;
+private String[][] table;
+private ArrayList<Production> prods=new ArrayList<Production>();
+private ArrayList<String> stack =new ArrayList<String>(), steps=new ArrayList<String>();
+private EquationStack eqstack =new EquationStack();
+private symTab sym;
 
 	
 	/**
@@ -60,9 +58,8 @@ symTab sym;
 		ctok=myScan.scanNext();
 		while(true)  //Until all tokens are processed
 		{	
-
-				System.out.println(ctok+" "+cstate);
-			
+			System.out.println(ctok+" "+cstate);
+			System.out.println(eqstack);
 				index=-1;
 				for(int i=0; i<headings.length; i++)
 				{
@@ -76,11 +73,8 @@ symTab sym;
 					System.out.println("Error: Invalid Token.  Program is not Syntactically correct, Unknown Token");
 					return false;
 				}
-				
-				
 				instr=table[index][cstate];  //find the instruction corresponding to the given state and token
 				
-			
 				if(instr.equals("")) //handles incorrect programs
 				{
 					System.out.println("Error:Program is not Syntactically correct (Empty Spot in Table)");
@@ -129,9 +123,13 @@ symTab sym;
 		stack.add(currenttok);										//places the current token on the stack
 		stack.add(currentstate+"");									//places the current state on the stack
 	
-		if(myScan.getRef()!=-1 && sym.getValue(myScan.getRef())!=-1)
+		if(myScan.getRef()!=-1 && sym.getValue(myScan.getRef())!=Double.NEGATIVE_INFINITY)
 		{
 			eqstack.push(createNode(myScan.getRef()));
+		}
+		else
+		{
+			System.out.println("HERES THE PROBLEM!!");
 		}
 		cstate=Integer.parseInt((instr.substring(1)));
 		ctok= myScan.scanNext();
@@ -204,13 +202,13 @@ symTab sym;
 			eqstack.push(f);
 		}
 		if(pnum==3) // Handles S -> n S , S )
-		{
-			
+		{	
+			EquationNode lchild =eqstack.pop();
 			EquationNode rchild =eqstack.pop();
 			BiFuncNode b =(BiFuncNode)eqstack.pop();
-			EquationNode lchild =eqstack.pop();
 			b.setLChild(lchild);
 			b.setRChild(rchild);
+			System.out.println("RESULT: "+b);
 			eqstack.push(b);
 		}
 		
@@ -357,18 +355,5 @@ symTab sym;
 		prods.add(new Production("S",tem4, "(4) <Segment> > double"));
 		String[] tem5={"v"};
 		prods.add(new Production("S",tem5,"(5) <Segment> > variable"));
-	}
-	
-	
-	public static void main(String[] args) throws Exception
-	{
-		String[] equation ={"#","(","(","3",")","+","sin(","1.75",")",")","#"};
-		EquationScanner s = new EquationScanner(equation);
-		EquationTreeBuilder d = new EquationTreeBuilder(s);
-		System.out.println(d.process());
-		//d.printTopNode();
-		
-		
-		
 	}
 }

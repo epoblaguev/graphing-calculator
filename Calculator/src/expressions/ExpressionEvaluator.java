@@ -9,11 +9,26 @@ public class ExpressionEvaluator implements IEvaluator{
 	EquationTokenizer et;
 	EquationScanner es;
 	EquationTreeBuilder etb;
-	EquationNode expressiontree;
+	EquationNode expressiontree = null;
 	
 	public ExpressionEvaluator()
 	{
 		et = EquationTokenizer.getInstance();
+	}
+	
+	public ExpressionEvaluator(String expression) throws Exception
+	{
+		et = EquationTokenizer.getInstance();
+		es = new EquationScanner(et.tokenize("#"+expression+"#"));
+		etb = new EquationTreeBuilder(es);
+		if(etb.process())
+		{
+			expressiontree = etb.getRoot();
+		}
+			else
+			{
+				throw new Exception();
+			}
 	}
 	
 	public void addVariable(String v, Double val) {
@@ -27,8 +42,9 @@ public class ExpressionEvaluator implements IEvaluator{
 	}
 
 	public Double getValue() {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println(expressiontree+" = "+expressiontree.getValue());
+		
+		return new Double(expressiontree.getValue());
 	}
 
 	public Double getVariable(String s) {
@@ -41,17 +57,17 @@ public class ExpressionEvaluator implements IEvaluator{
 		
 	}
 
-	public void setExpression(String s)  {
-		try{
-		es = new EquationScanner(et.tokenize("#"+s+"#"));
-		
-		
-		}
-		catch(Exception e)
+	public void setExpression(String expression)  throws Exception{
+		es = new EquationScanner(et.tokenize("#"+expression+"#"));
+		etb = new EquationTreeBuilder(es);
+		if(etb.process())
 		{
-			e.printStackTrace();
+			expressiontree = etb.getRoot();
 		}
-		
+			else
+			{
+				throw new Exception();
+			}
 	}
 
 	public void trace() {

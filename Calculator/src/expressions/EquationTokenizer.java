@@ -26,9 +26,9 @@ public class EquationTokenizer {
 	 */
 	public String[] tokenize(String eq)
 	{
-		Pattern number = Pattern.compile("^\\d+\\.?\\d*");
+		Pattern number = Pattern.compile("^-?\\d+\\.?\\d*");
 		Pattern space = Pattern.compile("^\\s+");
-		Pattern operator = Pattern.compile("^[\\+\\-\\*/!%^&|,)\\[\\]]");
+		Pattern operator = Pattern.compile("^[\\+\\-\\*/!%^&|,)\\[\\]#]");
 		Pattern function = Pattern.compile("^\\w*\\(");
 		Pattern variable = Pattern.compile("^\\w+\\d*");
 		LinkedList<String> list = new LinkedList<String>();
@@ -45,7 +45,21 @@ public class EquationTokenizer {
 			Matcher num = number.matcher(eq);
 			if(num.find())
 			{
-				list.add(eq.substring(0, num.end()));
+				double n = Double.parseDouble(eq.substring(0, num.end()));
+				
+				String last=null;
+				if(!list.isEmpty())
+				last=list.get(list.size()-1);
+				
+				if(n <0 && last != null && (last.equals(")")||number.matcher(last).matches()||variable.matcher(last).matches()))  //handle negative numbers
+				{
+				list.add("-");
+				list.add((-n)+"");
+				}
+				else
+				{
+					list.add((n)+"");	
+				}
 				eq = eq.substring(num.end());
 				continue;
 			}

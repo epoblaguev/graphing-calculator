@@ -1,37 +1,41 @@
 import java.text.DecimalFormat;
 
+import expressions.ExpressionEvaluator;
 import expressions.IEvaluator;
 import expressions.MathEvaluator;
 import junit.framework.TestCase;
 
 /** A JUnit Test class to make sure that the MathEvaluator class is evaluating functions properly */
-public class MathEvaluatorTest extends TestCase {
+public class ExpressionEvaluatorTest extends TestCase {
 	
 	/**Constructor */
-	public MathEvaluatorTest(String name)
+	public ExpressionEvaluatorTest(String name)
 	{
 		super(name);
 	}
 
-	/** A test of simple addition */
-	public void testAddition()
+	/** A test of simple addition 
+	 * @throws Exception */
+	public void testAddition() throws Exception
 	{
-		IEvaluator me = new MathEvaluator("1+1");
+		IEvaluator me = new ExpressionEvaluator("1+1");
 		double x = me.getValue();
 		assertEquals(x,2.0);
 	}
 	
-	/** A test of simple subtraction */
-	public void testSubtraction()
+	/** A test of simple subtraction 
+	 * @throws Exception */
+	public void testSubtraction() throws Exception
 	{
-		IEvaluator me = new MathEvaluator("2-1");
+		IEvaluator me = new ExpressionEvaluator("2-1");
 		double x = me.getValue();
 		assertEquals(x,1.0);
 	}
-	/** A test of simple multiplication */
-	public void testMultiplication()
+	/** A test of simple multiplication 
+	 * @throws Exception */
+	public void testMultiplication() throws Exception
 	{
-		IEvaluator me = new MathEvaluator("2*3");
+		IEvaluator me = new ExpressionEvaluator("2*3");
 		double x = me.getValue();
 		assertEquals(x,6.0);
 	}
@@ -40,7 +44,7 @@ public class MathEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testDivision() throws Exception
 	{
-		IEvaluator me = new MathEvaluator("10/2");
+		IEvaluator me = new ExpressionEvaluator("10/2");
 		double x = me.getValue();
 		assertEquals(x,5.0);
 		
@@ -57,10 +61,11 @@ public class MathEvaluatorTest extends TestCase {
 		assertEquals(x,Double.NEGATIVE_INFINITY);
 	}
 	
-	/**Tests the ^ operator */
-	public void testPowers()
+	/**Tests the ^ operator 
+	 * @throws Exception */
+	public void testPowers() throws Exception
 	{
-		IEvaluator me = new MathEvaluator("3^2");
+		IEvaluator me = new ExpressionEvaluator("3^2");
 		double x = me.getValue();
 		assertEquals(x,9.0);
 	}
@@ -69,7 +74,7 @@ public class MathEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testModDiv() throws Exception
 	{
-		IEvaluator me = new MathEvaluator("3%2");
+		IEvaluator me = new ExpressionEvaluator("3%2");
 		double x = me.getValue();
 		assertEquals(x,1.0);
 		
@@ -87,7 +92,7 @@ public class MathEvaluatorTest extends TestCase {
 	public void testBitwiseOps() throws Exception
 	{
 		
-		IEvaluator me = new MathEvaluator("7&3");
+		IEvaluator me = new ExpressionEvaluator("7&3");
 		double x = me.getValue();
 		assertEquals(x,3.0);
 		
@@ -105,35 +110,39 @@ public class MathEvaluatorTest extends TestCase {
 		
 	}
 	
-	/** Test the sqr() function */
-	public void testSqr()
+	/** Test the sqr() function 
+	 * @throws Exception */
+	public void testSqr() throws Exception
 	{
-		IEvaluator me = new MathEvaluator("sqr(2)");
+		IEvaluator me = new ExpressionEvaluator("sqr(2)");
 		double x = me.getValue();
 		assertEquals(x,4.0);
 	}
 	
-	/** Test the sqrt() function */
-	public void testSqrt()
+	/** Test the sqrt() function 
+	 * @throws Exception */
+	public void testSqrt() throws Exception
 	{
-		IEvaluator me = new MathEvaluator("sqrt(4)");
+		IEvaluator me = new ExpressionEvaluator("sqrt(4)");
 		double x = me.getValue();
 		assertEquals(x,2.0);
 	}
 	
-	/** Test the Log-Base 10 function */
-	public void testLog()
+	/** Test the Log-Base 10 function 
+	 * @throws Exception */
+	public void testLog() throws Exception
 	{
-		IEvaluator me = new MathEvaluator("log(10)");
+		IEvaluator me = new ExpressionEvaluator("log(10)");
 		double x = me.getValue();
 		assertEquals(x,1.0);
 		
 	}
 	
-	/**Test the natural log function */
-	public void testLn()
+	/**Test the natural log function 
+	 * @throws Exception */
+	public void testLn() throws Exception
 	{
-		IEvaluator me = new MathEvaluator("ln("+Math.E+")");
+		IEvaluator me = new ExpressionEvaluator("ln("+Math.E+")");
 		double x = me.getValue();
 		assertEquals(x,1.0);
 	}
@@ -143,7 +152,7 @@ public class MathEvaluatorTest extends TestCase {
 	 * @throws Exception **/
 	public void testArithmeticOrderOfOperations() throws Exception
 	{
-		IEvaluator me = new MathEvaluator("3+2*3");
+		IEvaluator me = new ExpressionEvaluator("3+2*3");
 		double x = me.getValue();
 		assertEquals(x,9.0);
 		
@@ -168,13 +177,14 @@ public class MathEvaluatorTest extends TestCase {
 		assertEquals(x,12.0);
 	}
 	
-	/**Tests the various trig functions making sure they're precise to the 15th decimal point in degree format */
-	public void testTriginDegrees()
+	/**Tests the various trig functions making sure they're precise to the 15th decimal point in degree format 
+	 * @throws Exception */
+	public void testTriginDegrees() throws Exception
 	{
 
 		DecimalFormat df = new DecimalFormat("#.###############");
-		MathEvaluator me = new MathEvaluator();
-		me.setAngleUnits(IEvaluator.DEGREES);
+		ExpressionEvaluator me = new ExpressionEvaluator();
+		//me.setAngleUnits(IEvaluator.DEGREES);
 		
 		//sine
 		me.setExpression("sin(30)");
@@ -193,12 +203,13 @@ public class MathEvaluatorTest extends TestCase {
 		
 	}
 	
-	/**Tests the Arc Trig functions */
-	public void testArcTriginDegrees()
+	/**Tests the Arc Trig functions 
+	 * @throws Exception */
+	public void testArcTriginDegrees() throws Exception
 	{
 		DecimalFormat df = new DecimalFormat("#.###############");
-		MathEvaluator me = new MathEvaluator();
-		me.setAngleUnits(IEvaluator.DEGREES);
+		ExpressionEvaluator me = new ExpressionEvaluator();
+		//me.setAngleUnits(IEvaluator.DEGREES);
 		
 		//arc-sine
 		me.setExpression("asin(0.5)");
@@ -216,13 +227,14 @@ public class MathEvaluatorTest extends TestCase {
 		assertEquals(df.format(x),df.format(45));
 	}
 	
-	/**Tests the various trig functions making sure they're precise to the 15th decimal point in degree format */
-	public void testTriginRadians()
+	/**Tests the various trig functions making sure they're precise to the 15th decimal point in degree format 
+	 * @throws Exception */
+	public void testTriginRadians() throws Exception
 	{
 
 		DecimalFormat df = new DecimalFormat("#.###############");
-		MathEvaluator me = new MathEvaluator();
-		me.setAngleUnits(IEvaluator.RADIANS);
+		ExpressionEvaluator me = new ExpressionEvaluator();
+		//me.setAngleUnits(IEvaluator.RADIANS);
 		
 		//sine
 		me.setExpression("sin("+(Math.PI/6.0)+")");
@@ -241,12 +253,13 @@ public class MathEvaluatorTest extends TestCase {
 		
 	}
 	
-	/**Tests the Arc Trig functions in radians */
-	public void testArcTriginRadians()
+	/**Tests the Arc Trig functions in radians 
+	 * @throws Exception */
+	public void testArcTriginRadians() throws Exception
 	{
 		DecimalFormat df = new DecimalFormat("#.###############");
-		MathEvaluator me = new MathEvaluator();
-		me.setAngleUnits(IEvaluator.RADIANS);
+		ExpressionEvaluator me = new ExpressionEvaluator();
+		//me.setAngleUnits(IEvaluator.RADIANS);
 		
 		//arc-sine
 		me.setExpression("asin(0.5)");
@@ -254,12 +267,12 @@ public class MathEvaluatorTest extends TestCase {
 		assertEquals(df.format(x),df.format(Math.PI/6));
 		
 		//arc-cosine
-		me.setExpression("cos(0.5)");
+		me.setExpression("acos(0.5)");
 		x = me.getValue();
 		assertEquals(df.format(x),df.format(Math.PI/3));
 		
 		//arc-tangent
-		me.setExpression("tan(1)");
+		me.setExpression("atan(1)");
 		x = me.getValue();
 		assertEquals(df.format(x),df.format(Math.PI/4));
 	}
@@ -268,7 +281,7 @@ public class MathEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testMinMax() throws Exception
 	{
-		IEvaluator me = new MathEvaluator("min(1,10)");
+		IEvaluator me = new ExpressionEvaluator("min(1,10)");
 		double x = me.getValue();
 		assertEquals(x,1.0);
 		
@@ -284,7 +297,7 @@ public class MathEvaluatorTest extends TestCase {
 	{
 		DecimalFormat df = new DecimalFormat("#.#############");
 		
-		IEvaluator me = new MathEvaluator("exp(1)");
+		IEvaluator me = new ExpressionEvaluator("exp(1)");
 		double x = me.getValue();
 		assertEquals(df.format(x),df.format(Math.E));
 		
@@ -298,7 +311,7 @@ public class MathEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testFloorAndCeil() throws Exception
 	{
-		IEvaluator me = new MathEvaluator("floor(2.99999999999)");
+		IEvaluator me = new ExpressionEvaluator("floor(2.99999999999)");
 		double x = me.getValue();
 		assertEquals(x,2.0);
 		
@@ -312,7 +325,7 @@ public class MathEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testAbs() throws Exception
 	{
-		IEvaluator me = new MathEvaluator("abs(2)");
+		IEvaluator me = new ExpressionEvaluator("abs(2)");
 		double x = me.getValue();
 		assertEquals(x,2.0);
 		
@@ -325,7 +338,7 @@ public class MathEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testNeg() throws Exception
 	{
-		IEvaluator me = new MathEvaluator("neg(2)");
+		IEvaluator me = new ExpressionEvaluator("neg(2)");
 		double x = me.getValue();
 		assertEquals(x,-2.0);
 		
@@ -334,22 +347,24 @@ public class MathEvaluatorTest extends TestCase {
 		assertEquals(x,2.0);
 	}
 	
-	/** Test the rnd() function */
-	public void testRandom()
+	/** Test the rnd() function 
+	 * @throws Exception */
+	public void testRandom() throws Exception
 	{
-		IEvaluator me = new MathEvaluator("rnd(2.3)");
+		IEvaluator me = new ExpressionEvaluator("rnd(2.3)");
 		double x = me.getValue();
 		double y = me.getValue();
 		
-		assertFalse(x == y); 
+		assertNotSame(x, y); 
 	}
 	
-	/**Test Order of Operations with functions involved */
-	public void testOrderOfOperationsWithFunctions()
+	/**Test Order of Operations with functions involved 
+	 * @throws Exception */
+	public void testOrderOfOperationsWithFunctions() throws Exception
 	{
 		DecimalFormat df = new DecimalFormat("#.###############");
-		MathEvaluator me = new MathEvaluator("sin(2*10+10)");
-		me.setAngleUnits(IEvaluator.DEGREES);
+		ExpressionEvaluator me = new ExpressionEvaluator("sin(2*10+10)");
+		//me.setAngleUnits(IEvaluator.DEGREES);
 		double x = me.getValue();
 		assertEquals(df.format(x),df.format(0.5));
 		
@@ -362,7 +377,7 @@ public class MathEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testVariables() throws Exception
 	{
-		IEvaluator me = new MathEvaluator("x");
+		IEvaluator me = new ExpressionEvaluator("x");
 		me.addVariable("x", 15.0);
 		double x = me.getValue();
 		assertEquals(x,15.0);
@@ -377,7 +392,7 @@ public class MathEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testImplicitMultiplication() throws Exception
 	{
-		IEvaluator me = new MathEvaluator("3(2+3)");
+		IEvaluator me = new ExpressionEvaluator("3(2+3)");
 		double x = me.getValue();
 		assertEquals(x,15.0);
 		

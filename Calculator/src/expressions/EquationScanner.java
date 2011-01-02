@@ -6,12 +6,12 @@ import java.util.Scanner;
 import java.util.regex.*;
 public class EquationScanner {
 	private BufferedReader br;
-	public String next,tok,currenttok="x";
-	public int currentref;
+	private String next,tok,currenttok="x";
+	private int currentref;
 	private ArrayList<String> tokens=new ArrayList<String>(),functions,operators,bifunc,punc;
 	private Scanner s;
 	private boolean comment=false;
-	symTab sym = new symTab(); //creates symbol table
+	private symTab sym = new symTab(); //creates symbol table
 	
 	/**
 	 * Initializes a scan object filling in the keyword map, and color/punctuation lists 
@@ -53,9 +53,6 @@ public class EquationScanner {
 		 {
 			 punc.add(p.next()); 
 		 }
-		 
-		 
-		 
 	}
 	
 	/**
@@ -65,13 +62,8 @@ public class EquationScanner {
 	 */
 	public String scanNext() throws IOException
 	{
-		tok=handleComments();
-	if(tok == null){return null;}
-	if(tok.length()>8)
-	{
-		System.out.print(errorHandle(tok))      ;
 		tok=nextToken();
-	}
+	if(tok == null){return null;}
 		
 	
 	if(functions.contains(tok.toLowerCase()))  //Handles functions
@@ -141,9 +133,9 @@ public class EquationScanner {
 	}
 	
 											//handles Doubles
-	Pattern p1 = Pattern.compile("^\\d+\\.\\d+$");
-	Pattern p2 = Pattern.compile("^\\.\\d+$");
-	Pattern p3 = Pattern.compile("^\\d+$");
+	Pattern p1 = Pattern.compile("^\\-?\\d+\\.\\d+$");
+	Pattern p2 = Pattern.compile("^\\-?\\.\\d+$");
+	Pattern p3 = Pattern.compile("^\\-?\\d+$");
 	
 	if(p1.matcher(tok).matches() || p2.matcher(tok).matches() || p3.matcher(tok).matches())
 	{
@@ -184,7 +176,7 @@ public class EquationScanner {
 		}
 		else
 		{
-		sym.add(tok,tok,-1);
+		sym.add(tok,tok,Double.NEGATIVE_INFINITY);
 		currentref=sym.size()-1;
 		}
 		return currenttok;
@@ -223,43 +215,7 @@ public class EquationScanner {
 		
 		
 	}
-	/**
-	 * Ignores any comments and new lines and moves to the next token
-	 * @return
-	 * @throws IOException
-	 */
-	public String handleComments() throws IOException
-	{
-		tok=nextToken();
-		if( tok == null){return null;}
-		boolean x=true;
-		while(x)
-		{
-			x=false;
-		if(tok.equals("NL"))
-		{
-			tok=nextToken();  //skip to next on a new line
-			x=true;
-		}
-		if(tok.equals("%"))
-		{
-			comment=true;
-			tok=nextToken();  //move to comment mode on %
-			x=true;
-		}
-		while(comment)  // Loop till out of comment mode
-		{
-			tok=nextToken();
-			if(tok.equals("NL"))
-			{
-				comment=false;
-				tok=nextToken();
-			}
-			x=true;
-		}
-		}
-		return tok;
-	}
+	
 	
 	/**
 	 * Returns the next token from the file, returns NL on a new line
@@ -332,7 +288,7 @@ public class EquationScanner {
 	 */
 	public String errorHandle(String token)
 	{
-		return ("Error: Invalid token -"+token);
+		return ("Error: Invalid token - "+token);
 	}
 	
 	/**
