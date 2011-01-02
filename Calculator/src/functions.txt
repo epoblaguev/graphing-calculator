@@ -1,0 +1,17 @@
+sqr(
+sqrt(
+log(
+ln(
+exp(
+floor(
+ceil(
+neg(
+rnd(
+sin(
+cos(
+tan(
+asin(
+acos(
+atan(
+abs(
+(
