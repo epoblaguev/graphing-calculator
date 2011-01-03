@@ -1,16 +1,13 @@
 package expressions;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 import java.util.regex.*;
 public class EquationScanner {
 	private BufferedReader br;
-	private String next,tok,currenttok="x";
+	private String tok,currenttok="x";
 	private int currentref;
 	private ArrayList<String> tokens=new ArrayList<String>(),functions,operators,bifunc,punc;
-	private Scanner s;
-	private boolean comment=false;
 	private symTab sym = new symTab(); //creates symbol table
 	
 	/**
@@ -21,11 +18,7 @@ public class EquationScanner {
 	 */
 	public EquationScanner(String[] tokenarray) throws FileNotFoundException
 	{
-		tokens=new ArrayList<String>();
-		 for(String x:tokenarray)
-		 {
-			tokens.add(x);
-		 }
+		 newExpression(tokenarray);
 		 
 		 Scanner f =new Scanner(new File("./src/functions.txt"));
 		 functions=new ArrayList<String>();
@@ -54,6 +47,17 @@ public class EquationScanner {
 			 punc.add(p.next()); 
 		 }
 	}
+	
+	/** Sets up a new Expression to be scanned */
+	public void newExpression(String[] tokenarray)
+	{
+		tokens=new ArrayList<String>();
+		 for(String x:tokenarray)
+		 {
+			tokens.add(x);
+		 }
+	}
+	
 	
 	/**
 	 * Scans the file and returns the next token
@@ -87,6 +91,7 @@ public class EquationScanner {
 		return currenttok;
 		}
 	}
+	
 	
 	if(bifunc.contains(tok.toLowerCase()))  //Handles functions
 	{
@@ -300,6 +305,7 @@ public class EquationScanner {
 		return true;
 	}
 	
+	/** Returns the Symbol Table */
 	public symTab getSymbolTable()
 	{
 		return sym;

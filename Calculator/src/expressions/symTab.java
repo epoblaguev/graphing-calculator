@@ -86,13 +86,13 @@ public class symTab {
 	 * @param ref
 	 * @param value
 	 */
-	public void setValue(int ref, int value)
+	public void setValue(int ref, double value)
 	{
-	sym[2].set(ref, new Integer(value));	
+	sym[2].set(ref, new Double(value));	
 	}
 	
 	/**
-	 * Returns the int value associated with a particular variable name
+	 * Returns the double value associated with a particular variable name
 	 * @param var
 	 * @return
 	 */
@@ -106,6 +106,22 @@ public class symTab {
 		}
 	}
 	return -1;
+	}
+	
+	/**
+	 * Sets the value of variable var to val
+	 * @param var
+	 * @return
+	 */
+	public void setVarValue(String var, double val)
+	{
+	for(int i=0; i<size(); i++)
+	{
+		if(getName(i).equals(var))
+		{
+			sym[2].set(i, val);	
+		}
+	}
 	}
 
 	

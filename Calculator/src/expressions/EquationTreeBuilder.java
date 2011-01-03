@@ -248,7 +248,7 @@ private symTab sym;
 		else
 		if(sym.getType(ref).equals("v"))
 		{
-			return new VarNode(sym.getName(ref));
+			return new VarNode(sym.getName(ref),sym.getValue(ref));
 		}
 		else
 		if(sym.getType(ref).equals("n"))
@@ -274,9 +274,47 @@ private symTab sym;
 		return null;	
 	}
 	
+	/** Gets the root of the equation */
 	public EquationNode getRoot()
 	{
 		return root;
+	}
+	
+	/** Sets the value of a variable in the Sym table and adds it if necessary,then updates current expression tree */
+	public void setVariable(String var, double val)
+	{
+		if(sym.contains(var))
+		{
+			System.out.println("Did contain "+var);
+			sym.setVarValue(var, val);
+		}
+		else
+		{
+			sym.add("v", var, val);
+		}
+		updateTreeVar(var,val,root);
+	}
+	
+	/** Updates the tree with updated variable information */
+	private void updateTreeVar(String var, double val,EquationNode node)
+	{
+		if(node instanceof VarNode  && ((VarNode)node).getName().equals(var))
+		{
+			((VarNode) node).setValue(val);
+		}
+		else
+		{
+			if(node != null && node.numChildren() == 1)
+			{
+				updateTreeVar(var,val,((OpNode)node).getChild());
+			}
+			else
+				if(node != null && node.numChildren() == 2)
+				{
+					updateTreeVar(var,val,((BinOpNode)node).getLChild());
+					updateTreeVar(var,val,((BinOpNode)node).getRChild());
+				}
+		}
 	}
 	
 	

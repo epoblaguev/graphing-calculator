@@ -10,10 +10,17 @@ public class VarNode extends EquationNode{
 		name=_name;
 	}
 	
-	public VarNode(String name,double value)
+	public VarNode(String _name,double value)
 	{
 		type = "v";
+		name = _name;
 		val = value;
+	}
+	
+	public String getName()
+	{
+		return name;
+		
 	}
 	
 	

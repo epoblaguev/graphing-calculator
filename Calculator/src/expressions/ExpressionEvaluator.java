@@ -32,7 +32,7 @@ public class ExpressionEvaluator implements IEvaluator{
 	}
 	
 	public void addVariable(String v, Double val) {
-		// TODO Auto-generated method stub
+		etb.setVariable(v, val);
 		
 	}
 
@@ -58,7 +58,9 @@ public class ExpressionEvaluator implements IEvaluator{
 	}
 
 	public void setExpression(String expression)  throws Exception{
-		es = new EquationScanner(et.tokenize("#"+expression+"#"));
+		
+		if(es == null){es = new EquationScanner(et.tokenize("#"+expression+"#"));}
+		else{es.newExpression(et.tokenize("#"+expression+"#"));}
 		etb = new EquationTreeBuilder(es);
 		if(etb.process())
 		{
