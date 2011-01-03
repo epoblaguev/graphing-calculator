@@ -25,14 +25,7 @@ public class PlusNode extends BinOpNode{
 		return 0;
 	}
 	
-	public String toString()
-	{
-		if(lchild != null && rchild != null)
-		return lchild.toString()+"+"+rchild.toString();
-		else
-			return "+";
-		
-	}
+
 	
 	
 

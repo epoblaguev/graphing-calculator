@@ -18,20 +18,20 @@ public class symTab {
 	
 	/**
 	 * Adds a new entry to the symbol table
-	 * @param a
-	 * @param b
-	 * @param c
+	 * @param type
+	 * @param name
+	 * @param value
 	 */
-	public void add(String a, String b, double c)
+	public void add(String type, String name, double value)
 	{
-		sym[0].add(a);
-		sym[1].add(b);
-		if(c==-1)
+		sym[0].add(type);
+		sym[1].add(name);
+		if(value==-1)
 		{
 			sym[2].add(null);
 		}
 		else
-		sym[2].add(new Double(c));
+		sym[2].add(new Double(value));
 	}
 	
 	/**

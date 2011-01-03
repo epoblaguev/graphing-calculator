@@ -26,13 +26,5 @@ public class ModNode extends BinOpNode {
 		return 6;
 	}
 	
-	public String toString()
-	{
-		if(lchild != null && rchild != null)
-			return lchild.toString()+"%"+rchild.toString();
-			else
-				return "%";
-		
-	}
 
 }

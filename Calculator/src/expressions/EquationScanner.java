@@ -181,9 +181,6 @@ public class EquationScanner {
 		}
 		return currenttok;
 	}	
-	
-	
- 
   
 	if(isVar(tok.toLowerCase()))
 	{
@@ -211,9 +208,6 @@ public class EquationScanner {
 		return errorHandle(tok);
 	}
 	
-		
-		
-		
 	}
 	
 	
@@ -286,7 +280,7 @@ public class EquationScanner {
 	 * Handles invalid tokens
 	 * @param token
 	 */
-	public String errorHandle(String token)
+	private String errorHandle(String token)
 	{
 		return ("Error: Invalid token - "+token);
 	}
@@ -296,7 +290,7 @@ public class EquationScanner {
 	 * @param token
 	 * @return
 	 */
-	public boolean isVar(String token)
+	private boolean isVar(String token)
 	{
 		for(int i=0; i<token.length(); i++)
 		{
@@ -305,10 +299,7 @@ public class EquationScanner {
 		
 		return true;
 	}
-	/**
-	 * Gives the symbol table
-	 * @return
-	 */
+	
 	public symTab getSymbolTable()
 	{
 		return sym;

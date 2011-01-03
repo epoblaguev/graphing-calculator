@@ -83,7 +83,7 @@ private symTab sym;
 				else
 				if(instr.equals("acc"))  //handles the accepts case
 				{
-					root =eqstack.pop();
+					root =balanceTree(eqstack.pop());
 					return true;
 				}
 				else
@@ -267,6 +267,8 @@ private symTab sym;
 				case '/': return new DivNode();
 				case '%': return new ModNode();
 				case '^': return new PowerNode();
+				case '|': return new BitwiseOrNode();
+				case '&': return new BitwiseAndNode();
 			}
 		}
 		return null;	
@@ -355,5 +357,43 @@ private symTab sym;
 		prods.add(new Production("S",tem4, "(4) <Segment> > double"));
 		String[] tem5={"v"};
 		prods.add(new Production("S",tem5,"(5) <Segment> > variable"));
+	}
+	
+	/**Balances the tree to preserve order of operations and returns the new root */
+	private EquationNode balanceTree(EquationNode node)
+	{
+		
+		
+		
+		if(node.numChildren() == 0){return node;}
+		else
+		if(node.numChildren() == 1)
+		{
+			((OpNode)node).setChild(balanceTree(((OpNode)node).getChild()));
+		}
+		else
+		{
+			((BinOpNode)node).setLChild(balanceTree(((BinOpNode)node).getLChild()));
+			((BinOpNode)node).setRChild(balanceTree(((BinOpNode)node).getRChild()));
+			EquationNode lchild = ((BinOpNode)node).getLChild();
+			EquationNode rchild = ((BinOpNode)node).getRChild();
+			if(lchild.getPriority() <node.getPriority())
+			{
+				EquationNode nlchild = ((BinOpNode)lchild).getRChild();
+				((BinOpNode)lchild).setRChild(node);
+				((BinOpNode)node).setLChild(nlchild);
+				return lchild;
+			}
+			if(rchild.getPriority() <node.getPriority())
+			{
+				EquationNode nrchild = ((BinOpNode)rchild).getRChild();
+				((BinOpNode)rchild).setLChild(node);
+				((BinOpNode)node).setRChild(nrchild);
+				return rchild;
+			}
+		}
+		
+		
+		return node;
 	}
 }

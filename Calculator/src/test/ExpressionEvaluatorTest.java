@@ -363,14 +363,14 @@ public class ExpressionEvaluatorTest extends TestCase {
 	public void testOrderOfOperationsWithFunctions() throws Exception
 	{
 		DecimalFormat df = new DecimalFormat("#.###############");
-		ExpressionEvaluator me = new ExpressionEvaluator("sin(2*10+10)");
+		ExpressionEvaluator me = new ExpressionEvaluator("abs(2+10*10)");
 		//me.setAngleUnits(IEvaluator.DEGREES);
 		double x = me.getValue();
-		assertEquals(df.format(x),df.format(0.5));
+		assertEquals(df.format(x),df.format(102.0));
 		
-		me.setExpression("sin(neg((2^1-12^0-11)*3))");
+		me.setExpression("(neg((2^1-12^0-11)*3))");
 		x = me.getValue();
-		assertEquals(df.format(x),df.format(0.5));	
+		assertEquals(df.format(x),df.format(30));	
 	}
 	
 	/**Tests the evaluators ability to handle variables 

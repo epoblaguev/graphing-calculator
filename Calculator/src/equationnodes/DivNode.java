@@ -25,13 +25,5 @@ public class DivNode extends BinOpNode {
 		return 5;
 	}
 
-	public String toString()
-	{
-		
-		if(lchild != null && rchild != null)
-			return lchild.toString()+"/"+rchild.toString();
-			else
-				return "/";
-		
-	}
+
 }

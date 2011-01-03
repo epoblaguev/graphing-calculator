@@ -34,5 +34,21 @@ public abstract class BinOpNode extends EquationNode {
 		return rchild;
 	}
 	
+	
+	public String toString()
+	{
+		if(lchild != null && rchild != null)
+		{
+			return lchild+name+rchild;
+		}
+		else return name;
+	}
+	
+	@Override
+	public int numChildren() {
+		// TODO Auto-generated method stub
+		return 2;
+	}
+	
 
 }

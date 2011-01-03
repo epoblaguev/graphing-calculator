@@ -40,5 +40,11 @@ public class VarNode extends EquationNode{
 	{
 		return name;
 	}
+	
+	@Override
+	public int numChildren() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 }

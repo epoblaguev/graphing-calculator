@@ -14,4 +14,7 @@ public abstract class EquationNode {
 	
 	public abstract int getPriority();
 	
+	/** Returns the number of children this node has */
+	public abstract int numChildren();
+	
 }

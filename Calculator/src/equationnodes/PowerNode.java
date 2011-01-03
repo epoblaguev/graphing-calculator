@@ -17,12 +17,5 @@ public class PowerNode extends BinOpNode {
 		return Math.pow(lchild.getValue(), rchild.getValue());
 	}
 	
-	public String toString()
-	{
-		if(lchild != null && rchild != null)
-			return lchild.toString()+"^"+rchild.toString();
-			else
-				return "^";
-	}
 
 }

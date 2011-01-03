@@ -51,5 +51,7 @@ public class BiFuncNode extends BinOpNode{
 				return name;
 	}
 
+	
+
 
 }

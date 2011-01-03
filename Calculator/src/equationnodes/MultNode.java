@@ -20,14 +20,7 @@ public class MultNode extends BinOpNode{
 		return lchild.getValue() * rchild.getValue();
 	}
 	
-	public String toString()
-	{
-		if(lchild != null && rchild != null)
-			return lchild.toString()+"*"+rchild.toString();
-			else
-				return "*";
-		
-	}
+	
 
 	@Override
 	public int getPriority() {
