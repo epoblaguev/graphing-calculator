@@ -66,9 +66,11 @@ public class Expression implements Serializable{
         return angleUnits;
     }
 
-    public double evaluate() {
+    public double evaluate() throws Exception {
 
-        IEvaluator m = new MathEvaluator(this.expression);
+        IEvaluator m;
+			m = new ExpressionEvaluator(this.expression);
+		
 
         for (Variable var : VariableList.getVariables()) {
             m.addVariable(var.getVariableName(), var.getVariableValue());
@@ -84,9 +86,10 @@ public class Expression implements Serializable{
         }
         this.value = m.getValue();
         return value;
+		
     }
 
-    public static double evaluate(String expression){
+    public static double evaluate(String expression) throws Exception{
         Expression expr = new Expression(expression);
         return expr.evaluate();
     }

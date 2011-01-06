@@ -18,11 +18,6 @@ public interface IEvaluator {
 	public abstract void setExpression(String s) throws Exception;
 
 	/***
-	 * resets the evaluator
-	 */
-	public abstract void reset();
-
-	/***
 	 * evaluates and returns the value of the expression
 	 */
 	public abstract Double getValue();
@@ -33,14 +28,12 @@ public interface IEvaluator {
 	public abstract Double getVariable(String s);
 
 	/**
-	 * Get the angleUnits (Radians, Degrees, Gradians)
+	 * Get the angleUnits (Radians, Degrees)
 	 * @return the angle
 	 */
 	public abstract int getAngleUnits();
-
-	/***
-	 * trace the binary tree for debug
-	 */
-	public abstract void trace();
+	
+	/** Sets the angle units (Radians, Degrees) */
+	public abstract void setAngleUnits(int units);
 
 }

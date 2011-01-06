@@ -4,36 +4,58 @@ import java.util.Random;
 
 public class FuncNode extends OpNode {
 
-	public FuncNode(String func)
+	boolean radians;
+	
+	public FuncNode(String func,boolean rad)
 	{
 		name = func;
 		type = "f";
+		radians = rad;
 	}
 	public double getValue() {  //should put this in order of most likely to least likely to be used
 		if(name.equals("sin("))
 		{
-			System.out.println(child.getClass());
+			System.out.print("Radians?: " +radians);
+					
+			if(radians)
 			return Math.sin(child.getValue());
+			else
+				return Math.sin(Math.toRadians(child.getValue()));
 		}
 		if(name.equals("cos("))
 		{
+			if(radians)
 			return Math.cos(child.getValue());
+			else
+				return Math.cos(Math.toRadians(child.getValue()));
 		}
 		if(name.equals("tan("))
 		{
+			if(radians)
 			return Math.tan(child.getValue());
+			else
+				return Math.tan(Math.toRadians(child.getValue()));
 		}
 		if(name.equals("asin("))
 		{
+			if(radians)
 			return Math.asin(child.getValue());
+			else
+				return Math.toDegrees(Math.asin(child.getValue()));
 		}
 		if(name.equals("acos("))
 		{
+			if(radians)
 			return Math.acos(child.getValue());
+			else
+				return Math.toDegrees(Math.acos(child.getValue()));
 		}
 		if(name.equals("atan("))
 		{
+			if(radians)
 			return Math.atan(child.getValue());
+			else
+				return Math.toDegrees(Math.atan(child.getValue()));
 		}
 		if(name.equals("abs("))
 		{

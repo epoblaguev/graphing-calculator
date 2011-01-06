@@ -10,6 +10,7 @@ public class ExpressionEvaluator implements IEvaluator{
 	EquationScanner es;
 	EquationTreeBuilder etb;
 	EquationNode expressiontree = null;
+	private boolean radians = true;
 	
 	public ExpressionEvaluator()
 	{
@@ -37,31 +38,57 @@ public class ExpressionEvaluator implements IEvaluator{
 	}
 
 	public int getAngleUnits() {
-		// TODO Auto-generated method stub
-		return 0;
+		if(radians)
+		return IEvaluator.RADIANS;
+		else
+			return IEvaluator.DEGREES;
+	}
+	
+	/** sets the angle units (gradians not currently supported */
+	public void setAngleUnits(int units) {
+		if(etb==null)
+		{
+			try{
+			es = new EquationScanner(new String[0]);
+			etb = new EquationTreeBuilder(es);
+			}
+			catch(Exception e)
+			{
+				
+			}
+		}
+		if(units == IEvaluator.RADIANS || units == IEvaluator.GRADIANS)
+		{
+			etb.setRadians(true);
+			radians = true;
+		}
+		else
+		{
+			etb.setRadians(false);
+			radians = false;
+		}
+		
+		
+		
 	}
 
 	public Double getValue() {
-		System.out.println(expressiontree+" = "+expressiontree.getValue());
 		
-		return new Double(expressiontree.getValue());
+		return new Double(etb.getRoot().getValue());
 	}
 
-	public Double getVariable(String s) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void reset() {
-		// TODO Auto-generated method stub
+	public Double getVariable(String varname) {
 		
+		return etb.getVariable(varname);
 	}
 
+	/** Sets the Evaluator to a new Expression */
 	public void setExpression(String expression)  throws Exception{
 		
 		if(es == null){es = new EquationScanner(et.tokenize("#"+expression+"#"));}
 		else{es.newExpression(et.tokenize("#"+expression+"#"));}
 		etb = new EquationTreeBuilder(es);
+		etb.setRadians(radians);
 		if(etb.process())
 		{
 			expressiontree = etb.getRoot();
@@ -72,9 +99,5 @@ public class ExpressionEvaluator implements IEvaluator{
 			}
 	}
 
-	public void trace() {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

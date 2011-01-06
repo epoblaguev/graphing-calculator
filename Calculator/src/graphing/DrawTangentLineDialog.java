@@ -89,8 +89,18 @@ public class DrawTangentLineDialog extends JFrame implements ActionListener, Key
                 }
             }
 
-            double pt1 = Expression.evaluate(this.txtInput.getText()) - ConstValues.smallestNum;
-            double pt2 = Expression.evaluate(this.txtInput.getText()) + ConstValues.smallestNum;
+            double pt1;
+			try {
+				pt1 = Expression.evaluate(this.txtInput.getText()) - ConstValues.smallestNum;
+			} catch (Exception e1) {
+				pt1 = Double.NaN;
+			}
+            double pt2;
+			try {
+				pt2 = Expression.evaluate(this.txtInput.getText()) + ConstValues.smallestNum;
+			} catch (Exception e2) {
+				pt2= Double.NaN;
+			}
 
             double slope = ((Equation.evaluate(expression, pt1, true) - Equation.evaluate(expression, pt2, true)) / (pt1 - pt2));
             double yIntercept = (Equation.evaluate(expression, pt1, true) - (slope * pt1));

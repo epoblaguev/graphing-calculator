@@ -601,7 +601,7 @@ public class MathEvaluator implements IEvaluator {
      * Set the angleUnits (Radians, Degrees, Gradians)
      * @param angleunits - the units of the angle
   	 */
-    public static void setAngleUnits(int angleUnits) {
+    public void setAngleUnits(int angleUnits) {
         MathEvaluator.angleUnits = angleUnits;
     }
     

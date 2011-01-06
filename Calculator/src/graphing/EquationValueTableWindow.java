@@ -93,11 +93,27 @@ public class EquationValueTableWindow extends JFrame implements ActionListener {
         tableModel.setColumnCount(0);
         tableModel.addColumn("X Value");
         tableModel.addColumn("Y Value");
-
-        double start = Expression.evaluate(txtLowX.getText());
-        double finish = Expression.evaluate(txtHighX.getText());
-        double interval = Expression.evaluate(txtInterval.getText());
-
+        double start;
+        double finish;
+        double interval;
+        try{
+        start = Expression.evaluate(txtLowX.getText());
+        }catch(Exception e)
+        {
+        	start = Double.NaN;
+        }
+        try{
+        finish = Expression.evaluate(txtHighX.getText());
+        }catch(Exception e)
+        {
+        	finish= Double.NaN;
+        }
+        try{
+        	interval = Expression.evaluate(txtInterval.getText());
+        }catch(Exception e)
+        {
+        	interval = Double.NaN;
+        }
         System.out.println(start);
         System.out.println(finish);
         System.out.println(interval);

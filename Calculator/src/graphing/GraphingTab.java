@@ -548,19 +548,45 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         try {
             if (e.getSource() == txtMaxX) {
                 Expression expr = new Expression(txtMaxX.getText());
+                try{
                 graphPanel.setMaxX(expr.evaluate());
+                }
+                catch(Exception x)
+                {
+                	graphPanel.setMaxX(Double.NaN);
+                }
             }
             if (e.getSource() == txtMinX) {
                 Expression expr = new Expression(txtMinX.getText());
+                try{
                 graphPanel.setMinX(expr.evaluate());
+                }
+                catch(Exception x)
+                {
+                	graphPanel.setMinX(Double.NaN);
+                }
             }
+            
             if (e.getSource() == txtMaxY) {
                 Expression expr = new Expression(txtMaxY.getText());
+                try{
                 graphPanel.setMaxY(expr.evaluate());
+                }
+                catch(Exception x)
+                {
+                	graphPanel.setMaxY(Double.NaN);
+                }
             }
+            
             if (e.getSource() == txtMinY) {
                 Expression expr = new Expression(txtMinY.getText());
+                try{
                 graphPanel.setMinY(expr.evaluate());
+                }
+                catch(Exception x)
+                {
+                	graphPanel.setMaxX(Double.NaN);
+                }
             }
         } catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(this, nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

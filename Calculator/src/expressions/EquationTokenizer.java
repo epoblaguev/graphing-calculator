@@ -1,5 +1,6 @@
 package expressions;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,7 +32,7 @@ public class EquationTokenizer {
 		Pattern operator = Pattern.compile("^[\\+\\-\\*/!%^&|,)\\[\\]#]");
 		Pattern function = Pattern.compile("^\\w*\\(");
 		Pattern variable = Pattern.compile("^\\w+\\d*");
-		LinkedList<String> list = new LinkedList<String>();
+		ArrayList<String> list = new ArrayList<String>();
 		
 		while(eq.length() >0)
 		{
@@ -97,7 +98,7 @@ public class EquationTokenizer {
 			System.out.println("Equation: "+eq);
 			System.out.println("Token List "+ list);
 		}
-		
+		addImplicitMult(list,number,variable,function);
 		String[] tokens = new String[list.size()];
 		int i=0;
 		for(String t:list)
@@ -105,11 +106,31 @@ public class EquationTokenizer {
 			tokens[i] = t;
 			i++;
 		}
-			
 		return tokens;
 		
 	}
 	
+	private void addImplicitMult(ArrayList<String> list,Pattern number, Pattern var,Pattern func) {
+		for(int i=0; i<list.size()-1; i++)
+		{
+			String a = list.get(i);
+			String b = list.get(i+1);
+			
+			if(number.matcher(a).matches())
+				if(var.matcher(b).matches()||func.matcher(b).matches())
+				{
+					list.add(i+1,"*");
+				}
+			if(a.equals(")"))
+					if(func.matcher(b).matches())
+					{
+						list.add(i+1,"*");
+					}
+		
+		}
+		
+	}
+
 	public static void main(String[] args)
 	{
 		EquationTokenizer et =getInstance();

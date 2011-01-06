@@ -33,6 +33,7 @@ private ArrayList<Production> prods=new ArrayList<Production>();
 private ArrayList<String> stack =new ArrayList<String>(), steps=new ArrayList<String>();
 private EquationStack eqstack =new EquationStack();
 private symTab sym;
+private boolean radians = true;
 
 	
 	/**
@@ -238,7 +239,7 @@ private symTab sym;
 		if(sym.getType(ref).equals("f"))
 		{
 			
-			return new FuncNode(sym.getName(ref));
+			return new FuncNode(sym.getName(ref),radians);
 		}
 		else
 		if(sym.getType(ref).equals("d"))
@@ -433,5 +434,16 @@ private symTab sym;
 		
 		
 		return node;
+	}
+	
+	/** True sets the angle value to radians, false sets it to degrees */
+	public void setRadians(boolean rad)
+	{
+		radians = rad;
+	}
+
+	/** Gets the value of the variable with name varname */
+	public Double getVariable(String varname) {
+		return sym.getVarValue(varname);
 	}
 }

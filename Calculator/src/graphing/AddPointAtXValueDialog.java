@@ -89,7 +89,12 @@ public class AddPointAtXValueDialog extends JFrame implements ActionListener, Ke
 
         //If Add.
         if (e.getSource() == btnDraw) {
-            double x = Expression.evaluate(txtValue.getText());
+            double x;
+			try {
+				x = Expression.evaluate(txtValue.getText());
+			} catch (Exception e1) {
+				x=Double.NaN;
+			}
 
             for (Component eq : graphTab.getEquationPanel().getComponents()) {
                 if (((EquationInput) eq).getBtnName().getText().equals(cbEquation.getSelectedItem())) {

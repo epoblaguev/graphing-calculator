@@ -184,7 +184,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 
 		DecimalFormat df = new DecimalFormat("#.###############");
 		ExpressionEvaluator me = new ExpressionEvaluator();
-		//me.setAngleUnits(IEvaluator.DEGREES);
+		me.setAngleUnits(IEvaluator.DEGREES);
 		
 		//sine
 		me.setExpression("sin(30)");
@@ -207,9 +207,9 @@ public class ExpressionEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testArcTriginDegrees() throws Exception
 	{
-		DecimalFormat df = new DecimalFormat("#.###############");
+		DecimalFormat df = new DecimalFormat("#.#############");
 		ExpressionEvaluator me = new ExpressionEvaluator();
-		//me.setAngleUnits(IEvaluator.DEGREES);
+		me.setAngleUnits(IEvaluator.DEGREES);
 		
 		//arc-sine
 		me.setExpression("asin(0.5)");
@@ -217,12 +217,12 @@ public class ExpressionEvaluatorTest extends TestCase {
 		assertEquals(df.format(x),df.format(30));
 		
 		//arc-cosine
-		me.setExpression("cos(0.5)");
+		me.setExpression("acos(0.5)");
 		x = me.getValue();
-		assertEquals(df.format(x),df.format(60));
+	   	assertEquals(df.format(x),df.format(60));
 		
 		//arc-tangent
-		me.setExpression("tan(1)");
+		me.setExpression("atan(1)");
 		x = me.getValue();
 		assertEquals(df.format(x),df.format(45));
 	}
@@ -234,7 +234,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 
 		DecimalFormat df = new DecimalFormat("#.###############");
 		ExpressionEvaluator me = new ExpressionEvaluator();
-		//me.setAngleUnits(IEvaluator.RADIANS);
+		me.setAngleUnits(IEvaluator.RADIANS);
 		
 		//sine
 		me.setExpression("sin("+(Math.PI/6.0)+")");
@@ -259,7 +259,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	{
 		DecimalFormat df = new DecimalFormat("#.###############");
 		ExpressionEvaluator me = new ExpressionEvaluator();
-		//me.setAngleUnits(IEvaluator.RADIANS);
+		me.setAngleUnits(IEvaluator.RADIANS);
 		
 		//arc-sine
 		me.setExpression("asin(0.5)");

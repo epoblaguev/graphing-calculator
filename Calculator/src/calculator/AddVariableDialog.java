@@ -102,6 +102,8 @@ public class AddVariableDialog extends JFrame implements ActionListener {
             }
         } catch (InvalidVariableNameException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
-        }
+        } catch (Exception x) {
+        	JOptionPane.showMessageDialog(this, x.getMessage());
+		}
     }
 }

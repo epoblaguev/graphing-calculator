@@ -41,8 +41,9 @@ public class ExpressionList {
     /**
      * Adds an expression to the list
      * @param expression
+     * @throws Exception 
      */
-    public static void addExpression(Expression expression){
+    public static void addExpression(Expression expression) throws Exception{
         expression.evaluate();
         expressions.add(expression);
     }

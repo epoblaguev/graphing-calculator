@@ -6,7 +6,7 @@ package equations;
 
 import expressions.Expression;
 import expressions.IEvaluator;
-import expressions.MathEvaluator;
+import expressions.ExpressionEvaluator;
 import expressions.Variable;
 import expressions.VariableList;
 import java.awt.Color;
@@ -42,12 +42,13 @@ public class Equation implements Serializable {
         this.expression = expression;
     }
 
-    public static double evaluate(String expression, double x, boolean formatFirst) {
+    public static double evaluate(String expression, double x, boolean formatFirst){
         if (formatFirst) {
             expression = Expression.formatExpression(expression);
         }
-        IEvaluator m = new MathEvaluator(expression);
-
+        try{
+        IEvaluator m = new ExpressionEvaluator(expression);
+        
         for (Variable var : VariableList.getVariables()) {
             m.addVariable(var.getVariableName(), var.getVariableValue());
         }
@@ -56,6 +57,6 @@ public class Equation implements Serializable {
 
 
         return m.getValue();
-
+        }catch(Exception e){return 0;}
     }
 }

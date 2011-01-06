@@ -104,8 +104,18 @@ public class AddMinMaxPointDialog extends JFrame implements ActionListener, KeyL
                 }
             }
 
-            double start = Math.min(Expression.evaluate(txtLowX.getText()),Expression.evaluate(txtHighX.getText()));
-            double finish = Math.max(Expression.evaluate(txtLowX.getText()),Expression.evaluate(txtHighX.getText()));
+            double start;
+			try {
+				start = Math.min(Expression.evaluate(txtLowX.getText()),Expression.evaluate(txtHighX.getText()));
+			} catch (Exception e2) {
+				start = Double.NaN;
+			}
+            double finish;
+			try {
+				finish = Math.max(Expression.evaluate(txtLowX.getText()),Expression.evaluate(txtHighX.getText()));
+			} catch (Exception e1) {
+				finish = Double.NaN;
+			}
             double interval = Math.abs(finish - start) / 1000;
             boolean foundMin = false;
             double xValue = start;
