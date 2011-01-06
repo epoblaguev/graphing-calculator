@@ -2,13 +2,13 @@ package expressions;
 import java.util.ArrayList;
 
 
-public class symTab {
+public class SymbolTable {
 	private ArrayList[] sym;
 	
 	/**
 	 * Creates the symbol table
 	 */
-	public symTab() {
+	public SymbolTable() {
 		
 		sym=new ArrayList[3];   //Symbol Table
 		sym[0]=new ArrayList<String>();
@@ -122,15 +122,6 @@ public class symTab {
 			sym[2].set(i, val);	
 		}
 	}
-	}
-
-	
-	public void print()
-	{
-		for(int i=0; i<size(); i++)	
-		{
-			System.out.println(getType(i)+" "+getName(i)+" "+getValue(i));
-		}
 	}
 	
 }

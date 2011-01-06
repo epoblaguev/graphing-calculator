@@ -11,7 +11,7 @@ import Settings.GenSettings;
 import Settings.GraphSettings;
 import calculator.*;
 import exceptions.InvalidVariableNameException;
-import expressions.ExpressionEvaluator;
+import expressions.EquationEvaluator;
 import expressions.ExpressionList;
 import expressions.IEvaluator;
 import expressions.MathEvaluator;
@@ -310,7 +310,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
         //Settings items.
         if (e.getSource() == this.rbDegrees || e.getSource() == this.rbRadians || e.getSource() == rbGradians) {
-            IEvaluator m = new ExpressionEvaluator();
+            IEvaluator m = new EquationEvaluator();
             if (this.rbRadians.isSelected()) {
                 m.setAngleUnits(IEvaluator.RADIANS);
             } else if (this.rbDegrees.isSelected()) {

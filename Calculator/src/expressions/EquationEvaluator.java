@@ -4,32 +4,24 @@ import java.io.FileNotFoundException;
 
 import equationnodes.EquationNode;
 
-public class ExpressionEvaluator implements IEvaluator{
+public class EquationEvaluator implements IEvaluator{
 
 	EquationTokenizer et;
 	EquationScanner es;
 	EquationTreeBuilder etb;
-	EquationNode expressiontree = null;
+	//EquationNode expressiontree = null;
 	private boolean radians = true;
 	
-	public ExpressionEvaluator()
+	public EquationEvaluator()
 	{
 		et = EquationTokenizer.getInstance();
 	}
 	
-	public ExpressionEvaluator(String expression) throws Exception
+	public EquationEvaluator(String expression) throws Exception
 	{
 		et = EquationTokenizer.getInstance();
 		es = new EquationScanner(et.tokenize("#"+expression+"#"));
 		etb = new EquationTreeBuilder(es);
-		if(etb.process())
-		{
-			expressiontree = etb.getRoot();
-		}
-			else
-			{
-				throw new Exception();
-			}
 	}
 	
 	public void addVariable(String v, Double val) {
@@ -74,7 +66,7 @@ public class ExpressionEvaluator implements IEvaluator{
 
 	public Double getValue() {
 		
-		return new Double(etb.getRoot().getValue());
+		return new Double(etb.getValue());
 	}
 
 	public Double getVariable(String varname) {
@@ -89,14 +81,6 @@ public class ExpressionEvaluator implements IEvaluator{
 		else{es.newExpression(et.tokenize("#"+expression+"#"));}
 		etb = new EquationTreeBuilder(es);
 		etb.setRadians(radians);
-		if(etb.process())
-		{
-			expressiontree = etb.getRoot();
-		}
-			else
-			{
-				throw new Exception();
-			}
 	}
 
 

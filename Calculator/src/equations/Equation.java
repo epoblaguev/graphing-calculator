@@ -6,7 +6,7 @@ package equations;
 
 import expressions.Expression;
 import expressions.IEvaluator;
-import expressions.ExpressionEvaluator;
+import expressions.EquationEvaluator;
 import expressions.Variable;
 import expressions.VariableList;
 import java.awt.Color;
@@ -47,7 +47,7 @@ public class Equation implements Serializable {
             expression = Expression.formatExpression(expression);
         }
         try{
-        IEvaluator m = new ExpressionEvaluator(expression);
+        IEvaluator m = new EquationEvaluator(expression);
         
         for (Variable var : VariableList.getVariables()) {
             m.addVariable(var.getVariableName(), var.getVariableValue());

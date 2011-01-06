@@ -8,7 +8,7 @@ public class EquationScanner {
 	private String tok,currenttok="x";
 	private int currentref;
 	private ArrayList<String> tokens=new ArrayList<String>(),functions,operators,bifunc,punc;
-	private symTab sym = new symTab(); //creates symbol table
+	private SymbolTable sym = new SymbolTable(); //creates symbol table
 	
 	/**
 	 * Initializes a scan object filling in the keyword map, and color/punctuation lists 
@@ -251,35 +251,6 @@ public class EquationScanner {
 	{
 		return currentref;
 	}
-
-	/**
-	 * Returns the current Token Type
-	 * @return
-	 */
-	public String getType()
-	{
-		return currenttok;
-	}
-	
-	/**
-	 * Returns the String value for reference ref
-	 * @param ref
-	 * @return
-	 */
-	public String getSVal(int ref)
-	{
-		return (String)sym.getName(ref);
-	}
-	
-	/**
-	 * Returns the Integer value for the reference ref
-	 * @param ref
-	 * @return
-	 */
-	public double getIVal(int ref)
-	{
-		return (sym.getValue(ref));
-	}
 	
 	/**
 	 * Handles invalid tokens
@@ -305,10 +276,40 @@ public class EquationScanner {
 		return true;
 	}
 	
-	/** Returns the Symbol Table */
-	public symTab getSymbolTable()
+	/** Returns the value of a reference */
+	public double getReferenceValue(int ref)
 	{
-		return sym;
+		return sym.getValue(ref);
+	}
+	
+	/** Returns the type of a reference */
+	public String getReferenceType(int ref)
+	{
+		return sym.getType(ref);
+	}
+	/** Returns the name of a reference */
+	public String getReferenceName(int ref)
+	{
+		return sym.getName(ref);
+	}
+	
+	/** Sets the value of a variable in the Sym table and adds it if necessary,then updates current expression tree */
+	public void setVariable(String var, double val)
+	{
+		if(sym.contains(var))
+		{
+			System.out.println("Did contain "+var);
+			sym.setVarValue(var, val);
+		}
+		else
+		{
+			sym.add("v", var, val);
+		}
+	}
+
+	/**Gets the value of a variable */
+	public Double getVarValue(String varname) {
+		return sym.getVarValue(varname);
 	}
 	
 }

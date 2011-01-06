@@ -32,7 +32,7 @@ private String[][] table;
 private ArrayList<Production> prods=new ArrayList<Production>();
 private ArrayList<String> stack =new ArrayList<String>(), steps=new ArrayList<String>();
 private EquationStack eqstack =new EquationStack();
-private symTab sym;
+//private SymbolTable sym;
 private boolean radians = true;
 
 	
@@ -46,7 +46,7 @@ private boolean radians = true;
 	myScan=s;
 	loadTable();
 	createProductions();
-	sym=myScan.getSymbolTable();
+	//sym=myScan.getSymbolTable();
 	}
 
 	/**
@@ -84,6 +84,7 @@ private boolean radians = true;
 				else
 				if(instr.equals("acc"))  //handles the accepts case
 				{
+					//System.out.println("Made it here");
 					root =balanceTree(eqstack.pop());
 					return true;
 				}
@@ -124,7 +125,7 @@ private boolean radians = true;
 		stack.add(currenttok);										//places the current token on the stack
 		stack.add(currentstate+"");									//places the current state on the stack
 	
-		if(myScan.getRef()!=-1 && sym.getValue(myScan.getRef())!=Double.NEGATIVE_INFINITY)
+		if(myScan.getRef()!=-1 && myScan.getReferenceValue(myScan.getRef())!=Double.NEGATIVE_INFINITY)
 		{
 			eqstack.push(createNode(myScan.getRef()));
 		}
@@ -236,30 +237,30 @@ private boolean radians = true;
 	
 	private EquationNode createNode(int ref) {
 		
-		if(sym.getType(ref).equals("f"))
+		if(myScan.getReferenceType(ref).equals("f"))
 		{
 			
-			return new FuncNode(sym.getName(ref),radians);
+			return new FuncNode(myScan.getReferenceName(ref),radians);
 		}
 		else
-		if(sym.getType(ref).equals("d"))
+		if(myScan.getReferenceType(ref).equals("d"))
 		{
-			return new DigitNode(sym.getValue(ref));
+			return new DigitNode(myScan.getReferenceValue(ref));
 		}
 		else
-		if(sym.getType(ref).equals("v"))
+		if(myScan.getReferenceType(ref).equals("v"))
 		{
-			return new VarNode(sym.getName(ref),sym.getValue(ref));
+			return new VarNode(myScan.getReferenceName(ref),myScan.getReferenceValue(ref));
 		}
 		else
-		if(sym.getType(ref).equals("n"))
+		if(myScan.getReferenceType(ref).equals("n"))
 		{
-			return new BiFuncNode(sym.getName(ref));
+			return new BiFuncNode(myScan.getReferenceName(ref));
 		}
 		else
-		if(sym.getType(ref).equals("b"))
+		if(myScan.getReferenceType(ref).equals("b"))
 		{
-			char op = sym.getName(ref).charAt(0);
+			char op = myScan.getReferenceName(ref).charAt(0);
 			switch(op)
 			{
 				case '+': return new PlusNode();
@@ -276,23 +277,23 @@ private boolean radians = true;
 	}
 	
 	/** Gets the root of the equation */
-	public EquationNode getRoot()
+	public double getValue()
 	{
-		return root;
+		try {
+			process();
+			return root.getValue();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+			return 0;
+		}
+		
 	}
 	
 	/** Sets the value of a variable in the Sym table and adds it if necessary,then updates current expression tree */
 	public void setVariable(String var, double val)
 	{
-		if(sym.contains(var))
-		{
-			System.out.println("Did contain "+var);
-			sym.setVarValue(var, val);
-		}
-		else
-		{
-			sym.add("v", var, val);
-		}
+		myScan.setVariable(var, val);
 		updateTreeVar(var,val,root);
 	}
 	
@@ -444,6 +445,6 @@ private boolean radians = true;
 
 	/** Gets the value of the variable with name varname */
 	public Double getVariable(String varname) {
-		return sym.getVarValue(varname);
+		return myScan.getVarValue(varname);
 	}
 }

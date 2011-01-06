@@ -69,7 +69,7 @@ public class Expression implements Serializable{
     public double evaluate() throws Exception {
 
         IEvaluator m;
-			m = new ExpressionEvaluator(this.expression);
+			m = new EquationEvaluator(this.expression);
 		
 
         for (Variable var : VariableList.getVariables()) {

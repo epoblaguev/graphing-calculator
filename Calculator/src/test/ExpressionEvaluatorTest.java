@@ -1,6 +1,6 @@
 import java.text.DecimalFormat;
 
-import expressions.ExpressionEvaluator;
+import expressions.EquationEvaluator;
 import expressions.IEvaluator;
 import expressions.MathEvaluator;
 import junit.framework.TestCase;
@@ -18,7 +18,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testAddition() throws Exception
 	{
-		IEvaluator me = new ExpressionEvaluator("1+1");
+		IEvaluator me = new EquationEvaluator("1+1");
 		double x = me.getValue();
 		assertEquals(x,2.0);
 	}
@@ -27,7 +27,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testSubtraction() throws Exception
 	{
-		IEvaluator me = new ExpressionEvaluator("2-1");
+		IEvaluator me = new EquationEvaluator("2-1");
 		double x = me.getValue();
 		assertEquals(x,1.0);
 	}
@@ -35,7 +35,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testMultiplication() throws Exception
 	{
-		IEvaluator me = new ExpressionEvaluator("2*3");
+		IEvaluator me = new EquationEvaluator("2*3");
 		double x = me.getValue();
 		assertEquals(x,6.0);
 	}
@@ -44,7 +44,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testDivision() throws Exception
 	{
-		IEvaluator me = new ExpressionEvaluator("10/2");
+		IEvaluator me = new EquationEvaluator("10/2");
 		double x = me.getValue();
 		assertEquals(x,5.0);
 		
@@ -65,7 +65,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testPowers() throws Exception
 	{
-		IEvaluator me = new ExpressionEvaluator("3^2");
+		IEvaluator me = new EquationEvaluator("3^2");
 		double x = me.getValue();
 		assertEquals(x,9.0);
 	}
@@ -74,7 +74,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testModDiv() throws Exception
 	{
-		IEvaluator me = new ExpressionEvaluator("3%2");
+		IEvaluator me = new EquationEvaluator("3%2");
 		double x = me.getValue();
 		assertEquals(x,1.0);
 		
@@ -92,7 +92,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	public void testBitwiseOps() throws Exception
 	{
 		
-		IEvaluator me = new ExpressionEvaluator("7&3");
+		IEvaluator me = new EquationEvaluator("7&3");
 		double x = me.getValue();
 		assertEquals(x,3.0);
 		
@@ -114,7 +114,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testSqr() throws Exception
 	{
-		IEvaluator me = new ExpressionEvaluator("sqr(2)");
+		IEvaluator me = new EquationEvaluator("sqr(2)");
 		double x = me.getValue();
 		assertEquals(x,4.0);
 	}
@@ -123,7 +123,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testSqrt() throws Exception
 	{
-		IEvaluator me = new ExpressionEvaluator("sqrt(4)");
+		IEvaluator me = new EquationEvaluator("sqrt(4)");
 		double x = me.getValue();
 		assertEquals(x,2.0);
 	}
@@ -132,7 +132,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testLog() throws Exception
 	{
-		IEvaluator me = new ExpressionEvaluator("log(10)");
+		IEvaluator me = new EquationEvaluator("log(10)");
 		double x = me.getValue();
 		assertEquals(x,1.0);
 		
@@ -142,7 +142,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testLn() throws Exception
 	{
-		IEvaluator me = new ExpressionEvaluator("ln("+Math.E+")");
+		IEvaluator me = new EquationEvaluator("ln("+Math.E+")");
 		double x = me.getValue();
 		assertEquals(x,1.0);
 	}
@@ -152,7 +152,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	 * @throws Exception **/
 	public void testArithmeticOrderOfOperations() throws Exception
 	{
-		IEvaluator me = new ExpressionEvaluator("3+2*3");
+		IEvaluator me = new EquationEvaluator("3+2*3");
 		double x = me.getValue();
 		assertEquals(x,9.0);
 		
@@ -183,7 +183,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	{
 
 		DecimalFormat df = new DecimalFormat("#.###############");
-		ExpressionEvaluator me = new ExpressionEvaluator();
+		EquationEvaluator me = new EquationEvaluator();
 		me.setAngleUnits(IEvaluator.DEGREES);
 		
 		//sine
@@ -208,7 +208,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	public void testArcTriginDegrees() throws Exception
 	{
 		DecimalFormat df = new DecimalFormat("#.#############");
-		ExpressionEvaluator me = new ExpressionEvaluator();
+		EquationEvaluator me = new EquationEvaluator();
 		me.setAngleUnits(IEvaluator.DEGREES);
 		
 		//arc-sine
@@ -233,7 +233,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	{
 
 		DecimalFormat df = new DecimalFormat("#.###############");
-		ExpressionEvaluator me = new ExpressionEvaluator();
+		EquationEvaluator me = new EquationEvaluator();
 		me.setAngleUnits(IEvaluator.RADIANS);
 		
 		//sine
@@ -258,7 +258,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	public void testArcTriginRadians() throws Exception
 	{
 		DecimalFormat df = new DecimalFormat("#.###############");
-		ExpressionEvaluator me = new ExpressionEvaluator();
+		EquationEvaluator me = new EquationEvaluator();
 		me.setAngleUnits(IEvaluator.RADIANS);
 		
 		//arc-sine
@@ -281,7 +281,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testMinMax() throws Exception
 	{
-		IEvaluator me = new ExpressionEvaluator("min(1,10)");
+		IEvaluator me = new EquationEvaluator("min(1,10)");
 		double x = me.getValue();
 		assertEquals(x,1.0);
 		
@@ -297,7 +297,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	{
 		DecimalFormat df = new DecimalFormat("#.#############");
 		
-		IEvaluator me = new ExpressionEvaluator("exp(1)");
+		IEvaluator me = new EquationEvaluator("exp(1)");
 		double x = me.getValue();
 		assertEquals(df.format(x),df.format(Math.E));
 		
@@ -311,7 +311,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testFloorAndCeil() throws Exception
 	{
-		IEvaluator me = new ExpressionEvaluator("floor(2.99999999999)");
+		IEvaluator me = new EquationEvaluator("floor(2.99999999999)");
 		double x = me.getValue();
 		assertEquals(x,2.0);
 		
@@ -325,7 +325,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testAbs() throws Exception
 	{
-		IEvaluator me = new ExpressionEvaluator("abs(2)");
+		IEvaluator me = new EquationEvaluator("abs(2)");
 		double x = me.getValue();
 		assertEquals(x,2.0);
 		
@@ -338,7 +338,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testNeg() throws Exception
 	{
-		IEvaluator me = new ExpressionEvaluator("neg(2)");
+		IEvaluator me = new EquationEvaluator("neg(2)");
 		double x = me.getValue();
 		assertEquals(x,-2.0);
 		
@@ -351,7 +351,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testRandom() throws Exception
 	{
-		IEvaluator me = new ExpressionEvaluator("rnd(2.3)");
+		IEvaluator me = new EquationEvaluator("rnd(2.3)");
 		double x = me.getValue();
 		double y = me.getValue();
 		
@@ -363,7 +363,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	public void testOrderOfOperationsWithFunctions() throws Exception
 	{
 		DecimalFormat df = new DecimalFormat("#.###############");
-		ExpressionEvaluator me = new ExpressionEvaluator("abs(2+10*10)");
+		EquationEvaluator me = new EquationEvaluator("abs(2+10*10)");
 		//me.setAngleUnits(IEvaluator.DEGREES);
 		double x = me.getValue();
 		assertEquals(df.format(x),df.format(102.0));
@@ -377,7 +377,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testVariables() throws Exception
 	{
-		IEvaluator me = new ExpressionEvaluator("x");
+		IEvaluator me = new EquationEvaluator("x");
 		me.addVariable("x", 15.0);
 		double x = me.getValue();
 		assertEquals(x,15.0);
@@ -392,7 +392,7 @@ public class ExpressionEvaluatorTest extends TestCase {
 	 * @throws Exception */
 	public void testImplicitMultiplication() throws Exception
 	{
-		IEvaluator me = new ExpressionEvaluator("3(2+3)");
+		IEvaluator me = new EquationEvaluator("3(2+3)");
 		double x = me.getValue();
 		assertEquals(x,15.0);
 		
