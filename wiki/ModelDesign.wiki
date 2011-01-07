@@ -3,9 +3,11 @@
 #sidebar SideBar
 
 
-===Proposed Iteration 3 Design ==
+===Iteration 3 Design ==
 
 For Iteration 3, the goal is to make this design a bit easier to handle, with evaluation responsibilities spread out to multiple classes.  The general structure will be to Tokenize the string, form the tokens into an expression tree, and evaluate the expression tree, with separate classes to represent the Tokenizer, TreeBuilder, and TreeNodes, and another class to aggregate these classes and drive the process.  To facilitate easy integration into the system, the driver will share an interface with the existing MathEvaluator class, allowing easy refactoring of the code.
+
+The Driver is called EquationEvaluator.  It contains an EquationTreeBuilder and an EquationTokenizer.  The equation tokenizer breaks an expression into an array of tokens which it gives to an EquationScanner object which is immediately given to the TreeBuilder.  The TreeBuilder then receives the tokens one by one from the scanner and creates an equation tree.  Finally it balances the tree to account for order of operations and calls the recursive get value operation on the root of the tree.
 
 
 
