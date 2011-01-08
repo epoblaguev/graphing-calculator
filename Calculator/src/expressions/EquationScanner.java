@@ -298,7 +298,7 @@ public class EquationScanner {
 	{
 		if(sym.contains(var))
 		{
-			System.out.println("Did contain "+var);
+			//System.out.println("Did contain "+var);
 			sym.setVarValue(var, val);
 		}
 		else

@@ -1,5 +1,8 @@
 package expressions;
 
+import exceptions.InvalidExpressionException;
+import exceptions.UnsetVariableException;
+
 public interface IEvaluator {
 
 	public static final int RADIANS = 1;
@@ -19,8 +22,11 @@ public interface IEvaluator {
 
 	/***
 	 * evaluates and returns the value of the expression
+	 * @throws InvalidExpressionException 
+	 * @throws UnsetVariableException 
+	 * @throws NumberFormatException 
 	 */
-	public abstract Double getValue();
+	public abstract Double getValue() throws InvalidExpressionException, NumberFormatException;
 
 	/***
 	 * gets the variable's value that was assigned previously 

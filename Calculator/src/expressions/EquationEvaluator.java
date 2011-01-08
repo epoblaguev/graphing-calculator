@@ -3,20 +3,33 @@ package expressions;
 import java.io.FileNotFoundException;
 
 import equationnodes.EquationNode;
-
+import exceptions.InvalidExpressionException;
+import exceptions.UnsetVariableException;
+/**
+ * A class to evaluate mathematical expressions
+ * @author Ben McCormick
+ *
+ */
 public class EquationEvaluator implements IEvaluator{
 
 	EquationTokenizer et;
 	EquationScanner es;
 	EquationTreeBuilder etb;
-	//EquationNode expressiontree = null;
 	private boolean radians = true;
 	
+	/**
+	 * A plain constructor, instantiates a new EquationEvaluator
+	 */
 	public EquationEvaluator()
 	{
 		et = EquationTokenizer.getInstance();
 	}
 	
+	/**
+	 * Constructor with 
+	 * @param expression
+	 * @throws Exception
+	 */
 	public EquationEvaluator(String expression) throws Exception
 	{
 		et = EquationTokenizer.getInstance();
@@ -60,11 +73,9 @@ public class EquationEvaluator implements IEvaluator{
 			radians = false;
 		}
 		
-		
-		
 	}
 
-	public Double getValue() {
+	public Double getValue() throws InvalidExpressionException, NumberFormatException {
 		
 		return new Double(etb.getValue());
 	}

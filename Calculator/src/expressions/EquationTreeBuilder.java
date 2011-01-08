@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.*;
 
 import equationnodes.*;
+import exceptions.InvalidExpressionException;
+import exceptions.UnsetVariableException;
 
 /*
  * EquationTreeBuilder.java
@@ -52,15 +54,16 @@ private boolean radians = true;
 	/**
 	 * Loops through asking for new tokens until there are no more in the scanner
 	 * @throws IOException
+	 * @throws InvalidExpressionException 
+	 * @throws UnsetVariableException 
+	 * @throws NumberFormatException 
 	 */
-	public boolean process() throws IOException
+	public boolean process() throws IOException, InvalidExpressionException, NumberFormatException
 	{
 		stack.add("0");
 		ctok=myScan.scanNext();
 		while(true)  //Until all tokens are processed
 		{	
-			System.out.println(ctok+" "+cstate);
-			System.out.println(eqstack);
 				index=-1;
 				for(int i=0; i<headings.length; i++)
 				{
@@ -71,15 +74,13 @@ private boolean radians = true;
 				}
 				if(index==-1)  //if the token isn't found, print out area and return
 				{
-					System.out.println("Error: Invalid Token.  Program is not Syntactically correct, Unknown Token");
-					return false;
+					throw new InvalidExpressionException("This is not a well formed expression, unknown token");
 				}
 				instr=table[index][cstate];  //find the instruction corresponding to the given state and token
 				
 				if(instr.equals("")) //handles incorrect programs
 				{
-					System.out.println("Error:Program is not Syntactically correct (Empty Spot in Table)");
-					return false;
+					throw new InvalidExpressionException("This is not a well formed expression");
 				}
 				else
 				if(instr.equals("acc"))  //handles the accepts case
@@ -92,8 +93,6 @@ private boolean radians = true;
 				if(instr.charAt(0)=='s')
 				{
 					shift(ctok,cstate,Integer.parseInt(instr.substring(1)));
-					
-					
 				}
 				else
 				if(instr.charAt(0)=='r')
@@ -103,13 +102,9 @@ private boolean radians = true;
 				}
 					else
 					{
-						System.out.println("Error:Program is not Syntactically correct");
-						return false;
-					}
-				
+						throw new InvalidExpressionException("This is not a well formed expression.");
+					}	
 			}
-			
-	
 	}
 	
 	
@@ -119,6 +114,7 @@ private boolean radians = true;
 	 * @param currentstate
 	 * @param nextstate
 	 * @throws IOException 
+	 * @throws UnsetVariableException 
 	 */
 	private void shift(String currenttok, int currentstate, int nextstate) throws IOException
 	{
@@ -131,7 +127,7 @@ private boolean radians = true;
 		}
 		else
 		{
-			System.out.println("HERES THE PROBLEM!!");
+			//throw new UnsetVariableException("Variable "+myScan.getReferenceName(myScan.getRef())+" was not set");
 		}
 		cstate=Integer.parseInt((instr.substring(1)));
 		ctok= myScan.scanNext();
@@ -210,7 +206,6 @@ private boolean radians = true;
 			BiFuncNode b =(BiFuncNode)eqstack.pop();
 			b.setLChild(lchild);
 			b.setRChild(rchild);
-			System.out.println("RESULT: "+b);
 			eqstack.push(b);
 		}
 		
@@ -276,8 +271,11 @@ private boolean radians = true;
 		return null;	
 	}
 	
-	/** Gets the root of the equation */
-	public double getValue()
+	/** Gets the root of the equation 
+	 * @throws InvalidExpressionException 
+	 * @throws UnsetVariableException 
+	 * @throws NumberFormatException */
+	public double getValue() throws InvalidExpressionException, NumberFormatException
 	{
 		try {
 			process();

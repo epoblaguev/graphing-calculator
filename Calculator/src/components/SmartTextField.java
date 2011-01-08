@@ -95,7 +95,7 @@ public class SmartTextField extends JTextField implements KeyListener, ActionLis
         } else if ((e.getKeyChar() >= 'a' && e.getKeyChar() <= 'z') || (e.getKeyChar() >= 'A' && e.getKeyChar() <= 'Z')) {
             this.curString += e.getKeyChar();
             for (String str : list) {
-                if (str.contains(curString)) {
+                if (str.startsWith(curString)) {
                     JMenuItem mi = new JMenuItem(str);
                     mi.addActionListener(this);
                     mi.addKeyListener(this);
@@ -104,7 +104,10 @@ public class SmartTextField extends JTextField implements KeyListener, ActionLis
             }
             if (autoCompleteMenu.getComponents().length > 0) {
                 autoCompleteMenu.show(this, this.getCaret().getMagicCaretPosition().x + 7, (int) (this.getHeight() * 0.75));
-                this.requestFocus();
+                this.requestFocusInWindow();
+                int pos =this.getSelectionEnd();
+                this.select(pos,pos);
+                this.setCaretPosition(pos);
             }
         } else {
             this.curString = "";
@@ -144,8 +147,8 @@ public class SmartTextField extends JTextField implements KeyListener, ActionLis
                     autoCompleteMenu.setVisible(false);
                 }
             }
-            if (e.getKeyCode() == 40) {
-                autoCompleteMenu.requestFocus();
+            if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                autoCompleteMenu.requestFocusInWindow();
             }
         }
     }

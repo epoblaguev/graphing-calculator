@@ -1,5 +1,6 @@
 import java.text.DecimalFormat;
 
+import exceptions.InvalidExpressionException;
 import expressions.IEvaluator;
 import expressions.MathEvaluator;
 import junit.framework.TestCase;
@@ -13,23 +14,29 @@ public class MathEvaluatorTest extends TestCase {
 		super(name);
 	}
 
-	/** A test of simple addition */
-	public void testAddition()
+	/** A test of simple addition 
+	 * @throws InvalidExpressionException 
+	 * @throws NumberFormatException */
+	public void testAddition() throws NumberFormatException, InvalidExpressionException
 	{
 		IEvaluator me = new MathEvaluator("1+1");
 		double x = me.getValue();
 		assertEquals(x,2.0);
 	}
 	
-	/** A test of simple subtraction */
-	public void testSubtraction()
+	/** A test of simple subtraction 
+	 * @throws InvalidExpressionException 
+	 * @throws NumberFormatException */
+	public void testSubtraction() throws NumberFormatException, InvalidExpressionException
 	{
 		IEvaluator me = new MathEvaluator("2-1");
 		double x = me.getValue();
 		assertEquals(x,1.0);
 	}
-	/** A test of simple multiplication */
-	public void testMultiplication()
+	/** A test of simple multiplication 
+	 * @throws InvalidExpressionException 
+	 * @throws NumberFormatException */
+	public void testMultiplication() throws NumberFormatException, InvalidExpressionException
 	{
 		IEvaluator me = new MathEvaluator("2*3");
 		double x = me.getValue();
@@ -57,8 +64,10 @@ public class MathEvaluatorTest extends TestCase {
 		assertEquals(x,Double.NEGATIVE_INFINITY);
 	}
 	
-	/**Tests the ^ operator */
-	public void testPowers()
+	/**Tests the ^ operator 
+	 * @throws InvalidExpressionException 
+	 * @throws NumberFormatException */
+	public void testPowers() throws NumberFormatException, InvalidExpressionException
 	{
 		IEvaluator me = new MathEvaluator("3^2");
 		double x = me.getValue();
@@ -105,24 +114,30 @@ public class MathEvaluatorTest extends TestCase {
 		
 	}
 	
-	/** Test the sqr() function */
-	public void testSqr()
+	/** Test the sqr() function 
+	 * @throws InvalidExpressionException 
+	 * @throws NumberFormatException */
+	public void testSqr() throws NumberFormatException, InvalidExpressionException
 	{
 		IEvaluator me = new MathEvaluator("sqr(2)");
 		double x = me.getValue();
 		assertEquals(x,4.0);
 	}
 	
-	/** Test the sqrt() function */
-	public void testSqrt()
+	/** Test the sqrt() function 
+	 * @throws InvalidExpressionException 
+	 * @throws NumberFormatException */
+	public void testSqrt() throws NumberFormatException, InvalidExpressionException
 	{
 		IEvaluator me = new MathEvaluator("sqrt(4)");
 		double x = me.getValue();
 		assertEquals(x,2.0);
 	}
 	
-	/** Test the Log-Base 10 function */
-	public void testLog()
+	/** Test the Log-Base 10 function 
+	 * @throws InvalidExpressionException 
+	 * @throws NumberFormatException */
+	public void testLog() throws NumberFormatException, InvalidExpressionException
 	{
 		IEvaluator me = new MathEvaluator("log(10)");
 		double x = me.getValue();
@@ -130,8 +145,10 @@ public class MathEvaluatorTest extends TestCase {
 		
 	}
 	
-	/**Test the natural log function */
-	public void testLn()
+	/**Test the natural log function 
+	 * @throws InvalidExpressionException 
+	 * @throws NumberFormatException */
+	public void testLn() throws NumberFormatException, InvalidExpressionException
 	{
 		IEvaluator me = new MathEvaluator("ln("+Math.E+")");
 		double x = me.getValue();
@@ -334,8 +351,10 @@ public class MathEvaluatorTest extends TestCase {
 		assertEquals(x,2.0);
 	}
 	
-	/** Test the rnd() function */
-	public void testRandom()
+	/** Test the rnd() function 
+	 * @throws InvalidExpressionException 
+	 * @throws NumberFormatException */
+	public void testRandom() throws NumberFormatException, InvalidExpressionException
 	{
 		IEvaluator me = new MathEvaluator("rnd(2.3)");
 		double x = me.getValue();

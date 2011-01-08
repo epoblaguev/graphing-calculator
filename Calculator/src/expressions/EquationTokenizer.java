@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 public class EquationTokenizer {
 	
 	private static final EquationTokenizer ET = new EquationTokenizer();
-	private boolean debug = true;
+	private boolean debug = false;
 	
 	private EquationTokenizer()
 	{
