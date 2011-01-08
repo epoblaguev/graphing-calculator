@@ -1,12 +1,22 @@
 #summary Goals for Iteration 3
+#labels Phase-Requirements
 #sidebar SideBar
+
+==Work to Date==
+
+ * Implemented new Expression Parsing and Evaluation Model (see ModelDesign for details)
+ * Got new Expression Evaluator to handle all advertised operations
+ * Added JUnit tests to evaluate Expression Evaluators
+ * Began work on autocomplete
+ * Began better commenting of code
 
 ==Intended Features==
 
- * Working Expression Parsing/Solving
+ * Working Expression Parsing/Evaluation
  * Handle arc-trig functions and bitwise operations
  * Easier to use autocomplete
  * Handle grid implementation better
+ * Add consistent exception system to handle illformed expressions
 
 
 == Other Intended Additions==
