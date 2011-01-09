@@ -26,7 +26,7 @@ public class EquationEvaluator implements IEvaluator{
 	}
 	
 	/**
-	 * Constructor with 
+	 * Constructor with an expression
 	 * @param expression
 	 * @throws Exception
 	 */
@@ -37,20 +37,30 @@ public class EquationEvaluator implements IEvaluator{
 		etb = new EquationTreeBuilder(es);
 	}
 	
-	public void addVariable(String v, Double val) {
+	/**
+	 * Adds a variable to the evaluator
+	 */
+	public void addVariable(String v, Double val) 
+	{
 		etb.setVariable(v, val);
-		
 	}
-
-	public int getAngleUnits() {
+	
+	/** 
+	 * Gets the angle Units (Radians or Degrees)
+	 */
+	public int getAngleUnits() 
+	{
 		if(radians)
 		return IEvaluator.RADIANS;
 		else
 			return IEvaluator.DEGREES;
 	}
 	
-	/** sets the angle units (gradians not currently supported */
-	public void setAngleUnits(int units) {
+	/** 
+	 * sets the angle units (gradians not currently supported )
+	 */
+	public void setAngleUnits(int units) 
+	{
 		if(etb==null)
 		{
 			try{
@@ -72,27 +82,31 @@ public class EquationEvaluator implements IEvaluator{
 			etb.setRadians(false);
 			radians = false;
 		}
-		
 	}
-
-	public Double getValue() throws InvalidExpressionException, NumberFormatException {
-		
+	
+	/**
+	 * Returns the value of the expression
+	 */
+	public Double getValue() throws InvalidExpressionException, NumberFormatException 
+	{
 		return new Double(etb.getValue());
 	}
-
-	public Double getVariable(String varname) {
-		
+	/**
+	 * Returns the value of the variable
+	 */
+	public Double getVariable(String varname) 
+	{
 		return etb.getVariable(varname);
 	}
 
-	/** Sets the Evaluator to a new Expression */
-	public void setExpression(String expression)  throws Exception{
-		
+	/** 
+	 * Sets the Evaluator to evaluate a new expression 
+	 * */
+	public void setExpression(String expression)  throws Exception
+	{
 		if(es == null){es = new EquationScanner(et.tokenize("#"+expression+"#"));}
 		else{es.newExpression(et.tokenize("#"+expression+"#"));}
 		etb = new EquationTreeBuilder(es);
 		etb.setRadians(radians);
 	}
-
-
 }

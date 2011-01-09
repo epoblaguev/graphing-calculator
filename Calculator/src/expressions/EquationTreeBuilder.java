@@ -17,8 +17,8 @@ import exceptions.UnsetVariableException;
  */
 
 /**
- * The TreeBuilder, it asks the scanner for the next token and then parses it while building the equation tree
- * after parsing, it balances the tree and sets it to root
+ * The TreeBuilder, it asks the scanner for the next token and then parses it while building the equation tree.
+ * After parsing, it balances the tree and sets it to root
  * @author Ben McCormick
  */
 public class EquationTreeBuilder {
@@ -136,8 +136,6 @@ private boolean radians = true;
 			ctok="$";
 		}
 	}
-	
-	
 
 	/**
 	 * Performs a reduce operation and updates state
@@ -271,7 +269,7 @@ private boolean radians = true;
 		return null;	
 	}
 	
-	/** Gets the root of the equation 
+	/** Gets the value of the equation 
 	 * @throws InvalidExpressionException 
 	 * @throws UnsetVariableException 
 	 * @throws NumberFormatException */
@@ -288,14 +286,19 @@ private boolean radians = true;
 		
 	}
 	
-	/** Sets the value of a variable in the Sym table and adds it if necessary,then updates current expression tree */
+	/** 
+	 * Sets the value of a variable in the Symbol table and adds it if necessary,then updates current expression tree 
+	 * 
+	 */
 	public void setVariable(String var, double val)
 	{
 		myScan.setVariable(var, val);
 		updateTreeVar(var,val,root);
 	}
 	
-	/** Updates the tree with updated variable information */
+	/** 
+	 * Updates the tree with updated variable information 
+	 */
 	private void updateTreeVar(String var, double val,EquationNode node)
 	{
 		if(node instanceof VarNode  && ((VarNode)node).getName().equals(var))
@@ -374,8 +377,6 @@ private boolean radians = true;
 		{
 			headings[j+terms.length]=vars[j];
 		}
-		
-		
 	}
 	
 	/**
@@ -397,12 +398,11 @@ private boolean radians = true;
 		prods.add(new Production("S",tem5,"(5) <Segment> > variable"));
 	}
 	
-	/**Balances the tree to preserve order of operations and returns the new root */
+	/**
+	 * Balances the tree to preserve order of operations and returns the new root 
+	 */
 	private EquationNode balanceTree(EquationNode node)
 	{
-		
-		
-		
 		if(node.numChildren() == 0){return node;}
 		else
 		if(node.numChildren() == 1)
@@ -429,19 +429,21 @@ private boolean radians = true;
 				((BinOpNode)node).setRChild(nrchild);
 				return rchild;
 			}
-		}
-		
-		
+		}	
 		return node;
 	}
 	
-	/** True sets the angle value to radians, false sets it to degrees */
+	/** 
+	 * True sets the angle value to radians, false sets it to degrees 
+	 */
 	public void setRadians(boolean rad)
 	{
 		radians = rad;
 	}
 
-	/** Gets the value of the variable with name varname */
+	/** 
+	 * Gets the value of the variable with name varname 
+	 */
 	public Double getVariable(String varname) {
 		return myScan.getVarValue(varname);
 	}
