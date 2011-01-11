@@ -5,16 +5,28 @@ import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * A Singleton object designed to break a mathematical expression into tokens
+ * @author BenMcCormick
+ *
+ */
 public class EquationTokenizer {
 	
 	private static final EquationTokenizer ET = new EquationTokenizer();
 	private boolean debug = false;
 	
+	/**
+	 * Private Constructor
+	 */
 	private EquationTokenizer()
 	{
 		
 	}
 	
+	/**
+	 * Returns the instance of the EquationTokenizer
+	 * @return
+	 */
 	public static EquationTokenizer getInstance()
 	{
 		return ET;
@@ -106,10 +118,15 @@ public class EquationTokenizer {
 			tokens[i] = t;
 			i++;
 		}
-		return tokens;
-		
+		return tokens;	
 	}
-	
+	/**
+	 * Handles implicit multiplication between numbers and variables and numbers/vars and parens
+	 * @param list
+	 * @param number
+	 * @param var
+	 * @param func
+	 */
 	private void addImplicitMult(ArrayList<String> list,Pattern number, Pattern var,Pattern func) {
 		for(int i=0; i<list.size()-1; i++)
 		{
@@ -125,18 +142,7 @@ public class EquationTokenizer {
 					if(func.matcher(b).matches())
 					{
 						list.add(i+1,"*");
-					}
-		
-		}
-		
+					}	
+		}	
 	}
-
-	public static void main(String[] args)
-	{
-		EquationTokenizer et =getInstance();
-		et.tokenize("3..5+4 x y sin ()");
-		et.tokenize("3*y");
-	}
-	
-
 }

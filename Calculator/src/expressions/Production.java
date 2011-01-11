@@ -1,10 +1,21 @@
 package expressions;
 
+/**
+ * A Class to represent a Production in parsing an arithmetic expression
+ * @author Ben McCormick
+ *
+ */
 public class Production {
 	
 	String left, description;
 	String[] right;
 
+	/**
+	 * Constructs a new Production object, associating a Variable with a set of terminals/variables
+	 * @param l
+	 * @param r
+	 * @param descr
+	 */
 	public Production(String l, String[] r, String descr)
 	{
 		left=l;
@@ -12,7 +23,7 @@ public class Production {
 		description=descr;
 		
 	}
-	/*
+	/**
 	 * checks to see if a set of strings fits the right side of the production
 	 */
 	public boolean isValid(String[] stack)

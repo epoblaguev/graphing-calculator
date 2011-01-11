@@ -227,7 +227,11 @@ private boolean radians = true;
 			return -1;
 		
 	}
-	
+	/**
+	 * Creates a new node from the given reference
+	 * @param ref
+	 * @return
+	 */
 	private EquationNode createNode(int ref) {
 		
 		if(myScan.getReferenceType(ref).equals("f"))
@@ -332,7 +336,6 @@ private boolean radians = true;
 		String[] t,terms, vars;
 		String[][]t1;              	//[x][y]  (so it goes 1,1  2,1 3,1)
 									//		              1,2  2,2 3,2)
-		
 		terms=(br.readLine()).split("&");
 		
 		t1=new String[terms.length][TABLE_SIZE];  //fill in terminals

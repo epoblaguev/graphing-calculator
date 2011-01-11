@@ -54,24 +54,40 @@ public class Expression implements Serializable{
         return expression;
     }
 
+    /**
+     * Sets the expression to a new expression string
+     * @param expression
+     */
     public void setExpression(String expression) {
         this.expression = expression;
     }
 
+    /**
+     * Gets the value of the expression 
+     * @return
+     */
     public double getValue() {
         return value;
     }
 
+    /**
+     * Gets the angle units for the expression (Radians,Degrees)
+     * @return
+     */
     public String getAngleUnits(){
         return angleUnits;
     }
 
+    /**
+     * Evaluates the expression
+     * @return
+     * @throws Exception
+     */
     public double evaluate() throws Exception {
 
         IEvaluator m;
 			m = new EquationEvaluator(this.expression);
-		
-
+	
         for (Variable var : VariableList.getVariables()) {
             m.addVariable(var.getVariableName(), var.getVariableValue());
         }
@@ -86,9 +102,14 @@ public class Expression implements Serializable{
         }
         this.value = m.getValue();
         return value;
-		
     }
 
+    /**
+     * Evaluates an expression
+     * @param expression
+     * @return
+     * @throws Exception
+     */
     public static double evaluate(String expression) throws Exception{
         Expression expr = new Expression(expression);
         return expr.evaluate();

@@ -44,6 +44,7 @@ public class EquationStack {
 		return stack.isEmpty();
 	}
 	
+	/**Returns a String representation of the stack */
 	public String toString()
 	{
 		return stack.toString();

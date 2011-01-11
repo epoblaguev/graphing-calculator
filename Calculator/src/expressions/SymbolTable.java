@@ -1,7 +1,11 @@
 package expressions;
 import java.util.ArrayList;
 
-
+/**
+ * Represents the symbol table for parsing arithmetic expressions
+ * @author Ben McCormick
+ *
+ */
 public class SymbolTable {
 	private ArrayList[] sym;
 	
