@@ -7,7 +7,7 @@
  * Implemented new Expression Parsing and Evaluation Model (see ModelDesign for details)
  * Got new Expression Evaluator to handle all advertised operations
  * Added JUnit tests to evaluate Expression Evaluators
- * Began work on autocomplete
+ * Began work on autocomplete, determined that autocomplete issue was a OSX issue with no easy fix
  * Began better commenting of code
 
 ==Intended Features==
