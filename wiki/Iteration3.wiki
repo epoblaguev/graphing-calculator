@@ -15,14 +15,13 @@
 (Struck out features are completed)
  * ~~Working Expression Parsing/Evaluation~~
  * ~~Handle arc-trig functions and bitwise operations~~
- * Easier to use autocomplete
- * Handle grid implementation better
- * Add consistent exception system to handle illformed expressions
+ * ~~Easier to use autocomplete~~
+ * ~~Add consistent exception system to handle illformed expressions~~
 
 
 == Other Intended Additions==
 
- * Better commenting throughout code to facilitate cooperation
+ * ~~Better commenting throughout code to facilitate cooperation~~
  * ~~JUnit Testing to identify expression parsing/solving bugs and maintain base functions as project is expanded~~
 
 
