@@ -16,7 +16,7 @@
  * ~~Working Expression Parsing/Evaluation~~
  * ~~Handle arc-trig functions and bitwise operations~~
  * ~~Easier to use autocomplete~~
- * ~~Add consistent exception system to handle illformed expressions~~
+ * ~~Add consistent exception system to handle illformed expressions~~ (Basic version implemented, moved to iteration 4)
 
 
 == Other Intended Additions==
