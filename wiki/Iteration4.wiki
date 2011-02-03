@@ -2,7 +2,8 @@
 #sidebar SideBar
 
 ==Work to Date==
-
+ * Combinations and Permutations are supported
+ * JUnit tests for Combinations, Permutations and Factorials have been added
 
 ==Intended Features==
 
@@ -14,6 +15,7 @@
 == Other Intended Additions==
 
  * Continue adding and improving commenting
+ * Add commenting to explain licensing of code
  * Add more documentation
  * Expand JUnit testing to test expanded features, making testing for all features more robust
  
