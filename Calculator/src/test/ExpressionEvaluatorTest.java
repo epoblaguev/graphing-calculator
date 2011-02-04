@@ -1,9 +1,31 @@
+package test;
+
 import java.text.DecimalFormat;
 
 import expressions.EquationEvaluator;
 import expressions.IEvaluator;
 import expressions.MathEvaluator;
 import junit.framework.TestCase;
+
+/*
+ * ExpressionEvaluatorTest.java
+ * Author: Ben McCormick
+ * Written: Dec 25 2010
+ * Last Edited: Feb 3 2011
+ * ©Ben McCormick 2011
+ * This file is part of The Eikona Project .
+ * Eikona is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * Eikona is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Eikona.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 
 /** A JUnit Test class to make sure that the MathEvaluator class is evaluating functions properly */
 public class ExpressionEvaluatorTest extends TestCase {
@@ -405,5 +427,49 @@ public class ExpressionEvaluatorTest extends TestCase {
 		x = me.getValue();
 		assertEquals(x,45.0);	
 	}
+	
+	/**Tests Factorials with !
+	 * @throws Exception */
+	public void testFactorial() throws Exception
+	{
+		IEvaluator me = new EquationEvaluator("3!");
+		double x = me.getValue();
+		assertEquals(x,6.0);
+		
+		me.setExpression("10!");
+	    x = me.getValue();
+		assertEquals(x,3628800.0);
+	}
+	
+	/**Tests Combinations with Comb(
+	 * @throws Exception */
+	public void testCombinations() throws Exception
+	{
+		IEvaluator me = new EquationEvaluator("Comb(3,2)");
+		double x = me.getValue();
+		assertEquals(x,3.0);
+		
+		me.setExpression("Comb(4,2)");
+	    x = me.getValue();
+		assertEquals(x,6.0);
+	}
+	
+	
+	/**Tests Permutations with Perm(
+	 * @throws Exception */
+	public void testPermutation() throws Exception
+	{
+		IEvaluator me = new EquationEvaluator("Perm(3,2)");
+		double x = me.getValue();
+		assertEquals(x,6.0);
+		
+		me.setExpression("Perm(4,2)");
+	    x = me.getValue();
+		assertEquals(x,12.0);
+	}
+	
+	
+	
+	
 	
 }

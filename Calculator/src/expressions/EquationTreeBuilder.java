@@ -13,11 +13,24 @@ import exceptions.UnsetVariableException;
  * EquationTreeBuilder.java
  * Author: Ben McCormick
  * Written: Jan 1 2011
- * Last Edited: Jan 1 2011
+ * Last Edited: Feb 3 2011
+ * ©Ben McCormick 2011
+ * This file is part of The Eikona Project .
+ * Eikona is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * Eikona is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with Eikona.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 /**
- * The TreeBuilder, it asks the scanner for the next token and then parses it while building the equation tree.
+ * The EquationTreeBuilder, it asks the scanner for the next token and then parses it while building the equation tree.
  * After parsing, it balances the tree and sets it to root
  * @author Ben McCormick
  */
@@ -34,7 +47,6 @@ private String[][] table;
 private ArrayList<Production> prods=new ArrayList<Production>();
 private ArrayList<String> stack =new ArrayList<String>(), steps=new ArrayList<String>();
 private EquationStack eqstack =new EquationStack();
-//private SymbolTable sym;
 private boolean radians = true;
 
 	
@@ -48,7 +60,6 @@ private boolean radians = true;
 	myScan=s;
 	loadTable();
 	createProductions();
-	//sym=myScan.getSymbolTable();
 	}
 
 	/**
@@ -107,7 +118,6 @@ private boolean radians = true;
 			}
 	}
 	
-	
 	/**
 	 * Performs a shift operation and updates state
 	 * @param currenttok
@@ -146,8 +156,6 @@ private boolean radians = true;
 	 */
 	private void reduce(String currenttok, int currentstate, int rule) throws IOException
 	{
-	
-		
 		p=prods.get(rule);
 		handleEqstack(p);
 		int start=stack.size()-1,finish=stack.size()-(2*p.plength());
@@ -169,7 +177,6 @@ private boolean radians = true;
 				}
 			}
 			steps.add(p.description);
-			
 			cstate=Integer.parseInt(table[index][cstate]);	
 	}
 	
@@ -199,8 +206,8 @@ private boolean radians = true;
 		}
 		if(pnum==3) // Handles S -> n S , S )
 		{	
-			EquationNode lchild =eqstack.pop();
 			EquationNode rchild =eqstack.pop();
+			EquationNode lchild =eqstack.pop();
 			BiFuncNode b =(BiFuncNode)eqstack.pop();
 			b.setLChild(lchild);
 			b.setRChild(rchild);

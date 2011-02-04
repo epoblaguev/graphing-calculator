@@ -2,6 +2,19 @@ package expressions;
 
 import java.util.HashMap;
 
+
+/* 
+ * This code has been deprecated and is no longer actively used in the system.
+ * It has been replaced by EquationEvaluator and related classes
+ */
+
+
+
+
+
+
+
+
 /************************************************************************
  * <i>Mathematic expression evaluator.</i> Supports the following functions:
  * +, -, *, /, ^, %, cos, sin, tan, acos, asin, atan, sqrt, sqr, log, min, max, ceil, floor, abs, neg, rnd.<br>
