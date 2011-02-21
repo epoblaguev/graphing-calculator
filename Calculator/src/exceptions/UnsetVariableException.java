@@ -5,7 +5,7 @@ package exceptions;
  * Author: Ben McCormick
  * Written: Dec 27 2010
  * Last Edited: Feb 4 2011
- * ©Ben McCormick 2011
+ * Ben McCormick 2011
  * This file is part of The Eikona Project .
  * Eikona is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

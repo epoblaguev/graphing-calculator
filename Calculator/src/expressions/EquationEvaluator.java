@@ -10,7 +10,7 @@ import exceptions.UnsetVariableException;
  * Author: Ben McCormick
  * Written: Jan 2 2011
  * Last Edited: Jan 5 2011
- * ©Ben McCormick 2011
+ * Ben McCormick 2011
  * This file is part of The Eikona Project .
  * Eikona is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
