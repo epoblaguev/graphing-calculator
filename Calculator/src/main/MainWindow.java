@@ -62,7 +62,7 @@ public class MainWindow extends JFrame implements ActionListener {
     public MainWindow() {
         super();
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setTitle("Egor's Calculator");
+        this.setTitle("Graphing Calculator");
         this.setIconImage(GenSettings.getImage("/images/calculator.png"));
 
         this.createTabbedPane();
