@@ -11,5 +11,7 @@
   * [ModelDesign Model Design]
   * [GUIDesign GUI Design]
  * Project Requirements
-  * [Iteration3Requirements Iteration 3 Requirements]
+  * [Iteration4Requirements Iteration 4 Requirements]
  * Authors
+  * [Ben Ben McCormick]
+  * [Egor Egor Poblaguev]
