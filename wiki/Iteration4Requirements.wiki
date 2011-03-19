@@ -1,4 +1,5 @@
 #summary Requirements for Iteration 4
+#sidebar SideBar
 
 = Iteration 4 Requirements =
 
