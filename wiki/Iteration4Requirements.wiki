@@ -8,7 +8,7 @@
 === Functional Requirements ===
 
  * The following operations must be supported
-   * Basic arithmetic +,-,*,/,%
+   * Basic arithmetic +,-,`*`,/,%
    * Basic Trig functions sin,cos,tan, asin,acos,atan
    * Power functions and logarithms sqr, sqrt, log, ln, exp(), ^
    * ceil & floor
