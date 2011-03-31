@@ -27,7 +27,7 @@ public class EquationScanner {
 	private String tok, currenttok = "x";
 	private int currentref;
 	private ArrayList<String> tokens = new ArrayList<String>(), functions,
-			operators, bifunc, punc;
+			operators, bifunc, punc, unop;
 	private SymbolTable sym = new SymbolTable(); // creates symbol table
 
 	/**
@@ -61,6 +61,12 @@ public class EquationScanner {
 		punc = new ArrayList<String>();
 		while (p.hasNext()) {
 			punc.add(p.next());
+		}
+		
+		Scanner u = new Scanner(new File("./src/unaryoperators.txt"));
+		unop = new ArrayList<String>();
+		while (p.hasNext()) {
+			unop.add(p.next());
 		}
 	}
 
@@ -137,6 +143,25 @@ public class EquationScanner {
 				return currenttok;
 			}
 		}
+		
+		if(unop.contains(tok.toLowerCase()))  //handles unary operators
+		{
+			currenttok = "u";
+			if (sym.contains(tok.toLowerCase())) {
+				for (int i = 0; i < sym.size(); i++) {
+					if ((sym.getName(i)).equals(tok.toLowerCase())) {
+						currentref = i;
+					}
+				}
+				return currenttok;
+			} else {
+				sym.add("u", tok.toLowerCase(), 0);
+				currentref = sym.size() - 1;
+				return currenttok;
+			}
+		}
+		
+		
 		// handles Doubles
 		Pattern p1 = Pattern.compile("^\\-?\\d+\\.\\d+$");
 		Pattern p2 = Pattern.compile("^\\-?\\.\\d+$");
@@ -275,7 +300,6 @@ public class EquationScanner {
 	 */
 	public void setVariable(String var, double val) {
 		if (sym.contains(var)) {
-			// System.out.println("Did contain "+var);
 			sym.setVarValue(var, val);
 		} else {
 			sym.add("v", var, val);

@@ -63,6 +63,7 @@ public class EquationTokenizer {
 		Pattern number = Pattern.compile("^-?\\d+\\.?\\d*");
 		Pattern space = Pattern.compile("^\\s+");
 		Pattern operator = Pattern.compile("^[\\+\\-\\*/!%^&|,)\\[\\]#]");
+		Pattern unop =Pattern.compile("!");
 		Pattern function = Pattern.compile("^\\w*\\(");
 		Pattern variable = Pattern.compile("^\\w+\\d*");
 		ArrayList<String> list = new ArrayList<String>();
@@ -110,6 +111,14 @@ public class EquationTokenizer {
 				eq = eq.substring(op.end());
 				continue;
 			}
+			Matcher u = unop.matcher(eq);
+			if(u.find())
+			{
+				list.add(eq.substring(0, u.end()));
+				eq = eq.substring(u.end());
+				continue;
+			}
+			
 			Matcher func = function.matcher(eq);
 			if(func.find())
 			{
