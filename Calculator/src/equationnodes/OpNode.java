@@ -42,4 +42,13 @@ protected EquationNode child;
 		return child;
 	}
 	
+	public String toString()
+	{
+		if(child !=null)
+		{
+			return child+name;
+		}
+		else return name;
+	}
+	
 }
