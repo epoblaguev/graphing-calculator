@@ -4,6 +4,8 @@
 ==Work to Date==
  * Combinations and Permutations are supported
  * JUnit tests for Combinations, Permutations and Factorials have been added
+ * Unary operations are supported
+
 
 ==Intended Features==
 
@@ -23,4 +25,4 @@
 
 == Intended due date ==
 
-Iteration 4 features & additions should be implemented by April 1, 2011 (this is flexible and intended only as a goal to motivate a worthwhile pace)
+Iteration 4 features & additions should be implemented by May 1, 2011 (this is flexible and intended only as a goal to motivate a worthwhile pace)
