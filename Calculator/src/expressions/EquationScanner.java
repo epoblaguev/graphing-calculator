@@ -65,8 +65,9 @@ public class EquationScanner {
 		
 		Scanner u = new Scanner(new File("./src/unaryoperators.txt"));
 		unop = new ArrayList<String>();
-		while (p.hasNext()) {
-			unop.add(p.next());
+		while (u.hasNext()) {
+			String x=u.next();
+			unop.add(x);
 		}
 	}
 
@@ -143,7 +144,6 @@ public class EquationScanner {
 				return currenttok;
 			}
 		}
-		
 		if(unop.contains(tok.toLowerCase()))  //handles unary operators
 		{
 			currenttok = "u";

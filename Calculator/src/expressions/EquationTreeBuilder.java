@@ -36,7 +36,7 @@ import exceptions.UnsetVariableException;
  */
 public class EquationTreeBuilder {
 	
-private final int TABLE_SIZE =16;
+private final int TABLE_SIZE =17;
 private String instr,ctok;
 private int  index=-1,cstate=0;
 private EquationScanner myScan;
@@ -88,7 +88,8 @@ private boolean radians = true;
 					throw new InvalidExpressionException("This is not a well formed expression, unknown token");
 				}
 				instr=table[index][cstate];  //find the instruction corresponding to the given state and token
-				
+
+				System.out.println(ctok+" "+cstate+" "+instr);
 				if(instr.equals("")) //handles incorrect programs
 				{
 					throw new InvalidExpressionException("This is not a well formed expression");
@@ -214,6 +215,14 @@ private boolean radians = true;
 			eqstack.push(b);
 		}
 		
+		if(pnum ==6)
+		{
+			OpNode op =(OpNode)eqstack.pop();
+			EquationNode child =eqstack.pop();
+			op.setChild(child);
+			eqstack.push(op);
+		}
+		
 	}
 	/**
 	 * Gets the index of the production or prints an error message
@@ -255,6 +264,10 @@ private boolean radians = true;
 		if(myScan.getReferenceType(ref).equals("v"))
 		{
 			return new VarNode(myScan.getReferenceName(ref),myScan.getReferenceValue(ref));
+		}
+		if(myScan.getReferenceType(ref).equals("u"))
+		{
+			return new FactorialNode();
 		}
 		else
 		if(myScan.getReferenceType(ref).equals("n"))
@@ -346,12 +359,10 @@ private boolean radians = true;
 		terms=(br.readLine()).split("&");
 		
 		t1=new String[terms.length][TABLE_SIZE];  //fill in terminals
-		
 		for(int i=0; i<TABLE_SIZE; i++)
 		{
 			temp=br.readLine();
 			t=temp.split("&");
-			
 			
 			for(int h=1; h<terms.length+1; h++)
 			{
@@ -406,6 +417,9 @@ private boolean radians = true;
 		prods.add(new Production("S",tem4, "(4) <Segment> > double"));
 		String[] tem5={"v"};
 		prods.add(new Production("S",tem5,"(5) <Segment> > variable"));
+		String[] tem6={"S","u"};
+		prods.add(new Production("S",tem6,"(6) <Segment> > <Segment> <unop>"));
+		
 	}
 	
 	/**

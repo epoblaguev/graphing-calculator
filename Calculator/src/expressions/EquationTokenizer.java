@@ -63,7 +63,7 @@ public class EquationTokenizer {
 		Pattern number = Pattern.compile("^-?\\d+\\.?\\d*");
 		Pattern space = Pattern.compile("^\\s+");
 		Pattern operator = Pattern.compile("^[\\+\\-\\*/!%^&|,)\\[\\]#]");
-		Pattern unop =Pattern.compile("!");
+		Pattern unop =Pattern.compile("^!");
 		Pattern function = Pattern.compile("^\\w*\\(");
 		Pattern variable = Pattern.compile("^\\w+\\d*");
 		ArrayList<String> list = new ArrayList<String>();

@@ -92,7 +92,8 @@ public class EquationEvaluator implements IEvaluator{
 			}
 			catch(Exception e)
 			{
-				
+				e.printStackTrace();
+				System.exit(0);
 			}
 		}
 		if(units == IEvaluator.RADIANS || units == IEvaluator.GRADIANS)
