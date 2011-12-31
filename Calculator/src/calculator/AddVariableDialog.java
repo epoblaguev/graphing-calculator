@@ -24,7 +24,7 @@ import javax.swing.JTextField;
  * @author Egor
  */
 public class AddVariableDialog extends JFrame implements ActionListener {
-
+	//
     private JLabel lblVariableName, lblVariableValue;
     private JTextField txtVariableName;
     private SmartTextField txtVariableValue;
