@@ -1,7 +1,6 @@
 package expressions;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

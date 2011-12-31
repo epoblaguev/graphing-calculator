@@ -27,7 +27,11 @@ import javax.swing.text.DefaultEditorKit;
  */
 public class EquationInput extends JPanel implements ActionListener, MouseListener {
 
-    private JButton btnName;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4217107958439218081L;
+	private JButton btnName;
     private JPanel labelPanel;
     private SmartTextField input;
     private JPopupMenu mnuRightClick;

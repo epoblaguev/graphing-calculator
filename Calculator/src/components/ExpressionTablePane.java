@@ -15,7 +15,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ExpressionTablePane extends JTable {
 
-    private static DefaultTableModel tableModel = new DefaultTableModel();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4737506904301505173L;
+	private static DefaultTableModel tableModel = new DefaultTableModel();
 
     /**
      * Create the table pane.
@@ -38,7 +42,7 @@ public class ExpressionTablePane extends JTable {
      * @param row
      *  The row to be added
      */
-    public static void addRow(Vector row) {
+    public static void addRow(Vector<String> row) {
         tableModel.addRow(row);
     }
 
@@ -55,14 +59,16 @@ public class ExpressionTablePane extends JTable {
      */
     public static void refreshTable() {
         double curValue;
-        Vector row;
+        Vector<String> row;
         ExpressionTablePane.setRowCount(0);
-        Iterator itr = ExpressionList.getExpressionList().iterator();
+        
+        @SuppressWarnings("rawtypes")
+		Iterator itr = ExpressionList.getExpressionList().iterator();
 
         while (itr.hasNext()) {
             Expression curExpression = (Expression) itr.next();
             curValue = curExpression.getValue();
-            row = new Vector(2);
+            row = new Vector<String>(2);
             row.add(curExpression.getExpression());
             if (!Double.isInfinite(curValue) && !Double.isNaN(curValue)) {
                 row.add(new DecimalFormat(ConstValues.DF_10).format(curExpression.getValue()));
@@ -71,7 +77,7 @@ public class ExpressionTablePane extends JTable {
             }
             row.add(curExpression.getAngleUnits());
 
-            ExpressionTablePane.addRow(row);
+			ExpressionTablePane.addRow(row);
         }
     }
 }

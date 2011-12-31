@@ -18,7 +18,11 @@ import java.io.Serializable;
  */
 public class Equation implements Serializable {
 
-    private String expression;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 443195241156639504L;
+	private String expression;
     private Color color;
 
     public Equation(String expression, Color color) {

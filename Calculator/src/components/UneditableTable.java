@@ -10,7 +10,11 @@ import javax.swing.table.TableModel;
  * @author Egor
  */
 public class UneditableTable extends JTable{
-    protected DefaultTableModel tableModel = new DefaultTableModel();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 9014866183495581121L;
+	protected DefaultTableModel tableModel = new DefaultTableModel();
 
     /**
      * Create the table pane.
@@ -30,7 +34,7 @@ public class UneditableTable extends JTable{
      * @param row
      *  The row to be added
      */
-    public void addRow(Vector row){
+    public void addRow(Vector<String> row){
         tableModel.addRow(row);
     }
 

@@ -1,9 +1,6 @@
 package expressions;
 
-import java.io.FileNotFoundException;
-import equationnodes.EquationNode;
 import exceptions.InvalidExpressionException;
-import exceptions.UnsetVariableException;
 
 /*
  * EquationEvaluator.java

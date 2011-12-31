@@ -18,7 +18,11 @@ import javax.swing.table.DefaultTableModel;
  * @author Egor
  */
 public class VariableTablePane extends JTable{
-    private static DefaultTableModel tableModel = new DefaultTableModel();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8945708880818610966L;
+	private static DefaultTableModel tableModel = new DefaultTableModel();
 
     /**
      * Constructor.
@@ -35,7 +39,7 @@ public class VariableTablePane extends JTable{
         return false;
     }
 
-    public static void addRow(Vector row){
+    public static void addRow(Vector<String> row){
         tableModel.addRow(row);
     }
 
@@ -44,13 +48,14 @@ public class VariableTablePane extends JTable{
         tableModel.setRowCount(rowCount);
     }
 
-    public static void refreshTable() throws InvalidVariableNameException{
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public static void refreshTable() throws InvalidVariableNameException{
         VariableList.createIfEmpty();
         
         Vector row;
         VariableTablePane.setRowCount(0);
 
-        Iterator itr = VariableList.getVariables().iterator();
+        Iterator<Variable> itr = VariableList.getVariables().iterator();
 
         while(itr.hasNext()){
             Variable curVariable = (Variable) itr.next();

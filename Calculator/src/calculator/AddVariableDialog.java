@@ -11,7 +11,6 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,8 +23,12 @@ import javax.swing.JTextField;
  * @author Egor
  */
 public class AddVariableDialog extends JFrame implements ActionListener {
-	//
-    private JLabel lblVariableName, lblVariableValue;
+	
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2791185538174056163L;
+	private JLabel lblVariableName, lblVariableValue;
     private JTextField txtVariableName;
     private SmartTextField txtVariableValue;
     private JButton btnAdd, btnClose;
@@ -78,8 +81,6 @@ public class AddVariableDialog extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(this, "Variable value is invalid.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-
-                Iterator itr = VariableList.getVariables().iterator();
 
                 for (Variable curVar : VariableList.getVariables()) {
                     if (var.getVariableName().equals(curVar.getVariableName())) {

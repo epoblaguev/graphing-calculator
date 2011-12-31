@@ -42,7 +42,11 @@ import javax.swing.text.DefaultEditorKit;
  */
 public class CalculatorTab extends JPanel implements ActionListener, Serializable, MouseListener, ClipboardOwner, KeyListener {
 
-    int targetRow;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1837255541427330578L;
+	int targetRow;
     JScrollPane exprScrollPane, varScrollPane;
     JPanel controlPanel, controlPanelEast;
     JPanel centerPanel, centerPanelEast, centerPanelWest, exprControlPanel, varControlPanel;

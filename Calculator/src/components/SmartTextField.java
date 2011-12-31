@@ -23,7 +23,11 @@ import javax.swing.JTextField;
  */
 public class SmartTextField extends JTextField implements KeyListener, ActionListener {
 
-    private static ArrayList<String> list = new ArrayList<String>();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5457545908621424875L;
+	private static ArrayList<String> list = new ArrayList<String>();
     private JPopupMenu autoCompleteMenu = new JPopupMenu();
     private String curString;
 

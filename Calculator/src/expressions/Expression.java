@@ -12,7 +12,11 @@ import java.io.Serializable;
  */
 public class Expression implements Serializable{
 
-    private String expression;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7172720115921875406L;
+	private String expression;
     private double value;
     private String angleUnits;
 

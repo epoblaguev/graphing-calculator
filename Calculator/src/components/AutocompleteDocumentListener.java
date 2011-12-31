@@ -5,11 +5,9 @@
 
 package components;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 
 /**
  *
@@ -19,18 +17,21 @@ public class AutocompleteDocumentListener implements DocumentListener{
 
     
     public void insertUpdate(DocumentEvent e) {
-        System.out.println("Insert Update: " + e.getDocument().TitleProperty);
+        e.getDocument();
+		System.out.println("Insert Update: " + Document.TitleProperty);
         System.out.println("Offset: " + e.getOffset());
     }
 
     
     public void removeUpdate(DocumentEvent e) {
-       System.out.println("Remove Update: " + e.getDocument().TitleProperty);
+       e.getDocument();
+	System.out.println("Remove Update: " + Document.TitleProperty);
     }
 
     
     public void changedUpdate(DocumentEvent e) {
-        System.out.println("Change Update:" + e.getDocument().TitleProperty);
+        e.getDocument();
+		System.out.println("Change Update:" + Document.TitleProperty);
     }
 
 }

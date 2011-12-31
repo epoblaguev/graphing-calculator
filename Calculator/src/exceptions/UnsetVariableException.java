@@ -20,6 +20,10 @@ package exceptions;
  */
 public class UnsetVariableException extends Exception{
 
+		/**
+	 * 
+	 */
+	private static final long serialVersionUID = -738450447401979940L;
 		String message;
 		
 		public UnsetVariableException(String _message)
