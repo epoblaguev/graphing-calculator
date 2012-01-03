@@ -6,7 +6,6 @@ package graphing;
 
 import equations.Equation;
 import equations.EquationInput;
-import Constants.ConstValues;
 import components.SmartTextField;
 import expressions.Expression;
 import java.awt.BorderLayout;
@@ -16,7 +15,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.text.DecimalFormat;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -30,16 +28,19 @@ import javax.swing.JTextField;
  */
 public class AddPointAtXValueDialog extends JFrame implements ActionListener, KeyListener {
 
-    private GraphingTab graphTab;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2895224375533289494L;
+	private GraphingTab graphTab;
     private SmartTextField txtValue;
     private JTextField txtPointName;
-    private JComboBox cbEquation;
+    private JComboBox<String> cbEquation;
     private JPanel inputPanel, bottomPanel;
     private JButton btnDraw;
     private JButton btnClose;
     private String expression;
-    private DecimalFormat df = new DecimalFormat(ConstValues.DF_10);
-
+    
     public AddPointAtXValueDialog(GraphingTab graphTab) {
         super();
         this.setLayout(new BorderLayout());
@@ -50,7 +51,7 @@ public class AddPointAtXValueDialog extends JFrame implements ActionListener, Ke
         inputPanel = new JPanel(new GridLayout(0, 2));
         bottomPanel = new JPanel();
 
-        cbEquation = new JComboBox();
+        cbEquation = new JComboBox<String>();
         txtValue = new SmartTextField();
         txtPointName = new JTextField();
 

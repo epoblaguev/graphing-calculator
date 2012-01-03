@@ -6,7 +6,6 @@ package main;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
 
 /**
  * The main Class to run the graphingcalculator application

@@ -5,7 +5,6 @@
 package graphing;
 
 import Constants.ConstValues;
-import Settings.GenSettings;
 import components.SmartTextField;
 import expressions.Expression;
 import java.awt.BorderLayout;
@@ -29,7 +28,11 @@ import javax.swing.JTextField;
  */
 public class AddPointDialog extends JFrame implements ActionListener, KeyListener {
 
-    private JTextField txtPointName;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 350325605840668713L;
+	private JTextField txtPointName;
     private SmartTextField txtXValue, txtYValue;
     private JButton btnAdd, btnClose;
     private JPanel topPanel, bottomPanel, caller;

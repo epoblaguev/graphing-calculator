@@ -6,7 +6,6 @@ package graphing;
 
 import equations.EquationInput;
 import Constants.ConstValues;
-import Settings.GenSettings;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -26,8 +25,12 @@ import javax.swing.JPanel;
  */
 public class DrawLineBetweenPointsDialog extends JFrame implements ActionListener {
 
-    private GraphingTab graphTab;
-    private JComboBox cbFrom, cbTo;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6004966477810832476L;
+	private GraphingTab graphTab;
+    private JComboBox<?> cbFrom, cbTo;
     private JPanel inputPanel, bottomPanel;
     private JButton btnDraw;
     private JButton btnClose;
@@ -43,8 +46,8 @@ public class DrawLineBetweenPointsDialog extends JFrame implements ActionListene
         inputPanel = new JPanel(new GridLayout(0, 2));
         bottomPanel = new JPanel();
 
-        cbFrom = new JComboBox(GraphPanel.getPoints().keySet().toArray());
-        cbTo = new JComboBox(GraphPanel.getPoints().keySet().toArray());
+        cbFrom = new JComboBox<Object>(GraphPanel.getPoints().keySet().toArray());
+        cbTo = new JComboBox<Object>(GraphPanel.getPoints().keySet().toArray());
 
         btnDraw = new JButton("Draw");
         btnClose = new JButton("Close");

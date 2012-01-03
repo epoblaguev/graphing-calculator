@@ -7,7 +7,6 @@ package graphing;
 import equations.Equation;
 import equations.EquationInput;
 import Constants.ConstValues;
-import Settings.GenSettings;
 import components.SmartTextField;
 import expressions.Expression;
 import java.awt.BorderLayout;
@@ -32,12 +31,16 @@ import javax.swing.JTextField;
  */
 public class AddMinMaxPointDialog extends JFrame implements ActionListener, KeyListener {
 
-    public static final int MIN = 1;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5368511158338772299L;
+	public static final int MIN = 1;
     public static final int MAX = 2;
     private GraphingTab graphTab;
     private SmartTextField txtLowX, txtHighX;
     private JTextField txtPointName;
-    private JComboBox cbEquation;
+    private JComboBox<String> cbEquation;
     private JPanel inputPanel, bottomPanel;
     private JButton btnDraw;
     private JButton btnClose;
@@ -56,7 +59,7 @@ public class AddMinMaxPointDialog extends JFrame implements ActionListener, KeyL
         inputPanel = new JPanel(new GridLayout(0, 2));
         bottomPanel = new JPanel();
 
-        cbEquation = new JComboBox();
+        cbEquation = new JComboBox<String>();
         txtPointName = new JTextField();
         txtLowX = new SmartTextField(df.format(x - (range / 20.0)));
         txtHighX = new SmartTextField(df.format(x + (range / 20.0)));

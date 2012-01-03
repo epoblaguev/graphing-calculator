@@ -22,7 +22,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 /**
  *-- Needs Commenting --
@@ -30,9 +29,13 @@ import javax.swing.JTextField;
  */
 public class DrawTangentLineDialog extends JFrame implements ActionListener, KeyListener {
 
-    private GraphingTab graphTab;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3048756512755408252L;
+	private GraphingTab graphTab;
     private SmartTextField txtInput;
-    private JComboBox cbEquation;
+    private JComboBox<String> cbEquation;
     private JPanel inputPanel, bottomPanel;
     private JButton btnDraw;
     private JButton btnClose;
@@ -49,7 +52,7 @@ public class DrawTangentLineDialog extends JFrame implements ActionListener, Key
         inputPanel = new JPanel(new GridLayout(0, 2));
         bottomPanel = new JPanel();
         
-        cbEquation = new JComboBox();
+        cbEquation = new JComboBox<String>();
         txtInput = new SmartTextField();
 
         for (Component eq : graphTab.getEquationPanel().getComponents()) {

@@ -28,7 +28,11 @@ import javax.swing.JPanel;
  */
 public class GraphPanel extends JPanel implements Runnable {
 
-    private double minX = -10;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8880798842884968375L;
+	private double minX = -10;
     private double maxX = 10;
     private double minY = -10;
     private double maxY = 10;

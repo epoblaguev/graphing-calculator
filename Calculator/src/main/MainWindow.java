@@ -14,7 +14,6 @@ import exceptions.InvalidVariableNameException;
 import expressions.EquationEvaluator;
 import expressions.ExpressionList;
 import expressions.IEvaluator;
-import expressions.MathEvaluator;
 import expressions.VariableList;
 import graphing.GraphingTab;
 import java.awt.BorderLayout;
@@ -46,7 +45,11 @@ import javax.swing.JTabbedPane;
  */
 public class MainWindow extends JFrame implements ActionListener {
 
-    JTabbedPane tabbedPane;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8481436709321974592L;
+	JTabbedPane tabbedPane;
     CalculatorTab calculatorTab;
     GraphingTab graphingTab;
     JMenuBar menuBar;

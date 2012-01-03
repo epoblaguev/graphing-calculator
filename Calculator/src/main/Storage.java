@@ -17,16 +17,17 @@ import javax.swing.JMenuBar;
  * @author Egor
  */
 public class Storage implements Serializable{
-    private Vector<Expression> expressions;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3970532039953352429L;
+	private Vector<Expression> expressions;
     private Vector<Variable> variables;
     private GraphingTab graphTab;
-    private JMenuBar menuBar;
-
     public Storage(Vector<Expression> expressions, Vector<Variable> variables, GraphingTab graphingTab, JMenuBar menuBar) {
         this.expressions = expressions;
         this.variables = variables;
         this.graphTab = graphingTab;
-        this.menuBar = menuBar;
     }
 
     /**

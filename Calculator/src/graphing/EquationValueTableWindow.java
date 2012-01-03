@@ -23,7 +23,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import components.UneditableTable;
 
@@ -33,13 +32,17 @@ import components.UneditableTable;
  */
 public class EquationValueTableWindow extends JFrame implements ActionListener {
 
-    private DefaultTableModel tableModel = new DefaultTableModel();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6814774794494656725L;
+	private DefaultTableModel tableModel = new DefaultTableModel();
     private UneditableTable table = new UneditableTable(tableModel);
     private SmartTextField txtLowX, txtHighX, txtInterval;
     private JScrollPane scrollPane = new JScrollPane(table);
     private JButton btnRefresh, btnClose;
     private JPanel buttonPanel, optionsPanel, equationPanel;
-    private JComboBox cbEquation;
+    private JComboBox<String> cbEquation;
     private DecimalFormat df = new DecimalFormat(ConstValues.DF_10);
 
     public EquationValueTableWindow(JPanel equationPanel) {
@@ -54,7 +57,7 @@ public class EquationValueTableWindow extends JFrame implements ActionListener {
         scrollPane = new JScrollPane(table);
         buttonPanel = new JPanel();
         optionsPanel = new JPanel(new GridLayout(0, 2));
-        cbEquation = new JComboBox();
+        cbEquation = new JComboBox<String>();
         btnRefresh = new JButton("Refresh");
         btnClose = new JButton("Close");
 
@@ -130,7 +133,7 @@ public class EquationValueTableWindow extends JFrame implements ActionListener {
         }
         
         for (double i = start; i <= finish; i+=interval) {
-            Vector row = new Vector(2);
+            Vector<String> row = new Vector<String>(2);
             row.add(df.format(i));
             row.add(df.format(Equation.evaluate(equation, i, false)));
 

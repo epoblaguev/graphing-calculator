@@ -24,7 +24,11 @@ import components.UneditableTable;
  */
 public class PointValuesTableWindow extends JFrame implements ActionListener{
 
-    private DefaultTableModel tableModel = new DefaultTableModel();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7855337057420942613L;
+	private DefaultTableModel tableModel = new DefaultTableModel();
     private UneditableTable table = new UneditableTable(tableModel);
     private JScrollPane scrollPane  = new JScrollPane(table);
     private JButton btnRefresh, btnClose;
@@ -60,7 +64,7 @@ public class PointValuesTableWindow extends JFrame implements ActionListener{
         tableModel.addColumn("X Value");
         tableModel.addColumn("Y Value");
         for(String key : GraphPanel.getPoints().keySet()){
-            Vector row = new Vector(3);
+            Vector<String> row = new Vector<String>(3);
             row.add(key);
             row.add(df.format(GraphPanel.getPoint(key).getX()));
             row.add(df.format(GraphPanel.getPoint(key).getY()));

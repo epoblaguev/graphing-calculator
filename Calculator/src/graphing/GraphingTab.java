@@ -53,7 +53,11 @@ import javax.swing.border.EtchedBorder;
  */
 public class GraphingTab extends JPanel implements ActionListener, MouseWheelListener, MouseMotionListener, MouseListener, FocusListener, KeyListener {
 
-    private int equationCount = 3;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2431506973009907432L;
+	private int equationCount = 3;
     private int xPrev = 0, yPrev = 0;
     private double xClicked = 0, yClicked = 0;
     private GraphPanel graphPanel;

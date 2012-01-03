@@ -13,7 +13,11 @@ import java.io.Serializable;
  * @author Egor
  */
 public class GraphSettings implements Serializable{
-    private static boolean antialiased = true;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1240146121530921728L;
+	private static boolean antialiased = true;
     private static float lineWidth = 1;
     private static Color bgColor = Color.gray;
     private static boolean drawGrid = false;
