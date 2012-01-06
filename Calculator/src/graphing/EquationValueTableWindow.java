@@ -5,6 +5,7 @@
 package graphing;
 
 import Constants.ConstValues;
+import Settings.Printer;
 import components.SmartTextField;
 import equations.Equation;
 import equations.EquationInput;
@@ -117,9 +118,9 @@ public class EquationValueTableWindow extends JFrame implements ActionListener {
         {
         	interval = Double.NaN;
         }
-        System.out.println(start);
-        System.out.println(finish);
-        System.out.println(interval);
+        Printer.print(start);
+        Printer.print(finish);
+        Printer.print(interval);
 
         String equation = "";
 

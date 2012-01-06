@@ -21,6 +21,8 @@ package equationnodes;
 
 import java.util.Random;
 
+import Settings.Printer;
+
 public class FuncNode extends OpNode {
 
 	boolean radians;
@@ -34,7 +36,7 @@ public class FuncNode extends OpNode {
 	public double getValue() {  //should put this in order of most likely to least likely to be used
 		if(name.equals("sin("))
 		{
-			System.out.print("Radians?: " +radians);
+			Printer.print("Radians?: " +radians);
 					
 			if(radians)
 			return Math.sin(child.getValue());

@@ -19,6 +19,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
@@ -45,13 +47,14 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SingleSelectionModel;
 import javax.swing.border.EtchedBorder;
 
 /**
  * Creates the Graphing Panel
  * @author Egor
  */
-public class GraphingTab extends JPanel implements ActionListener, MouseWheelListener, MouseMotionListener, MouseListener, FocusListener, KeyListener {
+public class GraphingTab extends JPanel implements ActionListener, MouseWheelListener, MouseMotionListener, MouseListener, FocusListener, KeyListener, ComponentListener {
 
     /**
 	 * 
@@ -205,6 +208,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         graphPanel.addMouseMotionListener(this);
         graphPanel.addMouseWheelListener(this);
         graphPanel.addMouseListener(this);
+        graphPanel.addComponentListener(this);
         txtMaxX.addFocusListener(this);
         txtMinX.addFocusListener(this);
         txtMaxY.addFocusListener(this);
@@ -389,7 +393,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
         }
         if (e.getSource() == miRemovePoint) {
             String remove = JOptionPane.showInputDialog(this, "Name of point to remove:");
-            GraphPanel.removePoint(remove);
+			GraphPanel.removePoint(remove);
             try {
                 this.wait(10);
             } catch (InterruptedException ex) {
@@ -655,4 +659,24 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
     public void keyReleased(KeyEvent e) {
         
     }
+
+	public void componentHidden(ComponentEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void componentMoved(ComponentEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void componentResized(ComponentEvent arg0) {
+		this.resetStats();
+		
+	}
+
+	public void componentShown(ComponentEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 }

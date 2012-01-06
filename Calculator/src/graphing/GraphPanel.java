@@ -7,6 +7,7 @@ package graphing;
 import Constants.ConstValues;
 import equations.Equation;
 import Settings.GraphSettings;
+import Settings.Printer;
 import exceptions.InvalidBoundsException;
 import expressions.Expression;
 import java.awt.BasicStroke;
@@ -14,11 +15,15 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Vector;
+
+import javax.swing.DebugGraphics;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -27,7 +32,7 @@ import javax.swing.JPanel;
  * 
  * @author Egor
  */
-public class GraphPanel extends JPanel implements Runnable {
+public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 
 	private static final long serialVersionUID = -8880798842884968375L;
 	private double minX = -10;
@@ -38,24 +43,32 @@ public class GraphPanel extends JPanel implements Runnable {
 	private double yInterval;
 	private int xAxis = 0;
 	private int yAxis = 0;
+	private int panelHeight = 0;
+	private int panelWidth = 0;
+	private boolean firstResize = true;
 	private static Vector<Equation> equations = new Vector<Equation>();
 	private static Vector<GeneralPath> polylines = new Vector<GeneralPath>();
 	private Vector<Thread> threads = new Vector<Thread>();
-	private static int currentEq = 0;
+	private boolean stopThreads = false;
+	private boolean painting = false;
+	private int currentEq = 0;
 	private static HashMap<String, Point2D.Double> points = new HashMap<String, Point2D.Double>();
-	private static Graphics2D g2;
+	private Graphics2D g2;
 
 	/**
 	 * Constructor, sets the background
 	 */
 	public GraphPanel() {
 		this.setBackground(GraphSettings.getBgColor());
+		this.addComponentListener(this);
 	}
 
 	/**
 	 * Paints the graph
 	 */
 	public void paintComponent(Graphics g) {
+		painting = true;
+
 		this.setBackground(GraphSettings.getBgColor());
 
 		g2 = (Graphics2D) g;
@@ -112,13 +125,13 @@ public class GraphPanel extends JPanel implements Runnable {
 
 		g2.setStroke(new BasicStroke(GraphSettings.getLineWidth()));
 		// Loop through each equation.
-		for(int i = 0; i < polylines.size(); i++){
+		for (int i = 0; i < polylines.size(); i++) {
 			g2.setColor(equations.get(i).getColor());
 			g2.draw(polylines.get(i));
 		}
-//		for (GeneralPath polyline : polylines) {
-//			g2.draw(polyline);
-//		}
+		// for (GeneralPath polyline : polylines) {
+		// g2.draw(polyline);
+		// }
 
 		// Add points
 		g2.setColor(Color.BLACK);
@@ -131,6 +144,7 @@ public class GraphPanel extends JPanel implements Runnable {
 					+ df.format(pt.getY()) + ")", x + 5, y);
 		}
 		g2.dispose();
+		painting = false;
 	}
 
 	/**
@@ -448,29 +462,13 @@ public class GraphPanel extends JPanel implements Runnable {
 	 * 
 	 * @return The next unused equation.
 	 */
-	private synchronized static int getNextEQ() {
+	private synchronized int getNextEQ() {
 		if (currentEq > equations.size() - 1) {
 			currentEq = 0;
 		}
 		// JOptionPane.showMessageDialog(this, currentEq);
-		System.out.println(currentEq);
+		Printer.print(currentEq);
 		return currentEq++;
-	}
-
-	/**
-	 * Set the color and draw a line. Thread safe.
-	 * 
-	 * @param x1
-	 * @param y1
-	 * @param x2
-	 * @param y2
-	 * @param c
-	 */
-	private static synchronized void drawLineSync(int x1, int y1, int x2,
-			int y2, Color c) {
-		g2.setColor(c);
-		// g2.drawLine(0, 0, 50, 50);
-		g2.drawLine(x1, y1, x2, y2);
 	}
 
 	private synchronized void increasePolylineNumber(int eqNumber) {
@@ -479,37 +477,37 @@ public class GraphPanel extends JPanel implements Runnable {
 		}
 	}
 
-	private synchronized void startDrawing(){
-		for(Thread t : threads){
+	public void startDrawing() {
+		stopThreads = true;
+		for (Thread t : threads) {
 			t.stop();
 		}
 		threads.clear();
 		polylines.clear();
+		stopThreads = false;
 		repaint();
-		for(Equation eq : equations){
+		for (Equation eq : equations) {
 			threads.add(new Thread(this));
 			threads.lastElement().start();
 		}
 	}
-	
+
 	/**
 	 * Repaints the pane
 	 */
 	public void run() {
 		try {
-			int eqNumber = GraphPanel.getNextEQ();
+			int eqNumber = this.getNextEQ();
 			Equation eq = equations.get(eqNumber);
-			
+
 			increasePolylineNumber(eqNumber);
 			GeneralPath polyline = new GeneralPath(GeneralPath.WIND_EVEN_ODD, this.getWidth());
-			
+
 			boolean firstPoint = true;
 			double interval, intervalFormula, slope;
 			Double eqVal;
 			Double eqPrev = 0.0;
 			String expr = eq.getExpression();
-			int prevX;
-			int prevY;
 
 			// Set values for loop.
 			try {
@@ -519,18 +517,20 @@ public class GraphPanel extends JPanel implements Runnable {
 				JOptionPane.showMessageDialog(this, "Invalid Argument.", "Error", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			// prevX = UnitToPixelX(minX);
-			// prevY = UnitToPixelY(eqPrev);
 
 			polyline.moveTo(UnitToPixelX(minX), UnitToPixelY(eqPrev));
-			System.out.println("\neqNumber:"+eqNumber);
-			System.out.println("Size:"+polylines.size());
+			// Printer.print("\neqNumber:" + eqNumber);
+			// Printer.print("Size:" + polylines.size());
 			polylines.set(eqNumber, polyline);
 			interval = intervalFormula = (maxX - minX) / (this.getWidth());
 
 			// Start loop.
 			int loop = 0;
-			for (double x = minX; ; x += interval) {
+			for (double x = minX;; x += interval) {
+				if (stopThreads) {
+					break;
+				}
+
 				// eqVal and pixValX are used a lot. Solve only once.
 				eqVal = Equation.evaluate(expr, x, false);
 				int pixValX = UnitToPixelX(x);
@@ -538,16 +538,10 @@ public class GraphPanel extends JPanel implements Runnable {
 				if (eqVal.isNaN() || eqVal.isInfinite()) {
 					firstPoint = true;
 				} else if (firstPoint) {
-					// prevX = pixValX;
-					// prevY = UnitToPixelY(eqVal);
 					polyline.moveTo(pixValX, UnitToPixelY(eqVal));
 					polylines.set(eqNumber, polyline);
 					firstPoint = false;
 				} else {
-					// GraphPanel.drawLineSync(prevX, prevY, pixValX,
-					// UnitToPixelY(eqVal), eq.getColor());
-					// prevX = pixValX;
-					// prevY = UnitToPixelY(eqVal);
 					polyline.lineTo(pixValX, UnitToPixelY(eqVal));
 					polylines.set(eqNumber, polyline);
 				}
@@ -563,11 +557,11 @@ public class GraphPanel extends JPanel implements Runnable {
 					interval = intervalFormula;
 				}
 				eqPrev = eqVal;
-				
-				if(loop++ % 10 == 0 || x >= maxX){
+
+				if ((loop++ % 10 == 0 || x >= maxX) && !painting) {
 					repaint();
 				}
-				if(x >= maxX){
+				if (x >= maxX) {
 					break;
 				}
 			}
@@ -575,5 +569,43 @@ public class GraphPanel extends JPanel implements Runnable {
 			JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
+	}
+
+	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	public void componentResized(ComponentEvent e) {
+		if(firstResize){
+			panelWidth = this.getWidth();
+			panelHeight = this.getHeight();
+			firstResize = false;
+			return;
+		}
+		
+		int oldWidth = panelWidth;
+		int oldHeight = panelHeight;
+		panelWidth = this.getWidth();
+		panelHeight = this.getHeight();
+
+		try {
+			this.setMinX(this.getMinX() * panelWidth / oldWidth);
+			this.setMaxX(this.getMaxX() * panelWidth / oldWidth);
+			this.setMinY(this.getMinY() * panelHeight / oldHeight);
+			this.setMaxY(this.getMaxY() * panelHeight / oldHeight);
+		} catch (InvalidBoundsException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		this.startDrawing();
+	}
+
+	public void componentShown(ComponentEvent e) {
+		// TODO Auto-generated method stub
 	}
 }

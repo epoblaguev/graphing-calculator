@@ -2,6 +2,8 @@ package expressions;
 
 import java.util.HashMap;
 
+import Settings.Printer;
+
 
 /* 
  * This code has been deprecated and is no longer actively used in the system.
@@ -23,7 +25,7 @@ import java.util.HashMap;
  * Sample:
  * MathEvaluator m = new MathEvaluator("-5-6/(-2) + sqr(15+x)");
  * m.addVariable("x", 15.1d);
- * System.out.println( m.getValue() );
+ * Printer.print( m.getValue() );
  * </pre>
  * @version 1.1
  * @author 	The-Son LAI, <a href="mailto:Lts@writeme.com">Lts@writeme.com</a>
@@ -414,7 +416,7 @@ public class MathEvaluator implements IEvaluator {
                     return operators[i];
                 }
             }
-            System.out.println(s);
+            Printer.print(s);
             return null;
         }
 
@@ -595,7 +597,7 @@ public class MathEvaluator implements IEvaluator {
             for (int i = 0; i < nLevel; i++) {
                 nbSpaces += "  ";
             }
-            System.out.println(nbSpaces + "|" + s);
+            Printer.print(nbSpaces + "|" + s);
         }
     }
 

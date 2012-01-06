@@ -14,7 +14,6 @@ import javax.swing.ImageIcon;
  */
 public class GenSettings {
 
-
     /**
      * Loads Icon image. Works inside JAR files.
      * @param location - location of icon image.

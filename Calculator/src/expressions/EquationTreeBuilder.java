@@ -3,7 +3,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
+
+import Settings.Printer;
 
 import equationnodes.*;
 import exceptions.InvalidExpressionException;
@@ -89,7 +92,7 @@ private boolean radians = true;
 				}
 				instr=table[index][cstate];  //find the instruction corresponding to the given state and token
 
-				System.out.println(ctok+" "+cstate+" "+instr);
+				Printer.print(ctok+" "+cstate+" "+instr);
 				if(instr.equals("")) //handles incorrect programs
 				{
 					throw new InvalidExpressionException("This is not a well formed expression");
@@ -97,7 +100,7 @@ private boolean radians = true;
 				else
 				if(instr.equals("acc"))  //handles the accepts case
 				{
-					//System.out.println("Made it here");
+					//Printer.print("Made it here");
 					root =balanceTree(eqstack.pop());
 					return true;
 				}
@@ -239,7 +242,7 @@ private boolean radians = true;
 			}
 		
 		}
-			System.out.println("Invalid Production");
+			Printer.print("Invalid Production");
 			return -1;
 		
 	}
@@ -351,7 +354,7 @@ private boolean radians = true;
 	 */
 	private void loadTable() throws IOException
 	{
-		BufferedReader br= new BufferedReader(new FileReader(new File("./src/parsedata.txt")));
+		BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/parsedata.txt")));
 		String temp;
 		String[] t,terms, vars;
 		String[][]t1;              	//[x][y]  (so it goes 1,1  2,1 3,1)

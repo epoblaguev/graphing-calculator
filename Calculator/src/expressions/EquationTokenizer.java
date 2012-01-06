@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import Settings.Printer;
+
 /*
  * EquationTokenizer.java
  * Author: Ben McCormick
@@ -71,8 +73,8 @@ public class EquationTokenizer {
 		{
 			if(debug)
 			{
-				System.out.println("Equation: "+eq);
-				System.out.println("Token List "+ list);
+				Printer.print("Equation: "+eq);
+				Printer.print("Token List "+ list);
 			}
 			
 			
@@ -136,8 +138,8 @@ public class EquationTokenizer {
 		}
 		if(debug)
 		{
-			System.out.println("Equation: "+eq);
-			System.out.println("Token List "+ list);
+			Printer.print("Equation: "+eq);
+			Printer.print("Token List "+ list);
 		}
 		addImplicitMult(list,number,variable,function);
 		String[] tokens = new String[list.size()];

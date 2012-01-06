@@ -39,31 +39,32 @@ public class EquationScanner {
 	 */
 	public EquationScanner(String[] tokenarray) throws FileNotFoundException {
 		newExpression(tokenarray);
-
-		Scanner f = new Scanner(new File("./src/functions.txt"));
+		
+		Scanner f = new Scanner(getClass().getResourceAsStream("/functions.txt"));
+		//Scanner f = new Scanner(new File("./src/functions.txt"));
 		functions = new ArrayList<String>();
 		while (f.hasNext()) {
 			functions.add(f.next());
 		}
-		Scanner o = new Scanner(new File("./src/operators.txt"));
+		Scanner o = new Scanner(getClass().getResourceAsStream("/operators.txt"));
 		operators = new ArrayList<String>();
 		while (o.hasNext()) {
 			operators.add(o.next());
 		}
 
-		Scanner b = new Scanner(new File("./src/bifunc.txt"));
+		Scanner b = new Scanner(getClass().getResourceAsStream("/bifunc.txt"));
 		bifunc = new ArrayList<String>();
 		while (b.hasNext()) {
 			bifunc.add(b.next());
 		}
 
-		Scanner p = new Scanner(new File("./src/punc.txt"));
+		Scanner p = new Scanner(getClass().getResourceAsStream("/punc.txt"));
 		punc = new ArrayList<String>();
 		while (p.hasNext()) {
 			punc.add(p.next());
 		}
 		
-		Scanner u = new Scanner(new File("./src/unaryoperators.txt"));
+		Scanner u = new Scanner(getClass().getResourceAsStream("/unaryoperators.txt"));
 		unop = new ArrayList<String>();
 		while (u.hasNext()) {
 			String x=u.next();

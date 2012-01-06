@@ -1,5 +1,7 @@
 package equationnodes;
 
+import Settings.Printer;
+
 /*
  * BiFuncNode.java
  * Author: Ben McCormick
@@ -71,7 +73,7 @@ public class BiFuncNode extends BinOpNode{
 			z*=a;
 			a--;
 		}
-		System.out.println(x+" "+z);
+		Printer.print(x+" "+z);
 		return z;
 		
 	}

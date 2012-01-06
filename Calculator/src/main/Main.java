@@ -6,6 +6,7 @@ package main;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * The main Class to run the graphingcalculator application
@@ -29,7 +30,21 @@ public class Main {
         SwingUtilities.invokeLater(new Runnable() {
 
             public void run() {
-                    UIManager.put("swing.boldMetal", Boolean.FALSE);
+                    try {
+						UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InstantiationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (UnsupportedLookAndFeelException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                     showMainWindow();
             }
         });

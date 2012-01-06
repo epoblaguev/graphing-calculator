@@ -96,7 +96,7 @@ public class MainWindow extends JFrame implements ActionListener {
         mnuLineWidth = new JMenu("Line Width");
         mnuGraphColor = new JMenu("Graph Background");
         mnuPrecision = new JMenu("Precision Modifier");
-
+        
         //Initialize Menu Items
         miSave = new JMenuItem("Save State", GenSettings.getImageIcon("/images/saveSmall.png"));
         miLoad = new JMenuItem("Load State", GenSettings.getImageIcon("/images/loadSmall.png"));
