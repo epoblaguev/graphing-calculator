@@ -47,7 +47,6 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.SingleSelectionModel;
 import javax.swing.border.EtchedBorder;
 
 /**

@@ -85,6 +85,8 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 			g2.setColor(Color.GRAY);
 			xInterval = Math.pow(10, String.valueOf((int) (maxX - minX) / 4).length() - 1);
 			yInterval = Math.pow(10, String.valueOf((int) (maxY - minY) / 4).length() - 1);
+			
+			xInterval = yInterval = Math.min(xInterval, yInterval);
 
 			for (double i = 0 + xInterval; i <= maxX; i += xInterval) {
 				g2.drawLine(UnitToPixelX(i), 0, UnitToPixelX(i), this.getHeight());
@@ -480,13 +482,13 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 	public void startDrawing() {
 		stopThreads = true;
 		for (Thread t : threads) {
-			t.stop();
+			t.stop(); //TODO: Terbile design. This should be changed later. But it works for testing.
 		}
 		threads.clear();
 		polylines.clear();
 		stopThreads = false;
 		repaint();
-		for (Equation eq : equations) {
+		for (int i=0; i<equations.size(); i++) {
 			threads.add(new Thread(this));
 			threads.lastElement().start();
 		}
