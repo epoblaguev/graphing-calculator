@@ -1,0 +1,17 @@
+These iterations were completed prior to this documentation being written.  As of version 2.5 of the software, the calculator had the following features:
+
+## Features ##
+
+  * Calculates Mathematical Expressions handling multiple operators including trig functions, abs(), and several others
+  * Stores variables as needed
+  * Tabbed GUI with calculator section and graphing section
+  * Full graphing capability of any equation that is understood by the machine
+  * Ability to change the scope of the graph, smooth zooming
+  * Ability to plot points, lines, and tangent lines
+
+
+## Known Issues ##
+
+  * Some problems with Expression handler (handles operations Out of order?)
+  * Autocomplete causes problems when entering functions
+  * Unable to handle asin,acos,atan,min,max functions (give null pointer exceptions), as well as bitwise functions & and | (it treats them as addition)

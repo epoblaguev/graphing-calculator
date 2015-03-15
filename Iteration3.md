@@ -1,0 +1,26 @@
+## Work to Date ##
+
+  * Implemented new Expression Parsing and Evaluation Model (see ModelDesign for details)
+  * Got new Expression Evaluator to handle all advertised operations
+  * Added JUnit tests to evaluate Expression Evaluators
+  * Began work on autocomplete, determined that autocomplete issue was a OSX issue with no easy fix
+  * Began better commenting of code
+
+## Intended Features ##
+
+(Struck out features are completed)
+  * ~~Working Expression Parsing/Evaluation~~
+  * ~~Handle arc-trig functions and bitwise operations~~
+  * ~~Easier to use autocomplete~~
+  * ~~Add consistent exception system to handle illformed expressions~~ (Basic version implemented, moved to iteration 4)
+
+
+## Other Intended Additions ##
+
+  * ~~Better commenting throughout code to facilitate cooperation~~
+  * ~~JUnit Testing to identify expression parsing/solving bugs and maintain base functions as project is expanded~~
+
+
+## Intended due date ##
+
+Iteration 3 features & additions should be implemented by February 1, 2011 (this is flexible and intended only as a goal to motivate a worthwhile pace)

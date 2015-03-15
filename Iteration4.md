@@ -1,0 +1,27 @@
+## Work to Date ##
+  * Combinations and Permutations are supported
+  * JUnit tests for Combinations, Permutations and Factorials have been added
+  * Unary operations are supported
+  * Improved Commenting
+  * Derivative and Partial simplification tabled for a future iteration
+
+
+## Intended Features ##
+
+  * ~~Add support for unary operations (specifically !) and better variable setting (using = )~~
+  * ~~Add support for !, Combinations, Permutations,~~ and derivatives
+  * Clean up the backend design with a clear system model including an improved expression handling system
+  * Add support for simplifying functions without solving them completely (if there are unknown variables involved
+
+## Other Intended Additions ##
+
+  * Continue adding and improving commenting
+  * Add commenting to explain licensing of code
+  * Add more documentation
+  * Expand JUnit testing to test expanded features, making testing for all features more robust
+
+
+
+## Intended due date ##
+
+Iteration 4 features & additions should be implemented by May 1, 2011 (this is flexible and intended only as a goal to motivate a worthwhile pace)
