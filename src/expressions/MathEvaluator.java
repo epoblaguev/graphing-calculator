@@ -2,48 +2,43 @@ package expressions;
 
 import java.util.HashMap;
 
+import Settings.Printer;
+
+
+/* 
+ * This code has been deprecated and is no longer actively used in the system.
+ * It has been replaced by EquationEvaluator and related classes
+ */
+
+
+
+
+
+
+
+
 /************************************************************************
  * <i>Mathematic expression evaluator.</i> Supports the following functions:
- * +, -, *, /, ^, %, cos, sin, tan, acos, asin, atan, sqrt, sqr, log, min, max, ceil, floor, abs, neg, rndr.<br>
+ * +, -, *, /, ^, %, cos, sin, tan, acos, asin, atan, sqrt, sqr, log, min, max, ceil, floor, abs, neg, rnd.<br>
  * When the getValue() is called, a Double object is returned. If it returns null, an error occured.<p>
  * <pre>
  * Sample:
  * MathEvaluator m = new MathEvaluator("-5-6/(-2) + sqr(15+x)");
  * m.addVariable("x", 15.1d);
- * System.out.println( m.getValue() );
+ * Printer.print( m.getValue() );
  * </pre>
  * @version 1.1
  * @author 	The-Son LAI, <a href="mailto:Lts@writeme.com">Lts@writeme.com</a>
+ * Edited by Egor, Ben McCormick
  * @date     April 2001
  ************************************************************************/
-public class MathEvaluator {
-
+public class MathEvaluator implements IEvaluator {
     protected static Operator[] operators = null;
     private Node node = null;
     private String expression = null;
     private HashMap variables = new HashMap();
-    private static boolean usingRadians = true;
+    private static int angleUnits = IEvaluator.RADIANS;
 
-    public boolean isUsingRadians() {
-        return usingRadians;
-    }
-
-    public void setUsingRadians(boolean useRadians) {
-        MathEvaluator.usingRadians = useRadians;
-    }
-
-    /**
-     * Checks if the value of the angle is in radians or degrees. If in degrees, converts to radians.
-     * @param angle - the angle value.
-     * @return The angle if using radians, a conversion to radians if using degrees.
-     */
-    private static double getAngleValue(double angle) {
-        if (usingRadians) {
-            return angle;
-        } else {
-            return Math.toRadians(angle);
-        }
-    }
 
     /***
      * creates an empty MathEvaluator. You need to use setExpression(String s) to assign a math expression string to it.
@@ -66,51 +61,35 @@ public class MathEvaluator {
         }
     }
 
-    /***
-     * adds a variable and its value in the MathEvaluator
-     */
-    public void addVariable(String v, double val) {
-        addVariable(v, new Double(val));
-    }
-
-    /***
-     * adds a variable and its value in the MathEvaluator
-     */
+    
+    /* (non-Javadoc)
+	 * @see expressions.IEvaluator#addVariable(java.lang.String, java.lang.Double)
+	 */
     public void addVariable(String v, Double val) {
         variables.put(v, val);
     }
 
-    /***
-     * sets the expression
-     */
+    /* (non-Javadoc)
+	 * @see expressions.IEvaluator#setExpression(java.lang.String)
+	 */
     public void setExpression(String s) {
         expression = s;
     }
 
-    /***
-     * resets the evaluator
-     */
+    /* (non-Javadoc)
+	 * @see expressions.IEvaluator#reset()
+	 */
     public void reset() {
         node = null;
         expression = null;
         variables = new HashMap();
     }
 
-    /***
-     * trace the binary tree for debug
-     */
-    public void trace() {
-        try {
-            node = new Node(expression);
-            node.trace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    
 
-    /***
-     * evaluates and returns the value of the expression
-     */
+    /* (non-Javadoc)
+	 * @see expressions.IEvaluator#getValue()
+	 */
     public Double getValue() {
         if (expression == null) {
             return null;
@@ -124,8 +103,15 @@ public class MathEvaluator {
             return null;
         }
     }
-
+    
+    /**
+     * Evaluates the value of the expression tree recursively
+     * @param n - the root node of the expression tree
+     * @return
+     */
     private static Double evaluate(Node n) {
+    	if(n.getLevel() == 0){n.trace();}
+    	
         if (n.hasOperator() && n.hasChild()) {
             if (n.getOperator().getType() == 1) {
                 n.setValue(evaluateExpression(n.getOperator(), evaluate(n.getLeft()), null));
@@ -135,7 +121,13 @@ public class MathEvaluator {
         }
         return n.getValue();
     }
-
+    /**
+     * Evaluates individual expressions
+     * @param o - the operator
+     * @param f1 - the first value
+     * @param f2 - the second value
+     * @return - the value of the expression
+     */
     private static Double evaluateExpression(Operator o, Double f1, Double f2) {
         String op = o.getOperator();
         Double res = null;
@@ -153,9 +145,9 @@ public class MathEvaluator {
         } else if ("%".equals(op)) {
             res = new Double(f1.doubleValue() % f2.doubleValue());
         } else if ("&".equals(op)) {
-            res = new Double(f1.doubleValue() + f2.doubleValue()); // todo
+            res = new Double((int)f1.doubleValue() & (int)f2.doubleValue()); 
         } else if ("|".equals(op)) {
-            res = new Double(f1.doubleValue() + f2.doubleValue()); // todo
+            res = new Double((int)f1.doubleValue() | (int)f2.doubleValue());
         } else if ("cos".equals(op)) {
             res = new Double(Math.cos(getAngleValue(f1.doubleValue())));
         } else if ("sin".equals(op)) {
@@ -173,6 +165,8 @@ public class MathEvaluator {
         } else if ("sqrt".equals(op)) {
             res = new Double(Math.sqrt(f1.doubleValue()));
         } else if ("log".equals(op)) {
+            res = new Double(Math.log10(f1.doubleValue()));
+        } else if ("ln".equals(op)){
             res = new Double(Math.log(f1.doubleValue()));
         } else if ("min".equals(op)) {
             res = new Double(Math.min(f1.doubleValue(), f2.doubleValue()));
@@ -195,8 +189,11 @@ public class MathEvaluator {
         return res;
     }
 
+    /**
+     * Initializes an array of operators
+     */
     private void initializeOperators() {
-        operators = new Operator[25];
+        operators = new Operator[26];
         operators[0] = new Operator("+", 2, 0);
         operators[1] = new Operator("-", 2, 0);
         operators[2] = new Operator("*", 2, 10);
@@ -205,28 +202,29 @@ public class MathEvaluator {
         operators[5] = new Operator("%", 2, 10);
         operators[6] = new Operator("&", 2, 0);
         operators[7] = new Operator("|", 2, 0);
-        operators[8] = new Operator("cos", 1, 20);
-        operators[9] = new Operator("sin", 1, 20);
-        operators[10] = new Operator("tan", 1, 20);
-        operators[11] = new Operator("acos", 1, 20);
-        operators[12] = new Operator("asin", 1, 20);
-        operators[13] = new Operator("atan", 1, 20);
+        operators[8] = new Operator("acos", 1, 20);
+        operators[9] = new Operator("asin", 1, 20);
+        operators[10] = new Operator("atan", 1, 20);
+        operators[11] = new Operator("cos", 1, 20);
+        operators[12] = new Operator("sin", 1, 20);
+        operators[13] = new Operator("tan", 1, 20);
         operators[14] = new Operator("sqrt", 1, 20);
         operators[15] = new Operator("sqr", 1, 20);
         operators[16] = new Operator("log", 1, 20);
-        operators[17] = new Operator("min", 2, 0);
-        operators[18] = new Operator("max", 2, 0);
-        operators[19] = new Operator("exp", 1, 20);
-        operators[20] = new Operator("floor", 1, 20);
-        operators[21] = new Operator("ceil", 1, 20);
-        operators[22] = new Operator("abs", 1, 20);
-        operators[23] = new Operator("neg", 1, 20);
-        operators[24] = new Operator("rnd", 1, 20);
+        operators[17] = new Operator("ln", 1, 20);
+        operators[18] = new Operator("min", 2, 0);
+        operators[19] = new Operator("max", 2, 0);
+        operators[20] = new Operator("exp", 1, 20);
+        operators[21] = new Operator("floor", 1, 20);
+        operators[22] = new Operator("ceil", 1, 20);
+        operators[23] = new Operator("abs", 1, 20);
+        operators[24] = new Operator("neg", 1, 20);
+        operators[25] = new Operator("rnd", 1, 20);
     }
 
-    /***
-     * gets the variable's value that was assigned previously 
-     */
+    /* (non-Javadoc)
+	 * @see expressions.IEvaluator#getVariable(java.lang.String)
+	 */
     public Double getVariable(String s) {
         return (Double) variables.get(s);
     }
@@ -246,39 +244,70 @@ public class MathEvaluator {
         return res;
     }
 
+    /**
+     * Gets the array of operators
+     * @return
+     */
     protected Operator[] getOperators() {
         return operators;
     }
 
+    /**
+     * A class to represent an operator in an arithmetic expression
+     *
+     */
     protected class Operator {
 
         private String op;
         private int type;
         private int priority;
 
+        /**
+         * Constructor to form a new operator
+         * @param o-string representation of operator
+         * @param t-operator type (unary/binary)
+         * @param p-priority
+         */
         public Operator(String o, int t, int p) {
             op = o;
             type = t;
             priority = p;
         }
-
+        /**
+         * Returns the string representation of the operator
+         * @return - the String representation of the Operator
+         */
         public String getOperator() {
             return op;
         }
-
+        /**
+         * Sets the String Representation of the Operator
+         * @param o
+         */
         public void setOperator(String o) {
             op = o;
         }
-
+        
+        /**
+         * Get the type of the operator (unary, binary)
+         * @return - Operator type
+         */
         public int getType() {
             return type;
         }
-
+        
+        /**
+         * Get the type of the operator (unary, binary)
+         * @return - Operator type
+         */
         public int getPriority() {
             return priority;
         }
     }
-
+    
+    /**
+     * Class to represent a Node in an arithmetic expression tree
+     */
     protected class Node {
 
         public String nString = null;
@@ -288,15 +317,34 @@ public class MathEvaluator {
         public Node nParent = null;
         public int nLevel = 0;
         public Double nValue = null;
-
+        
+        /**
+         * Constructor for the root node with only an expression string
+         * @param s
+         * @throws Exception
+         */
         public Node(String s) throws Exception {
             init(null, s, 0);
         }
-
+        
+        /**
+         * Constructor with parent node, String, and the level of the node
+         * @param parent-parent node
+         * @param s-string
+         * @param level-tree level
+         * @throws Exception
+         */
         public Node(Node parent, String s, int level) throws Exception {
             init(parent, s, level);
         }
-
+        
+        /**
+         * Initializes a node
+         * @param parent-the parent of the node
+         * @param s- node string
+         * @param level - node level
+         * @throws Exception
+         */
         private void init(Node parent, String s, int level) throws Exception {
             s = removeIllegalCharacters(s);
             s = removeBrackets(s);
@@ -353,6 +401,12 @@ public class MathEvaluator {
             }
         }
 
+        /**
+         * Get the operator at a location of a specific String
+         * @param s - the Expression string
+         * @param start - the starting location
+         * @return
+         */
         private Operator getOperator(String s, int start) {
             Operator[] operators = getOperators();
             String temp = s.substring(start);
@@ -362,9 +416,15 @@ public class MathEvaluator {
                     return operators[i];
                 }
             }
+            Printer.print(s);
             return null;
         }
 
+        /**
+         * Get the first word in the String
+         * @param s
+         * @return
+         */
         private String getNextWord(String s) {
             int sLength = s.length();
             for (int i = 1; i < sLength; i++) {
@@ -376,24 +436,7 @@ public class MathEvaluator {
             return s;
         }
 
-        /***
-         * checks if there is any missing brackets
-         * @return true if s is valid
-         */
-        protected int checkBrackets(String s) {
-            int sLength = s.length();
-            int inBracket = 0;
-
-            for (int i = 0; i < sLength; i++) {
-                if (s.charAt(i) == '(' && inBracket >= 0) {
-                    inBracket++;
-                } else if (s.charAt(i) == ')') {
-                    inBracket--;
-                }
-            }
-
-            return inBracket;
-        }
+       
 
         /***
          * returns a string that doesnt start with a + or a -
@@ -426,53 +469,97 @@ public class MathEvaluator {
                 }
             }
         }
-
+        
+        /**
+         * Returns true if the node has a child, false otherwise
+         * @return
+         */
         protected boolean hasChild() {
             return (nLeft != null || nRight != null);
         }
-
+        
+        /**
+         * Returns true if the node has an operator
+         * @return
+         */
         protected boolean hasOperator() {
             return (nOperator != null);
         }
-
+        
+        /**
+         * Returns true if the node has a left node
+         * @return
+         */
         protected boolean hasLeft() {
             return (nLeft != null);
         }
-
+        
+        /**
+         * Gets the left node
+         * @return
+         */
         protected Node getLeft() {
             return nLeft;
         }
-
+        
+        /**
+         * Returns true if the node has a left node
+         * @return
+         */
         protected boolean hasRight() {
             return (nRight != null);
         }
-
+        
+        /**
+         * Gets the right node
+         * @return
+         */
         protected Node getRight() {
             return nRight;
         }
-
+        
+        /**
+         * Gets the node operator
+         * @return
+         */
         protected Operator getOperator() {
             return nOperator;
         }
-
+        
+        /**
+         * Gets the node level
+         * @return
+         */
         protected int getLevel() {
             return nLevel;
         }
-
+        
+        /**
+         * Gets the node value
+         * @return
+         */
         protected Double getValue() {
             return nValue;
         }
-
+        
+        /**
+         * Sets the node value
+         * @param f
+         */
         protected void setValue(Double f) {
             nValue = f;
         }
-
+        
+        /**
+         * Gets the node String
+         * @return
+         */
         protected String getString() {
             return nString;
         }
 
         /***
-         * Removes spaces, tabs and brackets at the begining
+         * Removes spaces, tabs and brackets at the beginning
          */
         public String removeBrackets(String s) {
             String res = s;
@@ -510,11 +597,78 @@ public class MathEvaluator {
             for (int i = 0; i < nLevel; i++) {
                 nbSpaces += "  ";
             }
-            System.out.println(nbSpaces + "|" + s);
+            Printer.print(nbSpaces + "|" + s);
         }
     }
 
     protected static void _D(String s) {
         System.err.println(s);
     }
+    
+    /* (non-Javadoc)
+	 * @see expressions.IEvaluator#getAngleUnits()
+	 */
+    public int getAngleUnits() {
+        return angleUnits;
+    }
+
+    /**
+     * Set the angleUnits (Radians, Degrees, Gradians)
+     * @param angleunits - the units of the angle
+  	 */
+    public void setAngleUnits(int angleUnits) {
+        MathEvaluator.angleUnits = angleUnits;
+    }
+    
+    /**
+     * Checks if the value of the angle is in radians or degrees. If in degrees, converts to radians.
+     * @param angle - the angle value.
+     * @return The angle if using radians, a conversion to radians if using degrees.
+     */
+    private static double getAngleValue(double angle) {
+        //If radians.
+        if (angleUnits == IEvaluator.RADIANS ) {
+            return angle;
+        }
+        //If gradians.
+        else if (angleUnits == IEvaluator.GRADIANS){
+            return Math.toRadians(angle)*(9/10);
+        }
+        //If degrees.
+        else{
+            return Math.toRadians(angle);
+        }
+    }
+    
+    /* (non-Javadoc)
+	 * @see expressions.IEvaluator#trace()
+	 */
+    public void trace() {
+        try {
+            node = new Node(expression);
+            node.trace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /***
+     * checks if there is any missing brackets
+     * @return true if s is valid
+     */
+    protected int checkBrackets(String s) {
+        int sLength = s.length();
+        int inBracket = 0;
+
+        for (int i = 0; i < sLength; i++) {
+            if (s.charAt(i) == '(' && inBracket >= 0) {
+                inBracket++;
+            } else if (s.charAt(i) == ')') {
+                inBracket--;
+            }
+        }
+
+        return inBracket;
+    }
+
 }

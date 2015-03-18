@@ -1,48 +1,70 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package calculator;
 
+import components.VariableTablePane;
+import components.ExpressionTablePane;
+import Settings.GenSettings;
+import components.SmartTextField;
 import exceptions.InvalidVariableNameException;
-import expressions.VariableList;
-import expressions.Expression;
-import expressions.Variable;
-import expressions.ExpressionList;
+import expressions.*;
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.text.DefaultEditorKit;
 
 /**
- *
+ * A panel that can be used as a calculator.
  * @author Egor
  */
-public class CalculatorTab extends JPanel implements ActionListener {
+public class CalculatorTab extends JPanel implements ActionListener, Serializable, MouseListener, ClipboardOwner, KeyListener {
 
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1837255541427330578L;
+	int targetRow;
     JScrollPane exprScrollPane, varScrollPane;
     JPanel controlPanel, controlPanelEast;
     JPanel centerPanel, centerPanelEast, centerPanelWest, exprControlPanel, varControlPanel;
-    JTextField txtInput;
-    JButton btnEnter, btnAddVariable, btnRemoveVariable, btnClearExpressions, btnCopyToInput;
-    JTable varTable, exprTable;
+    SmartTextField txtInput;
+    JButton btnEnter, btnAddVariable, btnRemoveVariable, btnClearExpressions, btnAppendToInput;
+    JTable varTable, exprTable, targetTable;
+    JPopupMenu mnuRightClick;
+    JMenuItem miCopyExpression, miCopyValue, miRemoveRow;
+    Clipboard clipBoard;
 
+    /**
+     * Constructor for Calculator Tab
+     */
     public CalculatorTab() {
         this.setLayout(new BorderLayout());
         this.createControlPanel();
         this.createCenterPanel();
+        this.createPopupMenu();
 
         this.add(centerPanel, BorderLayout.CENTER);
         this.add(controlPanel, BorderLayout.SOUTH);
@@ -53,13 +75,16 @@ public class CalculatorTab extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Initializes and adds components to the Control Panel
+     */
     private void createControlPanel() {
         controlPanel = new JPanel();
         controlPanelEast = new JPanel();
         controlPanel.setLayout(new BorderLayout());
         controlPanelEast.setLayout(new FlowLayout());
 
-        txtInput = new JTextField();
+        txtInput = new SmartTextField();
 
         btnEnter = new JButton("Enter");
         btnEnter.addActionListener(this);
@@ -67,8 +92,28 @@ public class CalculatorTab extends JPanel implements ActionListener {
         controlPanelEast.add(btnEnter);
         controlPanel.add(txtInput, BorderLayout.CENTER);
         controlPanel.add(controlPanelEast, BorderLayout.EAST);
+
+        txtInput.addMouseListener(this);
+        txtInput.addKeyListener(this);
     }
 
+    /**
+     * Creates the right click popup menu.
+     */
+    private void createPopupMenu() {
+        mnuRightClick = new JPopupMenu();
+        miCopyExpression = new JMenuItem("Copy Expression");
+        miCopyValue = new JMenuItem("Copy Value");
+        miRemoveRow = new JMenuItem("Remove Row");
+
+        miCopyExpression.addActionListener(this);
+        miCopyValue.addActionListener(this);
+        miRemoveRow.addActionListener(this);
+    }
+
+    /**
+     * Initializes and adds components to the Center Panel
+     */
     private void createCenterPanel() {
         centerPanel = new JPanel();
         centerPanelEast = new JPanel();
@@ -84,29 +129,36 @@ public class CalculatorTab extends JPanel implements ActionListener {
 
         //Create variable and expression tables
         varTable = new VariableTablePane();
+        varTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         exprTable = new ExpressionTablePane();
+        exprTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         //Create Scroll Panes
         exprScrollPane = new JScrollPane(exprTable);
         varScrollPane = new JScrollPane(varTable);
 
         //Create Buttons
-        btnAddVariable = new JButton("Add");
-        btnRemoveVariable = new JButton("Remove");
-        btnClearExpressions = new JButton("Clear");
-        btnCopyToInput = new JButton("Copy To Input");
+        btnAddVariable = new JButton(GenSettings.getImageIcon("/images/addSmall.png"));
+        btnRemoveVariable = new JButton(GenSettings.getImageIcon("/images/removeSmall.png"));
+        btnClearExpressions = new JButton("Clear", GenSettings.getImageIcon("/images/clear.png"));
+        btnAppendToInput = new JButton("Append To Input", GenSettings.getImageIcon("/images/copy.png"));
 
         //Add Action Listeners
         btnAddVariable.addActionListener(this);
         btnRemoveVariable.addActionListener(this);
         btnClearExpressions.addActionListener(this);
-        btnCopyToInput.addActionListener(this);
+        btnAppendToInput.addActionListener(this);
+
+        //Add mouse listeners.
+        exprTable.addMouseListener(this);
+        varTable.addMouseListener(this);
 
         //Add buttons to control panels
-        varControlPanel.add(btnAddVariable);
+        varControlPanel.add(new JLabel("Variable:"));
         varControlPanel.add(btnRemoveVariable);
+        varControlPanel.add(btnAddVariable);
         exprControlPanel.add(btnClearExpressions);
-        exprControlPanel.add(btnCopyToInput);
+        exprControlPanel.add(btnAppendToInput);
 
         //Add to variable pannel.
         centerPanelEast.add(varScrollPane, BorderLayout.CENTER);
@@ -121,36 +173,46 @@ public class CalculatorTab extends JPanel implements ActionListener {
         centerPanel.add(centerPanelEast);
     }
 
+    /**
+     * If ExpressionTablePane and VariableTablePane are uninitialized, creates them.
+     * Otherwise refreshes them.
+     * @throws InvalidVariableNameException
+     */
     private void createTables() throws InvalidVariableNameException {
         ExpressionTablePane.refreshTable();
         VariableTablePane.refreshTable();
     }
 
     public void actionPerformed(ActionEvent e) {
+        //If Enter is pressed.
         if (e.getSource() == btnEnter) {
-            Expression exp = new Expression(txtInput.getText());
+            Expression expr = new Expression(txtInput.getText());
             try {
-                ExpressionList.addExpression(exp);
+                ExpressionList.addExpression(expr);
                 ExpressionTablePane.refreshTable();
+                txtInput.setText("");
             } catch (Exception exc) {
-                ExpressionList.removeExpression(exp);
-                JOptionPane.showMessageDialog(this, exc);
+                ExpressionList.removeExpression(expr);
+                JOptionPane.showMessageDialog(this, exc, "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
 
+        //If Add Variable is pressed.
         if (e.getSource() == btnAddVariable) {
-            JFrame window = new AddVariableWindow();
+            JFrame window = new AddVariableDialog();
+            window.setLocationRelativeTo(this);
             window.setVisible(true);
             window.pack();
         }
 
+        //If Remove Variable is pressed.
         if (e.getSource() == btnRemoveVariable) {
             if (varTable.getSelectedRow() >= 0) {
                 try {
                     VariableList.removeVariable(varTable.getSelectedRow());
                     VariableTablePane.refreshTable();
                 } catch (InvalidVariableNameException ex) {
-                    JOptionPane.showMessageDialog(this, "Invalid variable name.");
+                    JOptionPane.showMessageDialog(this, "Invalid variable name.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
 
@@ -163,11 +225,11 @@ public class CalculatorTab extends JPanel implements ActionListener {
                 ExpressionList.clearExpressionList();
                 ExpressionTablePane.refreshTable();
             } catch (Exception exc) {
-                JOptionPane.showMessageDialog(this, exc);
+                JOptionPane.showMessageDialog(this, exc, "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
 
-        if (e.getSource() == btnCopyToInput) {
+        if (e.getSource() == btnAppendToInput) {
             if (exprTable.getSelectedRow() >= 0) {
                 String copy = ((Expression) ExpressionList.getExpressionList().get(exprTable.getSelectedRow())).getExpression();
                 txtInput.setText(txtInput.getText() + "(" + copy + ")");
@@ -175,5 +237,121 @@ public class CalculatorTab extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Please select an expression to copy.");
             }
         }
+
+        if (e.getSource() == miCopyValue) {
+            String value = targetTable.getModel().getValueAt(targetRow, 1).toString();
+            StringSelection strS = new StringSelection(value);
+            clipBoard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipBoard.setContents(strS, this);
+        }
+
+        if (e.getSource() == miCopyExpression) {
+            String value = targetTable.getModel().getValueAt(targetRow, 0).toString();
+            StringSelection strS = new StringSelection(value);
+            clipBoard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipBoard.setContents(strS, this);
+        }
+
+        if (e.getSource() == miRemoveRow) {
+            if (targetTable.equals(varTable)) {
+                try {
+                    VariableList.removeVariable(targetRow);
+                    VariableTablePane.refreshTable();
+                } catch (InvalidVariableNameException ex) {
+                    JOptionPane.showMessageDialog(this, "Invalid variable name.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            if (targetTable.equals(exprTable)) {
+                ExpressionList.removeExpression(targetRow);
+                ExpressionTablePane.refreshTable();
+            }
+
+        }
+    }
+
+    public void mouseClicked(MouseEvent e) {
+        //
+    }
+
+    public void mousePressed(MouseEvent e) {
+        if (e.isPopupTrigger() || e.getModifiers() == InputEvent.BUTTON3_MASK) {
+            if (e.getSource() == exprTable) {
+                targetTable = exprTable;
+                targetRow = exprTable.rowAtPoint(e.getPoint());
+                exprTable.addRowSelectionInterval(targetRow, targetRow);
+
+                miCopyExpression.setText("Copy Expression");
+                mnuRightClick.removeAll();
+                mnuRightClick.add(miCopyExpression);
+                mnuRightClick.add(miCopyValue);
+                mnuRightClick.add(miRemoveRow);
+
+                mnuRightClick.show(exprTable, e.getX() + 10, e.getY() + 5);
+            }
+            if (e.getSource() == varTable) {
+                targetTable = varTable;
+                targetRow = varTable.rowAtPoint(e.getPoint());
+                varTable.addRowSelectionInterval(targetRow, targetRow);
+
+                miCopyExpression.setText("Copy Variable Name");
+                mnuRightClick.removeAll();
+                mnuRightClick.add(miCopyExpression);
+                mnuRightClick.add(miCopyValue);
+                mnuRightClick.add(miRemoveRow);
+
+                mnuRightClick.show(varTable, e.getX() + 10, e.getY() + 5);
+            }
+
+            if (e.getSource() == txtInput) {
+                txtInput.requestFocus();
+                JMenuItem mnuItem;
+                mnuRightClick.removeAll();
+
+                mnuItem = new JMenuItem(new DefaultEditorKit.CutAction());
+                mnuItem.setText("Cut");
+                mnuRightClick.add(mnuItem);
+                mnuItem = new JMenuItem(new DefaultEditorKit.CopyAction());
+                mnuItem.setText("Copy");
+                mnuRightClick.add(mnuItem);
+                mnuItem = new JMenuItem(new DefaultEditorKit.PasteAction());
+                mnuItem.setText("Paste");
+                mnuRightClick.add(mnuItem);
+
+
+                mnuRightClick.show(txtInput, e.getX() + 10, e.getY());
+            }
+        }
+    }
+
+    public void mouseReleased(MouseEvent e) {
+        //
+    }
+
+    public void mouseEntered(MouseEvent e) {
+        //
+    }
+
+    public void mouseExited(MouseEvent e) {
+        //
+    }
+
+    public void lostOwnership(Clipboard clipboard, Transferable contents) {
+        //Lost ownership.
+    }
+
+    public void keyTyped(KeyEvent e) {
+        //
+    }
+
+    public void keyPressed(KeyEvent e) {
+        if (e.getSource() == txtInput) {
+            if (e.getKeyCode() == 10) {
+                btnEnter.doClick();
+            }
+        }
+    }
+
+    public void keyReleased(KeyEvent e) {
+        
     }
 }

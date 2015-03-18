@@ -1,8 +1,0 @@
-#summary Ben McCormick's Page
-#sidebar SideBar
-
-Ben McCormick is a graduate of Duke University and a current student at Carnegie Mellon.  As an undergrad he studied Computer Science, while also getting a minor in Mathematics and taking a variety of classes in Religion, Philosophy, and Chinese.  At Carnegie Mellon he is pursuing his Masters in Information Systems Management.
-
-For this project Ben has been working on the system model, creating an efficient working calculator that can handle a variety of expressions. He also has been responsible for the project documentation and is grateful to Egor for allowing him to contribute to this project as it has been both interesting and educational.
-
-For more information about Ben, feel free to visit his [http://www.bmccormick.com website]

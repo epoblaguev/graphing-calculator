@@ -6,10 +6,11 @@
 package Constants;
 
 /**
- *
+ * Contains blacklists of various things.
  * @author Egor
  */
 public class BlackLists {
-    public static final String[] variableBlackList = {"cos", "sin", "tan", "acos", "asin", "atan", "sqrt", "sqr", "log", "min", "max", "ceil", "floor", "abs", "neg", "rndr"};
+    //Blacklist of strings that can not be used in variables.
+    public static final String[] variableBlackList = {"cos", "sin", "tan", "acos", "asin", "atan", "sqrt", "sqr", "log", "ln", "min", "max", "ceil", "floor", "abs", "neg", "rndr"};
 
 }

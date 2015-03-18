@@ -5,8 +5,9 @@
 
 package expressions;
 
+import Constants.ConstValues;
+import components.SmartTextField;
 import exceptions.InvalidVariableNameException;
-import java.util.Iterator;
 import java.util.Vector;
 
 /**
@@ -14,23 +15,27 @@ import java.util.Vector;
  * @author Egor
  */
 public class VariableList {
-    private static Vector variables = new Vector<Variable>();
+    private static Vector<Variable> variables = new Vector<Variable>();
 
     public static void createIfEmpty() throws InvalidVariableNameException{
         if(variables.isEmpty()){
-            variables.add(new Variable("pi", Math.PI));
-            variables.add(new Variable("e", Math.E));
-
+            variables.add(new Variable("pi", ConstValues.pi));
+            variables.add(new Variable("e", ConstValues.e));
             sort();
         }
     }
 
-    public static Vector<Variable> getVariableList(){
+    public static Vector<Variable> getVariables(){
         return variables;
+    }
+
+    public static void setVariables(Vector<Variable> variables) {
+        VariableList.variables = variables;
     }
 
     public static void clearVariableList(){
         variables = new Vector<Variable>();
+        sort();
     }
 
     public static void addVariable(Variable variable){
@@ -44,23 +49,13 @@ public class VariableList {
     }
 
     public static void removeVariable(Variable variable){
-        variables.remove(variables);
+        variables.remove(variable);
         sort();
     }
 
     public static void removeVariable(int var){
         variables.remove(var);
         sort();
-    }
-
-    public static String replaceVariables(String expression){
-        Iterator itr = variables.iterator();
-
-        while(itr.hasNext()){
-            Variable var = (Variable) itr.next();
-            expression = expression.replace(var.getVariableName(), String.valueOf(var.getVariableValue()));
-        }
-        return expression;
     }
 
     private static void sort(){
@@ -80,5 +75,6 @@ public class VariableList {
                 }
             }
         }while(swapped == true);
+        SmartTextField.rebuildList();
     }
 }

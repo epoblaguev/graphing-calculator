@@ -11,7 +11,11 @@ package exceptions;
  */
 public class InvalidVariableNameException extends Throwable{
 
-    private String message = "";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4944091275744603344L;
+	private String message = "";
 
     public InvalidVariableNameException(String string) {
         this.message = string;

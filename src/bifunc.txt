@@ -1,0 +1,4 @@
+min(
+max(
+perm(
+comb(
