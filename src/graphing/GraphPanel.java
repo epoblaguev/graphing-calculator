@@ -10,6 +10,7 @@ import Settings.GraphSettings;
 import Settings.Printer;
 import exceptions.InvalidBoundsException;
 import expressions.Expression;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -47,7 +48,7 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 	private int panelWidth = 0;
 	private boolean firstResize = true;
 	private static Vector<Equation> equations = new Vector<Equation>();
-	private static Vector<GeneralPath> polylines = new Vector<GeneralPath>();
+	private static volatile Vector<GeneralPath> polylines = new Vector<GeneralPath>();
 	private Vector<Thread> threads = new Vector<Thread>();
 	private boolean stopThreads = false;
 	private boolean painting = false;
@@ -129,7 +130,12 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 		// Loop through each equation.
 		for (int i = 0; i < polylines.size(); i++) {
 			g2.setColor(equations.get(i).getColor());
-			g2.draw(polylines.get(i));
+			try {
+				g2.draw(polylines.get(i));
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println(i + " / " + polylines.size());
+			}
 		}
 		// for (GeneralPath polyline : polylines) {
 		// g2.draw(polyline);
