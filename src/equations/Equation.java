@@ -68,7 +68,6 @@ public class Equation implements Serializable {
 
 		ExpressionBuilder expBuilder = new ExpressionBuilder(expression);
 		expBuilder.variable("x");
-		expBuilder.variable("y");
 
 		for (Variable var : VariableList.getVariables()) {
 			expBuilder.variable(var.getVariableName());

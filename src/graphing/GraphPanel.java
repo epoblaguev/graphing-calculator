@@ -10,6 +10,8 @@ import Settings.GraphSettings;
 import Settings.Printer;
 import exceptions.InvalidBoundsException;
 import expressions.Expression;
+import expressions.Variable;
+import expressions.VariableList;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -27,6 +29,8 @@ import java.util.Vector;
 import javax.swing.DebugGraphics;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import net.objecthunter.exp4j.ExpressionBuilder;
 
 /**
  * Class to represent the graph
@@ -516,10 +520,23 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 			Double eqVal;
 			Double eqPrev = 0.0;
 			String expr = eq.getExpression();
+			
+			ExpressionBuilder expBuilder = new ExpressionBuilder(expr);
+			expBuilder.variable("x");
+
+			for (Variable var : VariableList.getVariables()) {
+				expBuilder.variable(var.getVariableName());
+			}
+			net.objecthunter.exp4j.Expression equation = expBuilder.build();
+
+			for (Variable var : VariableList.getVariables()) {
+				equation.setVariable(var.getVariableName(), var.getVariableValue());
+			}
 
 			// Set values for loop.
 			try {
-				eqPrev = Equation.evaluate(expr, minX, false);
+				//eqPrev = Equation.evaluate(expr, minX, false);
+				eqPrev=equation.setVariable("x", minX).evaluate();
 			} catch (Exception exc) {
 				equations.clear();
 				JOptionPane.showMessageDialog(this, "Invalid Argument.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -540,7 +557,13 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 				}
 
 				// eqVal and pixValX are used a lot. Solve only once.
-				eqVal = Equation.evaluate(expr, x, false);
+				//eqVal = Equation.evaluate(expr, x, false);
+				try{
+				eqVal=equation.setVariable("x", x).evaluate();
+				} catch (Exception e){
+					System.out.println(e.getMessage());
+					continue;
+				}
 				int pixValX = UnitToPixelX(x);
 
 				if (eqVal.isNaN() || eqVal.isInfinite()) {
