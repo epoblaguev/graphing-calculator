@@ -71,7 +71,7 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 	/**
 	 * Paints the graph
 	 */
-	public void paintComponent(Graphics g) {
+	public synchronized void paintComponent(Graphics g) {
 		painting = true;
 
 		this.setBackground(GraphSettings.getBgColor());
@@ -367,7 +367,7 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 	 *            - pixel location to convert.
 	 * @return - x value of pixel location.
 	 */
-	public double PixelToUnitX(int pix) {
+	public synchronized double PixelToUnitX(int pix) {
 		double unitsPerPixel = (maxY - minY) / this.getWidth();
 		double x = (pix * unitsPerPixel) + minX;
 		return x;
@@ -380,7 +380,7 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 	 *            - pixel location to convert.
 	 * @return - y value of pixel location.
 	 */
-	public double PixelToUnitY(int pix) {
+	public synchronized double PixelToUnitY(int pix) {
 		double unitsPerPixel = (maxY - minY) / this.getHeight();
 		double y = ((this.getHeight() - pix) * unitsPerPixel) + minY;
 		return y;
@@ -589,7 +589,7 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 				}
 				eqPrev = eqVal;
 
-				if ((loop++ % 10 == 0 || x >= maxX) && !painting) {
+				if ((loop++ % 10 == 0 && !painting )|| x >= maxX) {
 					repaint();
 				}
 				if (x >= maxX) {
