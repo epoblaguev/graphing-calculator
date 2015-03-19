@@ -28,8 +28,8 @@ public class ExpressionTablePane extends JTable {
         this.setModel(tableModel);
         tableModel.addColumn("Expression");
         tableModel.addColumn("Value");
-        tableModel.addColumn("Angle Units");
-        tableModel.setColumnCount(3);
+        //tableModel.addColumn("Angle Units");
+        tableModel.setColumnCount(2);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class ExpressionTablePane extends JTable {
             } else {
                 row.add("NaN");
             }
-            row.add(curExpression.getAngleUnits());
+            //row.add(curExpression.getAngleUnits());
 
 			ExpressionTablePane.addRow(row);
         }

@@ -11,9 +11,7 @@ import Settings.GenSettings;
 import Settings.GraphSettings;
 import calculator.*;
 import exceptions.InvalidVariableNameException;
-import expressions.EquationEvaluator;
 import expressions.ExpressionList;
-import expressions.IEvaluator;
 import expressions.VariableList;
 import graphing.GraphingTab;
 import java.awt.BorderLayout;
@@ -92,7 +90,7 @@ public class MainWindow extends JFrame implements ActionListener {
         mnuFile = new JMenu("File");
         mnuSettings = new JMenu("Settings");
         mnuInfo = new JMenu("Info");
-        mnuAngleUnits = new JMenu("Angle Units");
+        //mnuAngleUnits = new JMenu("Angle Units");
         mnuLineWidth = new JMenu("Line Width");
         mnuGraphColor = new JMenu("Graph Background");
         mnuPrecision = new JMenu("Precision Modifier");
@@ -172,12 +170,14 @@ public class MainWindow extends JFrame implements ActionListener {
         mnuPrecision.add(rbHighAcc);
 
         //Add to angle units menu
+        /*
         mnuAngleUnits.add(rbDegrees);
         mnuAngleUnits.add(rbRadians);
         mnuAngleUnits.add(rbGradians);
+        */
 
         //Add to settings menu
-        mnuSettings.add(mnuAngleUnits);
+        //mnuSettings.add(mnuAngleUnits);
         mnuSettings.add(mnuPrecision);
         mnuSettings.add(mnuLineWidth);
         mnuSettings.add(mnuGraphColor);
@@ -312,6 +312,7 @@ public class MainWindow extends JFrame implements ActionListener {
         }
 
         //Settings items.
+        /*
         if (e.getSource() == this.rbDegrees || e.getSource() == this.rbRadians || e.getSource() == rbGradians) {
             IEvaluator m = new EquationEvaluator();
             if (this.rbRadians.isSelected()) {
@@ -322,6 +323,7 @@ public class MainWindow extends JFrame implements ActionListener {
                 m.setAngleUnits(IEvaluator.GRADIANS);
             }
         }
+        */
 
         if (e.getSource() == this.ckAntiAlias) {
             GraphSettings.setAntialiased(this.ckAntiAlias.isSelected());

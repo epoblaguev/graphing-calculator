@@ -1,6 +1,0 @@
-
-"S",{"S","b","S"}, "(1) <Segment> > <Segment> <binop> <Segment>"
-"S",{"f","S",")"}, "(2) <Segment> > function( <Segment> )"
-"S",{"n","S",",","S",")"}, "(3) <Segment> > bifunction( <Segment> , <Segment> )"
-"S",{"d"}, "(4) <Segment> > digit"
-"S",{"v"}, "(5) <Segment> > variable"

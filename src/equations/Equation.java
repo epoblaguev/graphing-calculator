@@ -5,8 +5,6 @@
 package equations;
 
 import expressions.Expression;
-import expressions.IEvaluator;
-import expressions.EquationEvaluator;
 import expressions.Variable;
 import expressions.VariableList;
 
