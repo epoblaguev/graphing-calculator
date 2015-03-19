@@ -492,7 +492,11 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 	public void startDrawing() {
 		stopThreads = true;
 		for (Thread t : threads) {
-			t.stop(); //TODO: Terbile design. This should be changed later. But it works for testing.
+			//System.out.println("Waiting for exit: " + t.toString());
+			while(t.isAlive()){
+				//Nothing
+			}
+			//System.out.println(t.toString() + " exited...");
 		}
 		threads.clear();
 		polylines.clear();
@@ -527,6 +531,7 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 			for (Variable var : VariableList.getVariables()) {
 				expBuilder.variable(var.getVariableName());
 			}
+			
 			net.objecthunter.exp4j.Expression equation = expBuilder.build();
 
 			for (Variable var : VariableList.getVariables()) {
@@ -558,12 +563,7 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 
 				// eqVal and pixValX are used a lot. Solve only once.
 				//eqVal = Equation.evaluate(expr, x, false);
-				try{
 				eqVal=equation.setVariable("x", x).evaluate();
-				} catch (Exception e){
-					System.out.println(e.getMessage());
-					continue;
-				}
 				int pixValX = UnitToPixelX(x);
 
 				if (eqVal.isNaN() || eqVal.isInfinite()) {
