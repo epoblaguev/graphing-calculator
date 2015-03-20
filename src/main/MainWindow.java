@@ -121,7 +121,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
         //Initialize check buttons.
         ckAntiAlias = new JCheckBoxMenuItem("Use Antialiasing");
-        ckDrawGrid = new JCheckBoxMenuItem("Draw Grid (Still Buggy)");
+        ckDrawGrid = new JCheckBoxMenuItem("Draw Grid");
 
         //Add to file menu.
         mnuFile.add(miLoad);
@@ -222,6 +222,7 @@ public class MainWindow extends JFrame implements ActionListener {
         rbRadians.doClick();
         rbThin.doClick();
         ckAntiAlias.doClick();
+        ckDrawGrid.doClick();
         rbLightGray.doClick();
         rbSmallAcc.doClick();
     }
