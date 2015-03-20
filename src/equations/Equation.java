@@ -4,7 +4,6 @@
  */
 package equations;
 
-import expressions.Expression;
 import expressions.Variable;
 import expressions.VariableList;
 
@@ -50,20 +49,6 @@ public class Equation implements Serializable {
 	}
 
 	public static double evaluate(String expression, double x, boolean formatFirst) {
-
-		/*
-		 * if (formatFirst) { expression =
-		 * Expression.formatExpression(expression); } try { IEvaluator m = new
-		 * EquationEvaluator(expression);
-		 * 
-		 * for (Variable var : VariableList.getVariables()) {
-		 * m.addVariable(var.getVariableName(), var.getVariableValue()); }
-		 * 
-		 * m.addVariable("x", x);
-		 * 
-		 * return m.getValue(); } catch (Exception e) { return 0; }
-		 */
-
 		ExpressionBuilder expBuilder = new ExpressionBuilder(expression);
 		expBuilder.variable("x");
 

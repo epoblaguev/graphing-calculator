@@ -26,7 +26,6 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Vector;
 
-import javax.swing.DebugGraphics;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -368,7 +367,7 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 	 * @return - x value of pixel location.
 	 */
 	public synchronized double PixelToUnitX(int pix) {
-		double unitsPerPixel = (maxY - minY) / this.getWidth();
+		double unitsPerPixel = (maxX - minX) / this.getWidth();
 		double x = (pix * unitsPerPixel) + minX;
 		return x;
 	}

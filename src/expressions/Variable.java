@@ -15,7 +15,11 @@ import java.io.Serializable;
  */
 public class Variable implements Serializable{
 
-    private String variableName;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1816036425056304281L;
+	private String variableName;
     private double variableValue;
 
     /**
