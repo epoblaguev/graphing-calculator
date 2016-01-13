@@ -102,8 +102,9 @@ public class AddPointAtXValueDialog extends JFrame implements ActionListener, Ke
                     expression = ((EquationInput) eq).getInput().getText();
                 }
             }
-
-            GraphPanel.addPoint(txtPointName.getText(), x, Equation.evaluate(expression, x, true));
+            
+            Equation equation = new Equation(expression,null);
+            GraphPanel.addPoint(txtPointName.getText(), x, equation.evaluate(x));
             graphTab.repaint();
         }
 

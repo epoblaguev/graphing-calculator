@@ -119,19 +119,20 @@ public class AddMinMaxPointDialog extends JFrame implements ActionListener, KeyL
 			} catch (Exception e1) {
 				finish = Double.NaN;
 			}
+			Equation equation = new Equation(expression,null);
             double interval = Math.abs(finish - start) / 1000;
             boolean foundMin = false;
             double xValue = start;
-            double yValue = Equation.evaluate(expression, xValue, true);
+            double yValue = equation.evaluate(xValue);
 
-            double prev = Equation.evaluate(expression, start, true);
-            double cur = Equation.evaluate(expression, start, true);
+            double prev = equation.evaluate(start);
+            double cur = equation.evaluate(start);
             double tracker = 0;
 
             while (interval > ConstValues.smallestNum) {
 
                 for (double i = start + interval; i <= finish; i += interval) {
-                    double next = Equation.evaluate(expression, i, true);
+                    double next = equation.evaluate(i);
 
                     if (MinOrMax == AddMinMaxPointDialog.MIN) {
                         if (prev > cur && cur < next) {

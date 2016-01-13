@@ -5,6 +5,7 @@
 package expressions;
 
 import java.io.Serializable;
+import java.util.Vector;
 
 import net.objecthunter.exp4j.ExpressionBuilder;
 
@@ -30,32 +31,7 @@ public class Expression implements Serializable {
 	 * @param expression
 	 */
 	public Expression(String expression) {
-		this.expression = Expression.formatExpression(expression);
-	}
-
-	/**
-	 * Formats the expression in a way that the machine can process Adds an * in
-	 * between any implicit multiplication situations
-	 * 
-	 * @param expression
-	 * @return
-	 */
-	public static String formatExpression(String expression) {
-		/*
-		expression = expression.replace(" ", "");
-
-		for (int i = 0; i <= 9; i++) {
-			expression = expression.replace(i + "(", i + "*(");
-
-			for (char c = 'a'; c <= 'z'; c++) {
-				expression = expression.replace(i + String.valueOf(c), i + "*" + c);
-				expression = expression.replace(i + String.valueOf(c).toUpperCase(), i + "*" + String.valueOf(c).toUpperCase());
-			}
-		}
-
-		expression = expression.replace(")(", ")*(");
-		*/
-		return expression;
+		this.expression = expression;
 	}
 
 	/**
@@ -103,15 +79,15 @@ public class Expression implements Serializable {
 	public double evaluate() throws Exception {
 
 		ExpressionBuilder expBuilder = new ExpressionBuilder(this.expression);
-		expBuilder.variable("x");
+		Vector<Variable> variables = VariableList.getVariables();
 
-		for (Variable var : VariableList.getVariables()) {
+		for (Variable var : variables) {
 			expBuilder.variable(var.getVariableName());
 		}
 
 		net.objecthunter.exp4j.Expression equation = expBuilder.build();
 
-		for (Variable var : VariableList.getVariables()) {
+		for (Variable var : variables) {
 			equation.setVariable(var.getVariableName(), var.getVariableValue());
 		}
 		this.value=equation.evaluate();

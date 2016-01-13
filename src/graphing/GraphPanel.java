@@ -519,7 +519,7 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 			GeneralPath polyline = new GeneralPath(GeneralPath.WIND_EVEN_ODD, this.getWidth());
 
 			boolean firstPoint = true;
-			double interval, intervalFormula, slope;
+			double interval, slope;
 			Double eqVal;
 			Double eqPrev = 0.0;
 			String expr = eq.getExpression();
@@ -531,16 +531,16 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 				expBuilder.variable(var.getVariableName());
 			}
 			
-			net.objecthunter.exp4j.Expression equation = expBuilder.build();
+			net.objecthunter.exp4j.Expression expression = expBuilder.build();
 
 			for (Variable var : VariableList.getVariables()) {
-				equation.setVariable(var.getVariableName(), var.getVariableValue());
+				expression.setVariable(var.getVariableName(), var.getVariableValue());
 			}
 
 			// Set values for loop.
 			try {
 				//eqPrev = Equation.evaluate(expr, minX, false);
-				eqPrev=equation.setVariable("x", minX).evaluate();
+				eqPrev=expression.setVariable("x", minX).evaluate();
 			} catch (Exception exc) {
 				equations.clear();
 				JOptionPane.showMessageDialog(this, "Invalid Argument.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -551,7 +551,7 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 			// Printer.print("\neqNumber:" + eqNumber);
 			// Printer.print("Size:" + polylines.size());
 			polylines.set(eqNumber, polyline);
-			interval = intervalFormula = (maxX - minX) / (this.getWidth());
+			interval = (maxX - minX) / (this.getWidth());
 
 			// Start loop.
 			int loop = 0;
@@ -562,18 +562,16 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 
 				// eqVal and pixValX are used a lot. Solve only once.
 				//eqVal = Equation.evaluate(expr, x, false);
-				eqVal=equation.setVariable("x", x).evaluate();
+				eqVal=expression.setVariable("x", x).evaluate();
 				int pixValX = UnitToPixelX(x);
 
 				if (eqVal.isNaN() || eqVal.isInfinite()) {
 					firstPoint = true;
 				} else if (firstPoint) {
 					polyline.moveTo(pixValX, UnitToPixelY(eqVal));
-					polylines.set(eqNumber, polyline);
 					firstPoint = false;
 				} else {
 					polyline.lineTo(pixValX, UnitToPixelY(eqVal));
-					polylines.set(eqNumber, polyline);
 				}
 
 				// Set interval.
@@ -582,10 +580,9 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 					if (slope > GraphSettings.getMaxCalcPerPixel()) {
 						slope = GraphSettings.getMaxCalcPerPixel();
 					}
-					interval = intervalFormula / slope;
-				} else {
-					interval = intervalFormula;
+					interval = interval / slope;
 				}
+				
 				eqPrev = eqVal;
 
 				if ((loop++ % 10 == 0 && !painting )|| x >= maxX) {

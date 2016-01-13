@@ -9,10 +9,10 @@ import expressions.VariableList;
 
 import java.awt.Color;
 import java.io.Serializable;
+import java.util.Vector;
 
+import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
-
-//import net.objecthunter.exp4j.ExpressionBuilder;
 
 /**
  *
@@ -48,22 +48,24 @@ public class Equation implements Serializable {
 		this.expression = expression;
 	}
 
-	public static double evaluate(String expression, double x, boolean formatFirst) {
+	public double evaluate(double x) {
 		ExpressionBuilder expBuilder = new ExpressionBuilder(expression);
+		Vector<Variable> variables = VariableList.getVariables();
 		expBuilder.variable("x");
 
-		for (Variable var : VariableList.getVariables()) {
+		for (Variable var : variables) {
 			expBuilder.variable(var.getVariableName());
 		}
-		net.objecthunter.exp4j.Expression newExpression = expBuilder.build();
+		Expression expression = expBuilder.build();
 
-		for (Variable var : VariableList.getVariables()) {
-			newExpression.setVariable(var.getVariableName(), var.getVariableValue());
+		for (Variable var : variables) {
+			expression.setVariable(var.getVariableName(), var.getVariableValue());
 		}
-		newExpression.setVariable("x", x);
+		expression.setVariable("x", x);
 		try {
-			return newExpression.evaluate();
+			return expression.evaluate();
 		} catch (Exception e) {
+			//TODO: Why did I do this? Need to find a better solution.
 			return 0;
 		}
 

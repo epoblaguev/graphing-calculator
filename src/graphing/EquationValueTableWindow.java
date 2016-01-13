@@ -100,6 +100,9 @@ public class EquationValueTableWindow extends JFrame implements ActionListener {
         double start;
         double finish;
         double interval;
+        String expression = "";
+        Equation equation = new Equation(expression,null);
+        
         try{
         start = Expression.evaluate(txtLowX.getText());
         }catch(Exception e)
@@ -122,13 +125,11 @@ public class EquationValueTableWindow extends JFrame implements ActionListener {
         Printer.print(finish);
         Printer.print(interval);
 
-        String equation = "";
 
         for (Component eq : equationPanel.getComponents()) {
             ((EquationInput) eq).getInput().getText();
             if (((EquationInput) eq).getBtnName().getText().equals(cbEquation.getSelectedItem())) {
-                equation = ((EquationInput) eq).getInput().getText();
-                equation = Expression.formatExpression(equation);
+                expression = ((EquationInput) eq).getInput().getText();
                 break;
             }
         }
@@ -136,7 +137,7 @@ public class EquationValueTableWindow extends JFrame implements ActionListener {
         for (double i = start; i <= finish; i+=interval) {
             Vector<String> row = new Vector<String>(2);
             row.add(df.format(i));
-            row.add(df.format(Equation.evaluate(equation, i, false)));
+            row.add(df.format(equation.evaluate(i)));
 
             tableModel.addRow(row);
         }
