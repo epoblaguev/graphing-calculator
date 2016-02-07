@@ -33,9 +33,9 @@ class MainWindow extends JFrame implements ActionListener {
     private CalculatorTab calculatorTab;
     private GraphingTab graphingTab;
     private JMenuBar menuBar;
-    private JMenu mnuFile, mnuSettings, mnuInfo, mnuLineWidth, mnuGraphColor, mnuPrecision, mnuAngleUnits;
+    private JMenu mnuFile, mnuSettings, mnuInfo, mnuLineWidth, mnuGraphColor, mnuPrecision;
     private JMenuItem miExit, miSave, miAbout, miHelp, miLoad;
-    private JRadioButtonMenuItem rbDegrees, rbRadians, rbGradians, rbThin, rbMedium, rbThick, rbCustThickness, rbWhite, rbLightGray, rbGray, rbCustColor, rbNoAcc, rbSmallAcc, rbMedAcc, rbHighAcc;
+    private JRadioButtonMenuItem rbThin, rbMedium, rbThick, rbCustThickness, rbWhite, rbLightGray, rbGray, rbCustColor, rbNoAcc, rbSmallAcc, rbMedAcc, rbHighAcc;
     private JCheckBoxMenuItem ckAntiAlias, ckDrawGrid;
     private ButtonGroup bgAngle, bgLineWidth, bgGraphColor, bgPrecision;
 
@@ -50,7 +50,6 @@ class MainWindow extends JFrame implements ActionListener {
 
         this.createTabbedPane();
         this.createMenuBar();
-
         this.setJMenuBar(menuBar);
         this.add(tabbedPane, BorderLayout.CENTER);
         this.setSize(520, 550);
@@ -72,7 +71,6 @@ class MainWindow extends JFrame implements ActionListener {
         mnuFile = new JMenu("File");
         mnuSettings = new JMenu("Settings");
         mnuInfo = new JMenu("Info");
-        //mnuAngleUnits = new JMenu("Angle Units");
         mnuLineWidth = new JMenu("Line Width");
         mnuGraphColor = new JMenu("Graph Background");
         mnuPrecision = new JMenu("Precision Modifier");
@@ -85,9 +83,6 @@ class MainWindow extends JFrame implements ActionListener {
         miHelp = new JMenuItem("Help", GenSettings.getImageIcon("/images/helpSmall.png"));
 
         //Initialize radio buttons.
-        rbDegrees = new JRadioButtonMenuItem("Degrees");
-        rbRadians = new JRadioButtonMenuItem("Radians");
-        rbGradians = new JRadioButtonMenuItem("Gradians");
         rbThin = new JRadioButtonMenuItem("Thin");
         rbMedium = new JRadioButtonMenuItem("Medium");
         rbThick = new JRadioButtonMenuItem("Thick");
@@ -109,11 +104,6 @@ class MainWindow extends JFrame implements ActionListener {
         mnuFile.add(miLoad);
         mnuFile.add(miSave);
         mnuFile.add(miExit);
-
-        //Add to Angle button group
-        bgAngle.add(rbDegrees);
-        bgAngle.add(rbRadians);
-        bgAngle.add(rbGradians);
 
         //Add to Line thickness button group.
         bgLineWidth.add(rbThin);
@@ -151,15 +141,7 @@ class MainWindow extends JFrame implements ActionListener {
         mnuPrecision.add(rbMedAcc);
         mnuPrecision.add(rbHighAcc);
 
-        //Add to angle units menu
-        /*
-        mnuAngleUnits.add(rbDegrees);
-        mnuAngleUnits.add(rbRadians);
-        mnuAngleUnits.add(rbGradians);
-        */
-
         //Add to settings menu
-        //mnuSettings.add(mnuAngleUnits);
         mnuSettings.add(mnuPrecision);
         mnuSettings.add(mnuLineWidth);
         mnuSettings.add(mnuGraphColor);
@@ -182,9 +164,6 @@ class MainWindow extends JFrame implements ActionListener {
         miExit.addActionListener(this);
         miHelp.addActionListener(this);
         miAbout.addActionListener(this);
-        rbDegrees.addActionListener(this);
-        rbRadians.addActionListener(this);
-        rbGradians.addActionListener(this);
         ckAntiAlias.addActionListener(this);
         ckDrawGrid.addActionListener(this);
         rbThin.addActionListener(this);
@@ -201,7 +180,6 @@ class MainWindow extends JFrame implements ActionListener {
         rbHighAcc.addActionListener(this);
 
         //Set default settings..
-        rbRadians.doClick();
         rbThin.doClick();
         ckAntiAlias.doClick();
         ckDrawGrid.doClick();

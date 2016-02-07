@@ -34,23 +34,8 @@ public class VariableList {
         VariableList.variables = variables;
     }
 
-    public static void clearVariableList(){
-        variables = new Vector<>();
-        sort();
-    }
-
     public static void addVariable(Variable variable){
         variables.add(variable);
-        sort();
-    }
-
-    public static void setVariable(int index, Variable variable){
-        variables.set(index, variable);
-        sort();
-    }
-
-    public static void removeVariable(Variable variable){
-        variables.remove(variable);
         sort();
     }
 

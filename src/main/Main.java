@@ -30,6 +30,7 @@ class Main {
             public void run() {
                     try {
 						UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                        System.setProperty("apple.laf.useScreenMenuBar", "true");
 					} catch (ClassNotFoundException | InstantiationException | UnsupportedLookAndFeelException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

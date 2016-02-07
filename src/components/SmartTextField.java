@@ -26,6 +26,7 @@ public class SmartTextField extends JTextField implements KeyListener, ActionLis
     private static final ArrayList<String> list = new ArrayList<>();
     private final JPopupMenu autoCompleteMenu = new JPopupMenu();
     private String curString;
+    private int position;
 
     public SmartTextField(String text, int columns) {
         super(text, columns);
@@ -65,15 +66,18 @@ public class SmartTextField extends JTextField implements KeyListener, ActionLis
 
     
     public void keyTyped(KeyEvent e) {
-        int position = this.getCaretPosition();
+        position = this.getCaretPosition();
         autoCompleteMenu.setVisible(false);
         autoCompleteMenu.removeAll();
+
+
         if (e.getKeyChar() == '(') {
+            //If '(' was typed, add a matching ')'
             this.setText(this.getText().substring(0, position) + ")" + this.getText().substring(position));
             this.setCaretPosition(position);
             this.curString = "";
-        } else if (this.getText().length() != position && e.getKeyChar() == ')' && this.getText().substring(position, position + 1).equals(")")) {
-            //Check if parens are balanced.
+        } else if (e.getKeyChar() == ')' && this.getText().length() != position && this.getText().substring(position, position + 1).equals(")")) {
+            //If ')' was typed, and the next character is ')'
             int left = 0;
             int right = 0;
             String txt = this.getText();
@@ -86,11 +90,13 @@ public class SmartTextField extends JTextField implements KeyListener, ActionLis
                 }
             }
             if(left >= right){
+                //If there are more opening than closing parens, ignore input.
                 this.setText(this.getText().substring(0, position) + this.getText().substring(position+1));
                 this.setCaretPosition(position);
             }
 
         } else if ((e.getKeyChar() >= 'a' && e.getKeyChar() <= 'z') || (e.getKeyChar() >= 'A' && e.getKeyChar() <= 'Z')) {
+            //If character typed is [a-zA-Z], add possible autocomplete terms to menu and display menu.
             this.curString += e.getKeyChar();
             for (String str : list) {
                 if (str.startsWith(curString)) {
@@ -103,21 +109,21 @@ public class SmartTextField extends JTextField implements KeyListener, ActionLis
             if (autoCompleteMenu.getComponents().length > 0) {
                 autoCompleteMenu.show(this, this.getCaret().getMagicCaretPosition().x + 7, (int) (this.getHeight() * 0.75));
                 this.requestFocusInWindow();
-                int pos =this.getSelectionEnd();
-                this.select(pos,pos);
-                this.setCaretPosition(pos);
             }
         } else {
             this.curString = "";
         }
+        this.setCaretPosition(position);
+        System.out.println("curString: " + this.curString);
 
     }
 
     
     public void keyPressed(KeyEvent e) {
 
-        if (e.getKeyCode() == 8) {
-            int position = this.getCaretPosition();
+        if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+            //If '(' was deleted and ')' is next char, delete ')' as well.
+            position = this.getCaretPosition();
             if (position != 0 && position != this.getText().length()) {
                 String prev = this.getText().substring(position - 1, position);
                 String next = this.getText().substring(position, position + 1);
@@ -132,8 +138,9 @@ public class SmartTextField extends JTextField implements KeyListener, ActionLis
    
     public void keyReleased(KeyEvent e) {
         if (e.getSource() == this) {
-            int[] validCodes = {16, 17, 18, 38, 40};
+            int[] validCodes = {KeyEvent.VK_SHIFT, KeyEvent.VK_CONTROL, KeyEvent.VK_ALT, KeyEvent.VK_UP, KeyEvent.VK_DOWN};
             if (e.getKeyCode() < 65 || e.getKeyCode() > 90) {
+                //If KeyCode is not a letter.
                 boolean valid = false;
                 for (int i : validCodes) {
                     if (e.getKeyCode() == i) {
@@ -146,6 +153,8 @@ public class SmartTextField extends JTextField implements KeyListener, ActionLis
                 }
             }
             if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                System.out.println("Focus on menu");
+                autoCompleteMenu.setFocusable(true);
                 autoCompleteMenu.requestFocusInWindow();
             }
         }
@@ -154,7 +163,7 @@ public class SmartTextField extends JTextField implements KeyListener, ActionLis
     
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().getClass() == JMenuItem.class) {
-            int position = this.getCaretPosition();
+            position = this.getCaretPosition();
             String str = this.getText();
             String toInsert = ((JMenuItem) e.getSource()).getText();
             this.setText(str.substring(0, position - curString.length()) + toInsert + str.substring(position));
