@@ -1,61 +1,72 @@
 package equations;
 
-import java.awt.geom.GeneralPath;
+import java.awt.*;
 import java.util.Vector;
 
-import expressions.Variable;
-import expressions.VariableList;
-import net.objecthunter.exp4j.Expression;
-import net.objecthunter.exp4j.ExpressionBuilder;
-
 public class EquationPlotter implements Runnable {
-	private GeneralPath polyline;
-	private Expression expression;
-	private double start, end, step;
-	private boolean running;
+    private final double minX, maxX, xStep;
+    private boolean running;
+	private final Equation equation;
+    private final Vector<double[]> xyCoordinates;
 
-	public EquationPlotter(String expressionString, GeneralPath polyline, double start, double end, double step) {
-		Vector<Variable> variables = VariableList.getVariables();
-		this.polyline = polyline;
-		this.start = start;
-		this.end = end;
-		this.step = step;
+    /**
+     * Constructor.
+     *
+     * @param equation The equation to be evaluated.
+     * @param minX The 'x' value at which to start evaluating.
+     * @param maxX The 'x' value at which to finish evaluating.
+     * @param width The width of the plot in pixels, determines how many points to evaluate.
+     */
+	public EquationPlotter(Equation equation, double minX, double maxX, int width) {
+		this.minX = minX;
+		this.maxX = maxX;
 		this.running = false;
+        this.equation = equation;
+        this.xStep = (maxX - minX) / width;
+        this.xyCoordinates = new Vector<>();
+    }
 
-		ExpressionBuilder expBuilder = new ExpressionBuilder(expressionString);
-		expBuilder.variable("x");
-
-		// Populate variables.
-		for (Variable var : variables) {
-			expBuilder.variable(var.getVariableName());
-		}
-
-		// Build expression.
-		expression = expBuilder.build();
-
-		// Populate variable values.
-		for (Variable var : variables) {
-			expression.setVariable(var.getVariableName(), var.getVariableValue());
-		}
+	public Vector<double[]> getXYCoordinates() {
+		return xyCoordinates;
 	}
 
-	public GeneralPath getPolyline() {
-		return polyline;
-	}
+    public String getExpression(){
+        return equation.getExpression();
+    }
+
+    public Equation getEquation(){
+        return equation;
+    }
+
+    public Color getColor(){
+        return equation.getColor();
+    }
+
+    /**
+     * Notifies thread to stop.
+     */
+    public void stop(){
+        this.running = false;
+    }
+
+    public boolean isRunning(){
+        return this.running;
+    }
 
 	@Override
 	public void run() {
 		double y;
 		this.running = true;
-		polyline.moveTo(start, expression.setVariable("x", start).evaluate()); //First Position
-		for (double x = start+step; x < end; x += step) {
-			if (!this.running)
-				break;
-			
-			expression.setVariable("x", x);
-			y = expression.evaluate();
-			polyline.lineTo(x, y);
-			System.out.println(this.getClass().getName() + String.format(": x=%s, y=%s", x, y));
+		for (double x = minX; x <= maxX; x += xStep) {
+			if (!this.running) {
+                //System.out.println("Stopping thread.");
+                break;
+            }
+
+			y = equation.evaluate(x);
+			xyCoordinates.add(new double[]{x,y});
+			//System.out.println(this.getClass().getName() + String.format(": x=%s, y=%s", x, y));
 		}
+        this.running = false;
 	}
 }

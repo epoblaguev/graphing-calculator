@@ -7,44 +7,38 @@ package graphing;
 import Constants.ConstValues;
 import Settings.Printer;
 import components.SmartTextField;
+import components.UneditableTable;
 import equations.Equation;
 import equations.EquationInput;
 import expressions.Expression;
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.Vector;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.table.DefaultTableModel;
-import components.UneditableTable;
 
 /**
  * -- Needs Commenting --
  * @author Egor
  */
-public class EquationValueTableWindow extends JFrame implements ActionListener {
+class EquationValueTableWindow extends JFrame implements ActionListener {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 6814774794494656725L;
-	private DefaultTableModel tableModel = new DefaultTableModel();
-    private UneditableTable table = new UneditableTable(tableModel);
-    private SmartTextField txtLowX, txtHighX, txtInterval;
+    private final DefaultTableModel tableModel = new DefaultTableModel();
+    private final UneditableTable table = new UneditableTable(tableModel);
+    private final SmartTextField txtLowX;
+    private final SmartTextField txtHighX;
+    private final SmartTextField txtInterval;
     private JScrollPane scrollPane = new JScrollPane(table);
-    private JButton btnRefresh, btnClose;
-    private JPanel buttonPanel, optionsPanel, equationPanel;
-    private JComboBox<String> cbEquation;
-    private DecimalFormat df = new DecimalFormat(ConstValues.DF_10);
+    private final JButton btnRefresh;
+    private final JButton btnClose;
+    private final JPanel buttonPanel;
+    private final JPanel optionsPanel;
+    private final JPanel equationPanel;
+    private final JComboBox<String> cbEquation;
+    private final DecimalFormat df = new DecimalFormat(ConstValues.DF_10);
 
     public EquationValueTableWindow(JPanel equationPanel) {
         this.setTitle("Table of Points");
@@ -58,7 +52,7 @@ public class EquationValueTableWindow extends JFrame implements ActionListener {
         scrollPane = new JScrollPane(table);
         buttonPanel = new JPanel();
         optionsPanel = new JPanel(new GridLayout(0, 2));
-        cbEquation = new JComboBox<String>();
+        cbEquation = new JComboBox<>();
         btnRefresh = new JButton("Refresh");
         btnClose = new JButton("Close");
 
@@ -126,6 +120,8 @@ public class EquationValueTableWindow extends JFrame implements ActionListener {
         Printer.print(interval);
 
 
+        //What does this do?
+        /*
         for (Component eq : equationPanel.getComponents()) {
             ((EquationInput) eq).getInput().getText();
             if (((EquationInput) eq).getBtnName().getText().equals(cbEquation.getSelectedItem())) {
@@ -133,9 +129,10 @@ public class EquationValueTableWindow extends JFrame implements ActionListener {
                 break;
             }
         }
+        */
         
         for (double i = start; i <= finish; i+=interval) {
-            Vector<String> row = new Vector<String>(2);
+            Vector<String> row = new Vector<>(2);
             row.add(df.format(i));
             row.add(df.format(equation.evaluate(i)));
 

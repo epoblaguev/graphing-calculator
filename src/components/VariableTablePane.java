@@ -6,23 +6,20 @@
 package components;
 
 import exceptions.InvalidVariableNameException;
-import expressions.VariableList;
 import expressions.Variable;
+import expressions.VariableList;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.util.Iterator;
 import java.util.Vector;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
 /**
  * A pane that displays a table of variables and their values;
  * @author Egor
  */
 public class VariableTablePane extends JTable{
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 8945708880818610966L;
-	private static DefaultTableModel tableModel = new DefaultTableModel();
+    private static final DefaultTableModel tableModel = new DefaultTableModel();
 
     /**
      * Constructor.
@@ -39,12 +36,12 @@ public class VariableTablePane extends JTable{
         return false;
     }
 
-    public static void addRow(Vector<String> row){
+    private static void addRow(Vector<String> row){
         tableModel.addRow(row);
     }
 
 
-    public static void setRowCount(int rowCount){
+    private static void setRowCount(int rowCount){
         tableModel.setRowCount(rowCount);
     }
 
@@ -58,7 +55,7 @@ public class VariableTablePane extends JTable{
         Iterator<Variable> itr = VariableList.getVariables().iterator();
 
         while(itr.hasNext()){
-            Variable curVariable = (Variable) itr.next();
+            Variable curVariable = itr.next();
             row = new Vector(2);
             row.add(curVariable.getVariableName());
             row.add(curVariable.getVariableValue());

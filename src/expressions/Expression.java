@@ -4,10 +4,10 @@
  */
 package expressions;
 
+import net.objecthunter.exp4j.ExpressionBuilder;
+
 import java.io.Serializable;
 import java.util.Vector;
-
-import net.objecthunter.exp4j.ExpressionBuilder;
 
 /**
  * A Class to represent a math expression
@@ -16,13 +16,8 @@ import net.objecthunter.exp4j.ExpressionBuilder;
  */
 public class Expression implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7172720115921875406L;
 	private String expression;
 	private double value;
-	private String angleUnits;
 
 	/**
 	 * Constructor that takes a string representing the expression and formats
@@ -59,15 +54,6 @@ public class Expression implements Serializable {
 	 */
 	public double getValue() {
 		return value;
-	}
-
-	/**
-	 * Gets the angle units for the expression (Radians,Degrees)
-	 * 
-	 * @return
-	 */
-	public String getAngleUnits() {
-		return angleUnits;
 	}
 
 	/**

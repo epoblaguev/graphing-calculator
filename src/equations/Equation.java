@@ -6,13 +6,12 @@ package equations;
 
 import expressions.Variable;
 import expressions.VariableList;
-
-import java.awt.Color;
-import java.io.Serializable;
-import java.util.Vector;
-
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
+
+import java.awt.*;
+import java.io.Serializable;
+import java.util.Vector;
 
 /**
  *
@@ -20,52 +19,89 @@ import net.objecthunter.exp4j.ExpressionBuilder;
  */
 public class Equation implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 443195241156639504L;
-	private String expression;
+    private String expressionString;
+	private Expression expression;
 	private Color color;
 
-	public Equation(String expression, Color color) {
-		this.expression = expression;
+    /**
+     * Create an equation out of a string.
+     * @param expressionString A string representing one side of a mathematical equation [Example: 5*log(x)]
+     */
+	public Equation(String expressionString){
+		this(expressionString,null);
+	}
+
+    /**
+     * Create a colored equation out of a string.
+     * @param expressionString A string representing one side of a mathematical equation [Example: 5*log(x)]
+     * @param color The color of the equation.
+     */
+	public Equation(String expressionString, Color color) {
+		this.expressionString = expressionString;
 		this.color = color;
+
+		buildExpression(expressionString);
 	}
 
-	public Color getColor() {
-		return color;
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
-	}
-
-	public String getExpression() {
-		return expression;
-	}
-
-	public void setExpression(String expression) {
-		this.expression = expression;
-	}
-
-	public double evaluate(double x) {
-		ExpressionBuilder expBuilder = new ExpressionBuilder(expression);
+	private void buildExpression(String exprStr){
+        this.expressionString = exprStr;
+		ExpressionBuilder expBuilder = new ExpressionBuilder(expressionString);
 		Vector<Variable> variables = VariableList.getVariables();
 		expBuilder.variable("x");
 
 		for (Variable var : variables) {
 			expBuilder.variable(var.getVariableName());
 		}
-		Expression expression = expBuilder.build();
+		expression = expBuilder.build();
 
 		for (Variable var : variables) {
 			expression.setVariable(var.getVariableName(), var.getVariableValue());
 		}
-		expression.setVariable("x", x);
+	}
+
+    /**
+     * Returns the color of the equation.
+     * @return The color of the equation.
+     */
+	public Color getColor() {
+		return color;
+	}
+
+    /**
+     * Sets the color of the equation.
+     * @param color The new color of the equation.
+     */
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+    /**
+     * Returns the mathematical expression as a string.
+     * @return The mathematical expression as a string.
+     */
+	public String getExpression() {
+		return expressionString;
+	}
+
+    /**
+     * Sets the new mathematical expression, and rebuilds the equation. Updates the variables from the variable list.
+     * @param expression The new mathematical expression.
+     */
+	public void setExpression(String expression) {
+		buildExpression(expression);
+	}
+
+    /**
+     * Evaluates the equation for a given value of 'x'
+     * @param x The value of 'x' for which to evaluate the equation.
+     * @return The result of the equation for a given value of 'x'.
+     */
+	public double evaluate(double x) {
 		try {
+			expression.setVariable("x",x);
 			return expression.evaluate();
 		} catch (Exception e) {
-			//TODO: Why did I do this? Need to find a better solution.
+			System.out.println("Exception thrown while evaluating '" + expression + "' " + e);
 			return 0;
 		}
 

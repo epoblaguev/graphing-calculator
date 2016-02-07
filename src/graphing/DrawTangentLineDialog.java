@@ -4,43 +4,35 @@
  */
 package graphing;
 
-import equations.Equation;
-import equations.EquationInput;
 import Constants.ConstValues;
 import components.SmartTextField;
+import equations.Equation;
+import equations.EquationInput;
 import expressions.Expression;
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.GridLayout;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.text.DecimalFormat;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 /**
  *-- Needs Commenting --
  * @author Administrator
  */
-public class DrawTangentLineDialog extends JFrame implements ActionListener, KeyListener {
+class DrawTangentLineDialog extends JFrame implements ActionListener, KeyListener {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 3048756512755408252L;
-	private GraphingTab graphTab;
-    private SmartTextField txtInput;
-    private JComboBox<String> cbEquation;
-    private JPanel inputPanel, bottomPanel;
-    private JButton btnDraw;
-    private JButton btnClose;
+    private final GraphingTab graphTab;
+    private final SmartTextField txtInput;
+    private final JComboBox<String> cbEquation;
+    private final JPanel inputPanel;
+    private final JPanel bottomPanel;
+    private final JButton btnDraw;
+    private final JButton btnClose;
     private String expression;
-    private DecimalFormat df = new DecimalFormat(ConstValues.DF_10);
+    private final DecimalFormat df = new DecimalFormat(ConstValues.DF_10);
 
     public DrawTangentLineDialog(GraphingTab graphTab) {
         super();
@@ -52,7 +44,7 @@ public class DrawTangentLineDialog extends JFrame implements ActionListener, Key
         inputPanel = new JPanel(new GridLayout(0, 2));
         bottomPanel = new JPanel();
         
-        cbEquation = new JComboBox<String>();
+        cbEquation = new JComboBox<>();
         txtInput = new SmartTextField();
 
         for (Component eq : graphTab.getEquationPanel().getComponents()) {
@@ -116,7 +108,7 @@ public class DrawTangentLineDialog extends JFrame implements ActionListener, Key
                     break;
                 }
             }
-            if (foundEmpty == false) {
+            if (!foundEmpty) {
                 graphTab.getBtnAddEquation().doClick();
                 ((EquationInput) graphTab.getEquationPanel().getComponent(graphTab.getEquationCount() - 1)).getInput().setText(df.format(slope) + "x+(" + df.format(yIntercept) + ")");
             }

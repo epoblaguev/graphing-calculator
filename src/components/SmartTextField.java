@@ -7,15 +7,15 @@ package components;
 import Constants.BlackLists;
 import expressions.Variable;
 import expressions.VariableList;
-import java.awt.Point;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JTextField;
+import java.util.Collections;
 
 /**
  *
@@ -23,12 +23,8 @@ import javax.swing.JTextField;
  */
 public class SmartTextField extends JTextField implements KeyListener, ActionListener {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 5457545908621424875L;
-	private static ArrayList<String> list = new ArrayList<String>();
-    private JPopupMenu autoCompleteMenu = new JPopupMenu();
+    private static final ArrayList<String> list = new ArrayList<>();
+    private final JPopupMenu autoCompleteMenu = new JPopupMenu();
     private String curString;
 
     public SmartTextField(String text, int columns) {
@@ -61,9 +57,7 @@ public class SmartTextField extends JTextField implements KeyListener, ActionLis
 
     public static void rebuildList(){
         list.clear();
-        for (String str : BlackLists.variableBlackList) {
-            list.add(str);
-        }
+        Collections.addAll(list, BlackLists.variableBlackList);
         for(Variable var : VariableList.getVariables()){
             list.add(var.getVariableName());
         }

@@ -1,18 +1,16 @@
 package unitTests;
 
-import static org.junit.Assert.*;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import exceptions.InvalidVariableNameException;
 import expressions.Expression;
 import expressions.VariableList;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class ExpressionTest {
 	private static final double DELTA = 1e-15;
-	Expression expression;
-	double pi;
+	private Expression expression;
 
 	@Before
 	public void setUp() throws Exception, InvalidVariableNameException {

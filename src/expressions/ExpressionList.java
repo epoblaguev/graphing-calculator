@@ -13,7 +13,7 @@ import java.util.Vector;
  * @author Egor
  */
 public class ExpressionList {
-    private static Vector<Expression> expressions = new Vector<Expression>();
+    private static Vector<Expression> expressions = new Vector<>();
     
     /**
      * Returns the expression list
@@ -47,16 +47,7 @@ public class ExpressionList {
         expression.evaluate();
         expressions.add(expression);
     }
-    
-    /**
-     * Sets an expression at a given index
-     * @param index
-     * @param expression
-     */
-    public static void setExpression(int index, Expression expression){
-        expressions.set(index, expression); 
-        //Note: Why does this method exist when there is no equivalent get method?? - benmccormick336
-    }
+
     /**
      * Remove a given expression from the list
      * @param expression

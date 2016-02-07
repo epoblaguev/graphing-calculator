@@ -5,49 +5,22 @@
 package graphing;
 
 import Constants.ConstValues;
-import equations.Equation;
-import equations.EquationInput;
 import Settings.GenSettings;
 import components.SmartTextField;
+import equations.Equation;
+import equations.EquationInput;
 import exceptions.InvalidBoundsException;
 import expressions.Expression;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
+
+import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import java.awt.*;
+import java.awt.event.*;
 import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.border.EtchedBorder;
 
 /**
  * Creates the Graphing Panel
@@ -55,11 +28,7 @@ import javax.swing.border.EtchedBorder;
  */
 public class GraphingTab extends JPanel implements ActionListener, MouseWheelListener, MouseMotionListener, MouseListener, FocusListener, KeyListener, ComponentListener {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -2431506973009907432L;
-	private int equationCount = 3;
+    private int equationCount = 3;
     private int xPrev = 0, yPrev = 0;
     private double xClicked = 0, yClicked = 0;
     private GraphPanel graphPanel;
@@ -332,7 +301,7 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnGraph) {
             try {
-                Vector<Equation> eq = new Vector<Equation>();
+                Vector<Equation> eq = new Vector<>();
                 for (Component cmp : equationPanel.getComponents()) {
                     if (cmp.getClass() == EquationInput.class) {
                         EquationInput ei = (EquationInput) cmp;
@@ -341,7 +310,9 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
                         }
                     }
                 }
-                graphPanel.drawGraph(eq);
+                //graphPanel.drawGraph(eq)
+                graphPanel.setEquations(eq);
+                graphPanel.startDrawing();
             } catch (Exception exc) {
                 JOptionPane.showMessageDialog(this, exc.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -595,10 +566,8 @@ public class GraphingTab extends JPanel implements ActionListener, MouseWheelLis
                 	graphPanel.setMaxX(Double.NaN);
                 }
             }
-        } catch (NumberFormatException nfe) {
+        } catch (NumberFormatException | InvalidBoundsException nfe) {
             JOptionPane.showMessageDialog(this, nfe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } catch (InvalidBoundsException ibe) {
-            JOptionPane.showMessageDialog(this, ibe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

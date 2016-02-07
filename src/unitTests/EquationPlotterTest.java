@@ -1,37 +1,33 @@
 package unitTests;
 
-import static org.junit.Assert.*;
-
-import java.awt.geom.GeneralPath;
-
+import equations.Equation;
+import equations.EquationPlotter;
 import org.junit.Before;
 import org.junit.Test;
 
-import equations.EquationPlotter;
+import java.awt.geom.GeneralPath;
 
 public class EquationPlotterTest {
-	GeneralPath polyline,polylineControl;
-	double start,end,step;
+	private GeneralPath polyline;
+	private final double start = 0;
+    private final double end = 10;
 
 	@Before
 	public void setUp() throws Exception {
-		start=0;
-		end=5;
-		step=1;
-		
-		polyline = new GeneralPath(GeneralPath.WIND_EVEN_ODD, (int)end+1);
-		polylineControl = new GeneralPath(GeneralPath.WIND_EVEN_ODD, (int)end+1);
+
+        polyline = new GeneralPath(GeneralPath.WIND_EVEN_ODD, (int)end+1);
 	}
 
 	@Test
 	public void test() throws InterruptedException {
-		String expression = "x";
-		EquationPlotter equationPlotter = new EquationPlotter(expression, polyline, start, end, step);
+		Equation equation = new Equation("x + 1");
+		EquationPlotter equationPlotter = new EquationPlotter(equation,start,end,10);
 		Thread epThread = new Thread(equationPlotter);
 		epThread.start();
+		//equationPlotter.stop();
 		epThread.join();
-		System.out.println(equationPlotter.getPolyline());
-		System.out.println(polyline);
+		System.out.println(polyline.toString());
+		System.out.println(polyline.getPathIterator(null));
 	}
 
 }

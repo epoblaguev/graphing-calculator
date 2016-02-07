@@ -5,35 +5,29 @@
 package graphing;
 
 import Constants.ConstValues;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+import components.UneditableTable;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.Vector;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.table.DefaultTableModel;
-import components.UneditableTable;
 
 /**
  * -- Needs Commenting --
  * @author Egor
  */
-public class PointValuesTableWindow extends JFrame implements ActionListener{
+class PointValuesTableWindow extends JFrame implements ActionListener{
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 7855337057420942613L;
-	private DefaultTableModel tableModel = new DefaultTableModel();
-    private UneditableTable table = new UneditableTable(tableModel);
+    private final DefaultTableModel tableModel = new DefaultTableModel();
+    private final UneditableTable table = new UneditableTable(tableModel);
     private JScrollPane scrollPane  = new JScrollPane(table);
-    private JButton btnRefresh, btnClose;
-    private JPanel buttonPanel;
-    private DecimalFormat df = new DecimalFormat(ConstValues.DF_10);
+    private final JButton btnRefresh;
+    private final JButton btnClose;
+    private final JPanel buttonPanel;
+    private final DecimalFormat df = new DecimalFormat(ConstValues.DF_10);
 
     public PointValuesTableWindow() {
         this.setTitle("Table of Points");
@@ -64,7 +58,7 @@ public class PointValuesTableWindow extends JFrame implements ActionListener{
         tableModel.addColumn("X Value");
         tableModel.addColumn("Y Value");
         for(String key : GraphPanel.getPoints().keySet()){
-            Vector<String> row = new Vector<String>(3);
+            Vector<String> row = new Vector<>(3);
             row.add(key);
             row.add(df.format(GraphPanel.getPoint(key).getX()));
             row.add(df.format(GraphPanel.getPoint(key).getY()));

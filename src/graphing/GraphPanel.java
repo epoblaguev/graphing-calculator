@@ -5,19 +5,14 @@
 package graphing;
 
 import Constants.ConstValues;
-import equations.Equation;
 import Settings.GraphSettings;
-import Settings.Printer;
+import equations.Equation;
+import equations.EquationPlotter;
 import exceptions.InvalidBoundsException;
-import expressions.Expression;
-import expressions.Variable;
-import expressions.VariableList;
+import helpers.Helpers;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.geom.GeneralPath;
@@ -26,20 +21,14 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Vector;
 
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
-import net.objecthunter.exp4j.ExpressionBuilder;
-
 /**
  * Class to represent the graph
  * 
  * @author Egor
  */
-public class GraphPanel extends JPanel implements Runnable, ComponentListener {
+public class GraphPanel extends JPanel implements ComponentListener {
 
-	private static final long serialVersionUID = -8880798842884968375L;
-	private double minX = -10;
+    private double minX = -10;
 	private double maxX = 10;
 	private double minY = -10;
 	private double maxY = 10;
@@ -50,16 +39,11 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 	private int panelHeight = 0;
 	private int panelWidth = 0;
 	private boolean firstResize = true;
-	private static Vector<Equation> equations = new Vector<Equation>();
-	private static volatile Vector<GeneralPath> polylines = new Vector<GeneralPath>();
-	private Vector<Thread> threads = new Vector<Thread>();
-	private boolean stopThreads = false;
-	private boolean painting = false;
-	private int currentEq = 0;
-	private static HashMap<String, Point2D.Double> points = new HashMap<String, Point2D.Double>();
-	private Graphics2D g2;
+	private Vector<Equation> equations = new Vector<>();
+	private static final HashMap<String, Point2D.Double> points = new HashMap<>();
+    private EquationPlotter[] equationPlotters = {};
 
-	/**
+    /**
 	 * Constructor, sets the background
 	 */
 	public GraphPanel() {
@@ -70,12 +54,10 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 	/**
 	 * Paints the graph
 	 */
-	public synchronized void paintComponent(Graphics g) {
-		painting = true;
-
+	public void paintComponent(Graphics g) {
 		this.setBackground(GraphSettings.getBgColor());
 
-		g2 = (Graphics2D) g;
+		Graphics2D g2 = (Graphics2D) g;
 
 		super.paintComponent(g2);
 
@@ -108,12 +90,12 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 
 		g2.setColor(Color.black);
 
-		// Draw crossheir
+		// Draw crosshair
 		g2.drawLine(this.getWidth() / 2 - 5, this.getHeight() / 2, this.getWidth() / 2 + 5, this.getHeight() / 2);
 		g2.drawLine(this.getWidth() / 2, this.getHeight() / 2 - 5, this.getWidth() / 2, this.getHeight() / 2 + 5);
 
 		// Draw x and y axis
-		g2.drawLine(0, xAxis, this.getWidth(), xAxis);
+        g2.drawLine(0, xAxis, this.getWidth(), xAxis);
 		g2.drawLine(yAxis, 0, yAxis, this.getHeight());
 
 		// Set antialiasing
@@ -124,25 +106,38 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 		// Write Numbers
 		g2.drawString("0", yAxis + 2, xAxis - 1);
 		g2.drawString(df.format(minX), 5, xAxis - 1);
-		g2.drawString(df.format(maxX), this.getWidth()
-				- df.format(maxX).length() * 7, xAxis - 1);
+		g2.drawString(df.format(maxX), this.getWidth() - df.format(maxX).length() * 7, xAxis - 1);
 		g2.drawString(df.format(minY), yAxis + 2, this.getHeight() - 5);
 		g2.drawString(df.format(maxY), yAxis + 2, 15);
 
 		g2.setStroke(new BasicStroke(GraphSettings.getLineWidth()));
+
 		// Loop through each equation.
-		for (int i = 0; i < polylines.size(); i++) {
-			g2.setColor(equations.get(i).getColor());
-			try {
-				g2.draw(polylines.get(i));
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.out.println(i + " / " + polylines.size());
-			}
-		}
-		// for (GeneralPath polyline : polylines) {
-		// g2.draw(polyline);
-		// }
+        for(EquationPlotter equationPlotter : equationPlotters){
+            try {
+                GeneralPath eqLine = new GeneralPath();
+                boolean firstPoint = true;
+                double x, y;
+                Vector<double[]> xyCoordinates = equationPlotter.getXYCoordinates();
+                //Convert coordinates vector to GeneralPath.
+                for(double[] coordinate : xyCoordinates.toArray(new double[xyCoordinates.size()][])){
+                    x = this.UnitToPixelX(coordinate[0]);
+                    y = this.UnitToPixelY(coordinate[1]);
+                    if(firstPoint){
+                        eqLine.moveTo(x,y);
+                        firstPoint = false;
+                    } else {
+                        eqLine.lineTo(x,y);
+                    }
+                }
+                g2.setColor(equationPlotter.getColor());
+                g2.draw(eqLine);
+            } catch(Exception e){
+                e.printStackTrace();
+                System.out.println("Exception while graphing polyline: " + e.getMessage());
+            }
+
+        }
 
 		// Add points
 		g2.setColor(Color.BLACK);
@@ -155,28 +150,9 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 					+ df.format(pt.getY()) + ")", x + 5, y);
 		}
 		g2.dispose();
-		painting = false;
 	}
 
-	/**
-	 * gets the x interval
-	 * 
-	 * @return
-	 */
-	public double getxInterval() {
-		return xInterval;
-	}
-
-	/**
-	 * Gets the y interval
-	 * 
-	 * @return
-	 */
-	public double getyInterval() {
-		return yInterval;
-	}
-
-	/**
+    /**
 	 * Add a point to the graph
 	 * 
 	 * @param key
@@ -313,97 +289,61 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 	}
 
 	/**
-	 * Get the x axis
-	 * 
-	 * @return
-	 */
-	public int getxAxis() {
-		return xAxis;
-	}
-
-	/**
-	 * Get the Y axis
-	 * 
-	 * @return
-	 */
-	public int getyAxis() {
-		return yAxis;
-	}
-
-	/**
 	 * Converts specified x value to it's pixel location.
-	 * 
+	 *
 	 * @param x
 	 *            - the value of x for which to find the pixel location on the
 	 *            graph.
 	 * @return - the pixel value.
 	 */
-	public synchronized int UnitToPixelX(double x) {
-		double pixelsPerUnit = this.getWidth() / (maxX - minX);
-		double pos = (x - minX) * pixelsPerUnit;
-		return (int) pos;
+	private int UnitToPixelX(double x) {
+		return Helpers.UnitToPixelX(x,minX,maxX,this.getWidth());
 	}
 
 	/**
 	 * Converts specified y value to it's pixel location.
-	 * 
+	 *
 	 * @param y
 	 *            - the value of y for which to find the pixel location on the
 	 *            graph.
 	 * @return - the pixel value.
 	 */
-	public synchronized int UnitToPixelY(double y) {
-		double pixelsPerUnit = this.getHeight() / (maxY - minY);
-		double pos = (y - minY) * pixelsPerUnit;
-		pos = -pos + this.getHeight();
-		return (int) pos;
+	private int UnitToPixelY(double y) {
+		return Helpers.UnitToPixelY(y,minY,maxY,this.getHeight());
 	}
 
 	/**
 	 * Converts a horizontal pixel location to it's x value
-	 * 
+	 *
 	 * @param pix
 	 *            - pixel location to convert.
 	 * @return - x value of pixel location.
 	 */
 	public synchronized double PixelToUnitX(int pix) {
-		double unitsPerPixel = (maxX - minX) / this.getWidth();
-		double x = (pix * unitsPerPixel) + minX;
-		return x;
+		return Helpers.PixelToUnitX(pix,minX,maxX,this.getWidth());
 	}
 
 	/**
 	 * Converts a vertical pixel location to it's y value.
-	 * 
+	 *
 	 * @param pix
 	 *            - pixel location to convert.
 	 * @return - y value of pixel location.
 	 */
 	public synchronized double PixelToUnitY(int pix) {
-		double unitsPerPixel = (maxY - minY) / this.getHeight();
-		double y = ((this.getHeight() - pix) * unitsPerPixel) + minY;
-		return y;
+		return Helpers.PixelToUnitY(pix,minY,maxY,this.getHeight());
 	}
 
-	/**
-	 * Draws the graph with the equations
-	 * 
-	 * @param eq
-	 */
-	void drawGraph(Vector<Equation> eq) {
-		GraphPanel.equations = new Vector<Equation>();
-		for (Equation e : eq) {
-			Expression expr = new Expression(e.getExpression());
-			GraphPanel.equations.add(new Equation(expr.getExpression(), e.getColor()));
-		}
-		startDrawing();
-	}
+    void drawGraph(EquationPlotter[] equationPlotters){
+        this.equationPlotters = equationPlotters;
+        repaint();
+    }
 
 	/**
 	 * Draws the grid
 	 */
 	void drawGrid() {
-		GraphPanel.equations = new Vector<Equation>();
+		this.equations = new Vector<>();
 		startDrawing();
 	}
 
@@ -468,135 +408,17 @@ public class GraphPanel extends JPanel implements Runnable, ComponentListener {
 		startDrawing();
 	}
 
-	/**
-	 * Returns the next unused equation, and increments the currentEq value;
-	 * 
-	 * @return The next unused equation.
-	 */
-	private synchronized int getNextEQ() {
-		if (currentEq > equations.size() - 1) {
-			currentEq = 0;
-		}
-		// JOptionPane.showMessageDialog(this, currentEq);
-		Printer.print(currentEq);
-		return currentEq++;
-	}
-
-	private synchronized void increasePolylineNumber(int eqNumber) {
-		while (polylines.size() < eqNumber + 1) {
-			polylines.add(new GeneralPath(GeneralPath.WIND_EVEN_ODD, this.getWidth()));
-		}
-	}
 
 	public void startDrawing() {
-		stopThreads = true;
-		for (Thread t : threads) {
-			//System.out.println("Waiting for exit: " + t.toString());
-			while(t.isAlive()){
-				//Nothing
-			}
-			//System.out.println(t.toString() + " exited...");
-		}
-		threads.clear();
-		polylines.clear();
-		stopThreads = false;
-		repaint();
-		for (int i=0; i<equations.size(); i++) {
-			threads.add(new Thread(this));
-			threads.lastElement().start();
-		}
+        GraphState graphState = GraphState.getInstance();
+        graphState.updateGraphState(this,equations);
 	}
 
-	/**
-	 * Repaints the pane
-	 */
-	public void run() {
-		try {
-			int eqNumber = this.getNextEQ();
-			Equation eq = equations.get(eqNumber);
+    public void setEquations(Vector<Equation> equations){
+        this.equations = equations;
+    }
 
-			increasePolylineNumber(eqNumber);
-			GeneralPath polyline = new GeneralPath(GeneralPath.WIND_EVEN_ODD, this.getWidth());
 
-			boolean firstPoint = true;
-			double interval, slope;
-			Double eqVal;
-			Double eqPrev = 0.0;
-			String expr = eq.getExpression();
-			
-			ExpressionBuilder expBuilder = new ExpressionBuilder(expr);
-			expBuilder.variable("x");
-
-			for (Variable var : VariableList.getVariables()) {
-				expBuilder.variable(var.getVariableName());
-			}
-			
-			net.objecthunter.exp4j.Expression expression = expBuilder.build();
-
-			for (Variable var : VariableList.getVariables()) {
-				expression.setVariable(var.getVariableName(), var.getVariableValue());
-			}
-
-			// Set values for loop.
-			try {
-				//eqPrev = Equation.evaluate(expr, minX, false);
-				eqPrev=expression.setVariable("x", minX).evaluate();
-			} catch (Exception exc) {
-				equations.clear();
-				JOptionPane.showMessageDialog(this, "Invalid Argument.", "Error", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-
-			polyline.moveTo(UnitToPixelX(minX), UnitToPixelY(eqPrev));
-			// Printer.print("\neqNumber:" + eqNumber);
-			// Printer.print("Size:" + polylines.size());
-			polylines.set(eqNumber, polyline);
-			interval = (maxX - minX) / (this.getWidth());
-
-			// Start loop.
-			int loop = 0;
-			for (double x = minX;; x += interval) {
-				if (stopThreads) {
-					break;
-				}
-
-				// eqVal and pixValX are used a lot. Solve only once.
-				//eqVal = Equation.evaluate(expr, x, false);
-				eqVal=expression.setVariable("x", x).evaluate();
-				int pixValX = UnitToPixelX(x);
-
-				if (eqVal.isNaN() || eqVal.isInfinite()) {
-					firstPoint = true;
-				} else if (firstPoint) {
-					polyline.moveTo(pixValX, UnitToPixelY(eqVal));
-					firstPoint = false;
-				} else {
-					polyline.lineTo(pixValX, UnitToPixelY(eqVal));
-				}
-
-				// Set interval.
-				slope = Math.abs((eqVal - eqPrev) / (x - (x - interval)));
-				if (slope > GraphSettings.getMinCalcPerPixel()) {
-					if (slope > GraphSettings.getMaxCalcPerPixel()) {
-						slope = GraphSettings.getMaxCalcPerPixel();
-					}
-					interval = interval / slope;
-				}
-				
-				eqPrev = eqVal;
-
-				if ((loop++ % 10 == 0 && !painting )|| x >= maxX) {
-					repaint();
-				}
-				if (x >= maxX) {
-					break;
-				}
-			}
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, e, "Error", JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
-		}
-	}
 
 	public void componentHidden(ComponentEvent e) {
 		// TODO Auto-generated method stub

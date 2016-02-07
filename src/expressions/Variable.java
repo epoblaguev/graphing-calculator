@@ -5,8 +5,9 @@
 
 package expressions;
 
-import exceptions.InvalidVariableNameException;
 import Constants.BlackLists;
+import exceptions.InvalidVariableNameException;
+
 import java.io.Serializable;
 
 /**
@@ -15,11 +16,7 @@ import java.io.Serializable;
  */
 public class Variable implements Serializable{
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1816036425056304281L;
-	private String variableName;
+    private String variableName;
     private double variableValue;
 
     /**
@@ -46,7 +43,7 @@ public class Variable implements Serializable{
      * @param variableName
      * @throws InvalidVariableNameException
      */
-    public void setVariableName(String variableName) throws InvalidVariableNameException {
+    private void setVariableName(String variableName) throws InvalidVariableNameException {
         String tempVar = variableName.toLowerCase();
 
         for(String s : BlackLists.variableBlackList){

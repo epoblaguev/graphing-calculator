@@ -4,41 +4,32 @@
  */
 package graphing;
 
+import components.SmartTextField;
 import equations.Equation;
 import equations.EquationInput;
-import components.SmartTextField;
 import expressions.Expression;
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.GridLayout;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 /**
  * -- Needs Commenting --
  * @author Administrator
  */
-public class AddPointAtXValueDialog extends JFrame implements ActionListener, KeyListener {
+class AddPointAtXValueDialog extends JFrame implements ActionListener, KeyListener {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 2895224375533289494L;
-	private GraphingTab graphTab;
-    private SmartTextField txtValue;
-    private JTextField txtPointName;
-    private JComboBox<String> cbEquation;
-    private JPanel inputPanel, bottomPanel;
-    private JButton btnDraw;
-    private JButton btnClose;
+    private final GraphingTab graphTab;
+    private final SmartTextField txtValue;
+    private final JTextField txtPointName;
+    private final JComboBox<String> cbEquation;
+    private final JPanel inputPanel;
+    private final JPanel bottomPanel;
+    private final JButton btnDraw;
+    private final JButton btnClose;
     private String expression;
     
     public AddPointAtXValueDialog(GraphingTab graphTab) {
@@ -51,7 +42,7 @@ public class AddPointAtXValueDialog extends JFrame implements ActionListener, Ke
         inputPanel = new JPanel(new GridLayout(0, 2));
         bottomPanel = new JPanel();
 
-        cbEquation = new JComboBox<String>();
+        cbEquation = new JComboBox<>();
         txtValue = new SmartTextField();
         txtPointName = new JTextField();
 

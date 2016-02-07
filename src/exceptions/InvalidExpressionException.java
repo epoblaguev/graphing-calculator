@@ -17,13 +17,9 @@ package exceptions;
  * You should have received a copy of the GNU General Public License
  * along with Eikona.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class InvalidExpressionException extends Exception{
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3157576367852769255L;
-	String message;
+class InvalidExpressionException extends Exception{
+
+	private final String message;
 	
 	public InvalidExpressionException(String _message)
 	{

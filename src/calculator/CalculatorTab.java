@@ -1,40 +1,25 @@
 package calculator;
 
-import components.VariableTablePane;
-import components.ExpressionTablePane;
 import Settings.GenSettings;
+import components.ExpressionTablePane;
 import components.SmartTextField;
+import components.VariableTablePane;
 import exceptions.InvalidVariableNameException;
-import expressions.*;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
+import expressions.Expression;
+import expressions.ExpressionList;
+import expressions.VariableList;
+
+import javax.swing.*;
+import javax.swing.text.DefaultEditorKit;
+import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.text.DefaultEditorKit;
 
 /**
  * A panel that can be used as a calculator.
@@ -42,20 +27,16 @@ import javax.swing.text.DefaultEditorKit;
  */
 public class CalculatorTab extends JPanel implements ActionListener, Serializable, MouseListener, ClipboardOwner, KeyListener {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1837255541427330578L;
-	int targetRow;
-    JScrollPane exprScrollPane, varScrollPane;
-    JPanel controlPanel, controlPanelEast;
-    JPanel centerPanel, centerPanelEast, centerPanelWest, exprControlPanel, varControlPanel;
-    SmartTextField txtInput;
-    JButton btnEnter, btnAddVariable, btnRemoveVariable, btnClearExpressions, btnAppendToInput;
-    JTable varTable, exprTable, targetTable;
-    JPopupMenu mnuRightClick;
-    JMenuItem miCopyExpression, miCopyValue, miRemoveRow;
-    Clipboard clipBoard;
+    private int targetRow;
+    private JScrollPane exprScrollPane, varScrollPane;
+    private JPanel controlPanel, controlPanelEast;
+    private JPanel centerPanel, centerPanelEast, centerPanelWest, exprControlPanel, varControlPanel;
+    private SmartTextField txtInput;
+    private JButton btnEnter, btnAddVariable, btnRemoveVariable, btnClearExpressions, btnAppendToInput;
+    private JTable varTable, exprTable, targetTable;
+    private JPopupMenu mnuRightClick;
+    private JMenuItem miCopyExpression, miCopyValue, miRemoveRow;
+    private Clipboard clipBoard;
 
     /**
      * Constructor for Calculator Tab
@@ -231,7 +212,7 @@ public class CalculatorTab extends JPanel implements ActionListener, Serializabl
 
         if (e.getSource() == btnAppendToInput) {
             if (exprTable.getSelectedRow() >= 0) {
-                String copy = ((Expression) ExpressionList.getExpressionList().get(exprTable.getSelectedRow())).getExpression();
+                String copy = ExpressionList.getExpressionList().get(exprTable.getSelectedRow()).getExpression();
                 txtInput.setText(txtInput.getText() + "(" + copy + ")");
             } else {
                 JOptionPane.showMessageDialog(this, "Please select an expression to copy.");

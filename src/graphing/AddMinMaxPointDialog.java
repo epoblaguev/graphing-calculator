@@ -4,49 +4,40 @@
  */
 package graphing;
 
-import equations.Equation;
-import equations.EquationInput;
 import Constants.ConstValues;
 import components.SmartTextField;
+import equations.Equation;
+import equations.EquationInput;
 import expressions.Expression;
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.GridLayout;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.text.DecimalFormat;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 /**
  *  ---NEEDS TO BE COMMENTED---
  * @author Administrator
  */
-public class AddMinMaxPointDialog extends JFrame implements ActionListener, KeyListener {
+class AddMinMaxPointDialog extends JFrame implements ActionListener, KeyListener {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 5368511158338772299L;
-	public static final int MIN = 1;
+    public static final int MIN = 1;
     public static final int MAX = 2;
-    private GraphingTab graphTab;
-    private SmartTextField txtLowX, txtHighX;
-    private JTextField txtPointName;
-    private JComboBox<String> cbEquation;
-    private JPanel inputPanel, bottomPanel;
-    private JButton btnDraw;
-    private JButton btnClose;
+    private final GraphingTab graphTab;
+    private final SmartTextField txtLowX;
+    private final SmartTextField txtHighX;
+    private final JTextField txtPointName;
+    private final JComboBox<String> cbEquation;
+    private final JPanel inputPanel;
+    private final JPanel bottomPanel;
+    private final JButton btnDraw;
+    private final JButton btnClose;
     private String expression;
-    private DecimalFormat df = new DecimalFormat(ConstValues.DF_10);
-    private int MinOrMax;
+    private final DecimalFormat df = new DecimalFormat(ConstValues.DF_10);
+    private final int MinOrMax;
 
     public AddMinMaxPointDialog(GraphingTab graphTab, double x, double range, int MinOrMax) {
         super();
@@ -59,7 +50,7 @@ public class AddMinMaxPointDialog extends JFrame implements ActionListener, KeyL
         inputPanel = new JPanel(new GridLayout(0, 2));
         bottomPanel = new JPanel();
 
-        cbEquation = new JComboBox<String>();
+        cbEquation = new JComboBox<>();
         txtPointName = new JTextField();
         txtLowX = new SmartTextField(df.format(x - (range / 20.0)));
         txtHighX = new SmartTextField(df.format(x + (range / 20.0)));

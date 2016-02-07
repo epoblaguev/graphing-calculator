@@ -1,20 +1,16 @@
 package components;
 
-import java.util.Vector;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import java.util.Vector;
 
 /**
  * Creates an uneditable table.
  * @author Egor
  */
 public class UneditableTable extends JTable{
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 9014866183495581121L;
-	protected DefaultTableModel tableModel = new DefaultTableModel();
+    private DefaultTableModel tableModel = new DefaultTableModel();
 
     /**
      * Create the table pane.
@@ -46,9 +42,4 @@ public class UneditableTable extends JTable{
         tableModel.setRowCount(rowCount);
     }
 
-    /**
-     * Refreshes the table.
-     */
-    public static void refreshTable(){
-    }
 }

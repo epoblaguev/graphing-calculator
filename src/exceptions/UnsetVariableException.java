@@ -18,13 +18,9 @@ package exceptions;
  * You should have received a copy of the GNU General Public License
  * along with Eikona.  If not, see <http://www.gnu.org/licenses/>.
  */
-public class UnsetVariableException extends Exception{
+class UnsetVariableException extends Exception{
 
-		/**
-	 * 
-	 */
-	private static final long serialVersionUID = -738450447401979940L;
-		String message;
+	private final String message;
 		
 		public UnsetVariableException(String _message)
 		{

@@ -4,37 +4,30 @@
  */
 package graphing;
 
-import equations.EquationInput;
 import Constants.ConstValues;
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import equations.EquationInput;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.text.DecimalFormat;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 /**
  *-- Needs Commenting --
  * @author Administrator
  */
-public class DrawLineBetweenPointsDialog extends JFrame implements ActionListener {
+class DrawLineBetweenPointsDialog extends JFrame implements ActionListener {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -6004966477810832476L;
-	private GraphingTab graphTab;
-    private JComboBox<?> cbFrom, cbTo;
-    private JPanel inputPanel, bottomPanel;
-    private JButton btnDraw;
-    private JButton btnClose;
-    private DecimalFormat df = new DecimalFormat(ConstValues.DF_10);
+    private final GraphingTab graphTab;
+    private final JComboBox<?> cbFrom;
+    private final JComboBox<?> cbTo;
+    private final JPanel inputPanel;
+    private final JPanel bottomPanel;
+    private final JButton btnDraw;
+    private final JButton btnClose;
+    private final DecimalFormat df = new DecimalFormat(ConstValues.DF_10);
 
     public DrawLineBetweenPointsDialog(GraphingTab graphTab) {
         super();
@@ -46,8 +39,8 @@ public class DrawLineBetweenPointsDialog extends JFrame implements ActionListene
         inputPanel = new JPanel(new GridLayout(0, 2));
         bottomPanel = new JPanel();
 
-        cbFrom = new JComboBox<Object>(GraphPanel.getPoints().keySet().toArray());
-        cbTo = new JComboBox<Object>(GraphPanel.getPoints().keySet().toArray());
+        cbFrom = new JComboBox<>(GraphPanel.getPoints().keySet().toArray());
+        cbTo = new JComboBox<>(GraphPanel.getPoints().keySet().toArray());
 
         btnDraw = new JButton("Draw");
         btnClose = new JButton("Close");
@@ -93,7 +86,7 @@ public class DrawLineBetweenPointsDialog extends JFrame implements ActionListene
                     break;
                 }
             }
-            if (foundEmpty == false) {
+            if (!foundEmpty) {
                 graphTab.getBtnAddEquation().doClick();
                 ((EquationInput) graphTab.getEquationPanel().getComponent(graphTab.getEquationCount() - 1)).getInput().setText(df.format(slope) + "x+(" + df.format(yIntercept) + ")");
             }

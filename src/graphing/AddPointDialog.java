@@ -7,45 +7,27 @@ package graphing;
 import Constants.ConstValues;
 import components.SmartTextField;
 import expressions.Expression;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.text.DecimalFormat;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 /**
  *  -- Needs Commenting --
  * @author Egor
  */
-public class AddPointDialog extends JFrame implements ActionListener, KeyListener {
+class AddPointDialog extends JFrame implements ActionListener, KeyListener {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 350325605840668713L;
-	private JTextField txtPointName;
+    private JTextField txtPointName;
     private SmartTextField txtXValue, txtYValue;
     private JButton btnAdd, btnClose;
-    private JPanel topPanel, bottomPanel, caller;
-
-    /**
-     * Constructor. Creates the form.
-     */
-    public AddPointDialog(JPanel caller) {
-        super();
-        this.caller = caller;
-        makeLayout();
-        this.pack();
-    }
+    private JPanel topPanel;
+    private JPanel bottomPanel;
+    private final JPanel caller;
 
     public AddPointDialog(JPanel caller, double x, double y) {
         super();

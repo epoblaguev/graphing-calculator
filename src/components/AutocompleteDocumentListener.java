@@ -5,17 +5,17 @@
 
 package components;
 
+import Settings.Printer;
+
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
-
-import Settings.Printer;
 
 /**
  *
  * @author Egor
  */
-public class AutocompleteDocumentListener implements DocumentListener{
+class AutocompleteDocumentListener implements DocumentListener{
 
     
     public void insertUpdate(DocumentEvent e) {

@@ -6,33 +6,27 @@ import exceptions.InvalidVariableNameException;
 import expressions.Expression;
 import expressions.Variable;
 import expressions.VariableList;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 /**
  * A form that allows the addition of variables.
  * @author Egor
  */
-public class AddVariableDialog extends JFrame implements ActionListener {
-	
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 2791185538174056163L;
-	private JLabel lblVariableName, lblVariableValue;
-    private JTextField txtVariableName;
-    private SmartTextField txtVariableValue;
-    private JButton btnAdd, btnClose;
-    private JPanel topPanel, middlePanel, bottomPanel;
+class AddVariableDialog extends JFrame implements ActionListener {
+
+    private final JLabel lblVariableName;
+    private final JLabel lblVariableValue;
+    private final JTextField txtVariableName;
+    private final SmartTextField txtVariableValue;
+    private final JButton btnAdd;
+    private final JButton btnClose;
+    private final JPanel topPanel;
+    private final JPanel middlePanel;
+    private final JPanel bottomPanel;
 
     /**
      * Constructor. Creates the form.
@@ -101,10 +95,8 @@ public class AddVariableDialog extends JFrame implements ActionListener {
             if (e.getSource() == btnClose) {
                 this.dispose();
             }
-        } catch (InvalidVariableNameException ex) {
+        } catch (InvalidVariableNameException | Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
-        } catch (Exception x) {
-        	JOptionPane.showMessageDialog(this, x.getMessage());
-		}
+        }
     }
 }

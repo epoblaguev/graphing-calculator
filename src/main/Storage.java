@@ -8,23 +8,19 @@ package main;
 import expressions.Expression;
 import expressions.Variable;
 import graphing.GraphingTab;
+
 import java.io.Serializable;
 import java.util.Vector;
-import javax.swing.JMenuBar;
 
 /**
  * A class to store Expressions, Variables, the Graphing Tab, and the Menu Bar
  * @author Egor
  */
-public class Storage implements Serializable{
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 3970532039953352429L;
-	private Vector<Expression> expressions;
+class Storage implements Serializable{
+    private Vector<Expression> expressions;
     private Vector<Variable> variables;
     private GraphingTab graphTab;
-    public Storage(Vector<Expression> expressions, Vector<Variable> variables, GraphingTab graphingTab, JMenuBar menuBar) {
+    public Storage(Vector<Expression> expressions, Vector<Variable> variables, GraphingTab graphingTab) {
         this.expressions = expressions;
         this.variables = variables;
         this.graphTab = graphingTab;

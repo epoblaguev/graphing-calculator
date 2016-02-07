@@ -5,7 +5,7 @@
 
 package Settings;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.Serializable;
 
 /**
@@ -13,11 +13,7 @@ import java.io.Serializable;
  * @author Egor
  */
 public class GraphSettings implements Serializable{
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -1240146121530921728L;
-	private static boolean antialiased = true;
+    private static boolean antialiased = true;
     private static float lineWidth = 1;
     private static Color bgColor = Color.gray;
     private static boolean drawGrid = false;
@@ -90,16 +86,8 @@ public class GraphSettings implements Serializable{
         GraphSettings.bgColor = bgColor;
     }
 
-    public static int getMaxCalcPerPixel() {
-        return maxCalcPerPixel;
-    }
-
     public static void setMaxCalcPerPixel(int maxCalcPerPixel) {
         GraphSettings.maxCalcPerPixel = maxCalcPerPixel;
-    }
-
-    public static int getMinCalcPerPixel() {
-        return minCalcPerPixel;
     }
 
     public static void setMinCalcPerPixel(int minCalcPerPixel) {

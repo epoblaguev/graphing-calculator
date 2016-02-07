@@ -4,20 +4,18 @@
  */
 package main;
 
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.*;
 
 /**
  * The main Class to run the graphingcalculator application
  * @author Egor
  */
-public class Main {
+class Main {
 
 	/**
 	 * Creates a new main window and sets it visible
 	 */
-    public static void showMainWindow() {
+    private static void showMainWindow() {
         MainWindow window = new MainWindow();
         window.setVisible(true);
     }
@@ -32,20 +30,14 @@ public class Main {
             public void run() {
                     try {
 						UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-					} catch (ClassNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (InstantiationException e) {
+					} catch (ClassNotFoundException | InstantiationException | UnsupportedLookAndFeelException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (IllegalAccessException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					} catch (UnsupportedLookAndFeelException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
 					}
-                    showMainWindow();
+                showMainWindow();
             }
         });
     }

@@ -8,6 +8,7 @@ package expressions;
 import Constants.ConstValues;
 import components.SmartTextField;
 import exceptions.InvalidVariableNameException;
+
 import java.util.Vector;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Vector;
  * @author Egor
  */
 public class VariableList {
-    private static Vector<Variable> variables = new Vector<Variable>();
+    private static Vector<Variable> variables = new Vector<>();
 
     public static void createIfEmpty() throws InvalidVariableNameException{
         if(variables.isEmpty()){
@@ -34,7 +35,7 @@ public class VariableList {
     }
 
     public static void clearVariableList(){
-        variables = new Vector<Variable>();
+        variables = new Vector<>();
         sort();
     }
 
@@ -64,17 +65,17 @@ public class VariableList {
         do{
             swapped = false;
             for(int i = 0; i < variables.size() - 1; i++){
-                String var1 = ((Variable)variables.get(i)).getVariableName();
-                String var2 = ((Variable)variables.get(i+1)).getVariableName();
+                String var1 = variables.get(i).getVariableName();
+                String var2 = variables.get(i+1).getVariableName();
 
                 if(var1.length() < var2.length()){
-                    Variable toSwap = (Variable) variables.get(i);
+                    Variable toSwap = variables.get(i);
                     variables.set(i, variables.get(i+1));
                     variables.set(i+1, toSwap);
                     swapped = true;
                 }
             }
-        }while(swapped == true);
+        }while(swapped);
         SmartTextField.rebuildList();
     }
 }

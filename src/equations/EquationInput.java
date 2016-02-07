@@ -5,21 +5,11 @@
 package equations;
 
 import components.SmartTextField;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import javax.swing.JButton;
-import javax.swing.JColorChooser;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.SwingConstants;
+
+import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
+import java.awt.*;
+import java.awt.event.*;
 
 /**
  *
@@ -27,14 +17,10 @@ import javax.swing.text.DefaultEditorKit;
  */
 public class EquationInput extends JPanel implements ActionListener, MouseListener {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -4217107958439218081L;
-	private JButton btnName;
-    private JPanel labelPanel;
+    private JButton btnName;
+    private final JPanel labelPanel;
     private SmartTextField input;
-    private JPopupMenu mnuRightClick;
+    private final JPopupMenu mnuRightClick;
     private Color color;
 
     public EquationInput(String name, Color color) {

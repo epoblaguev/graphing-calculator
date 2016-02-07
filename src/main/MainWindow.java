@@ -4,65 +4,47 @@
  */
 package main;
 
-import components.VariableTablePane;
-import components.ExpressionTablePane;
 import Constants.Info;
 import Settings.GenSettings;
 import Settings.GraphSettings;
-import calculator.*;
+import calculator.CalculatorTab;
+import components.ExpressionTablePane;
+import components.VariableTablePane;
 import exceptions.InvalidVariableNameException;
 import expressions.ExpressionList;
 import expressions.VariableList;
 import graphing.GraphingTab;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FileDialog;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ButtonGroup;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JColorChooser;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JTabbedPane;
 
 /**
  * Class to display the main Calculator window
  * @author Egor
  */
-public class MainWindow extends JFrame implements ActionListener {
+class MainWindow extends JFrame implements ActionListener {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -8481436709321974592L;
-	JTabbedPane tabbedPane;
-    CalculatorTab calculatorTab;
-    GraphingTab graphingTab;
-    JMenuBar menuBar;
-    JMenu mnuFile, mnuSettings, mnuInfo, mnuLineWidth, mnuGraphColor, mnuPrecision, mnuAngleUnits;
-    JMenuItem miExit, miSave, miAbout, miHelp, miLoad;
-    JRadioButtonMenuItem rbDegrees, rbRadians, rbGradians, rbThin, rbMedium, rbThick, rbCustThickness, rbWhite, rbLightGray, rbGray, rbCustColor, rbNoAcc, rbSmallAcc, rbMedAcc, rbHighAcc;
-    JCheckBoxMenuItem ckAntiAlias, ckDrawGrid;
-    ButtonGroup bgAngle, bgLineWidth, bgGraphColor, bgPrecision;
+    private JTabbedPane tabbedPane;
+    private CalculatorTab calculatorTab;
+    private GraphingTab graphingTab;
+    private JMenuBar menuBar;
+    private JMenu mnuFile, mnuSettings, mnuInfo, mnuLineWidth, mnuGraphColor, mnuPrecision, mnuAngleUnits;
+    private JMenuItem miExit, miSave, miAbout, miHelp, miLoad;
+    private JRadioButtonMenuItem rbDegrees, rbRadians, rbGradians, rbThin, rbMedium, rbThick, rbCustThickness, rbWhite, rbLightGray, rbGray, rbCustColor, rbNoAcc, rbSmallAcc, rbMedAcc, rbHighAcc;
+    private JCheckBoxMenuItem ckAntiAlias, ckDrawGrid;
+    private ButtonGroup bgAngle, bgLineWidth, bgGraphColor, bgPrecision;
 
     /**
      * Constructor to create the main window
      */
     public MainWindow() {
         super();
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setTitle("Graphing Calculator");
         this.setIconImage(GenSettings.getImage("/images/calculator.png"));
 
@@ -248,7 +230,7 @@ public class MainWindow extends JFrame implements ActionListener {
             fd.setVisible(true);
 
             if (fd.getFile() != null) {
-                ObjectInputStream in = null;
+                ObjectInputStream in;
                 try {
                     String filePath = fd.getDirectory() + fd.getFile();
                     in = new ObjectInputStream(new FileInputStream(filePath));
@@ -267,9 +249,7 @@ public class MainWindow extends JFrame implements ActionListener {
                     this.repaint();
                     in.close();
 
-                } catch (InvalidVariableNameException ex) {
-                    JOptionPane.showMessageDialog(this, ex.getMessage());
-                } catch (ClassNotFoundException ex) {
+                } catch (InvalidVariableNameException | ClassNotFoundException ex) {
                     JOptionPane.showMessageDialog(this, ex.getMessage());
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(this, ex.getMessage());
@@ -283,7 +263,7 @@ public class MainWindow extends JFrame implements ActionListener {
             fd.setVisible(true);
 
             if (fd.getFile() != null) {
-                Storage store = new Storage(ExpressionList.getExpressionList(), VariableList.getVariables(), this.graphingTab, this.menuBar);
+                Storage store = new Storage(ExpressionList.getExpressionList(), VariableList.getVariables(), this.graphingTab);
                 ObjectOutputStream objstream = null;
                 try {
                     String filePath = fd.getDirectory() + fd.getFile();
@@ -294,6 +274,7 @@ public class MainWindow extends JFrame implements ActionListener {
                     Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
                 } finally {
                     try {
+                        assert objstream != null;
                         objstream.close();
                     } catch (IOException ex) {
                         Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
